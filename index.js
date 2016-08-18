@@ -50,8 +50,8 @@ function fetchVersionMetadata(name, version) {
   return fetchUrl(url.resolve(NPMJS_URL, name + '/' + version)).map(JSON.parse)
 }
 
-function fetchBinary(name, version) {
-  return fetchUrl(url.resolve(NPMJS_URL, name + '/-/' + version + '/' + packageFilename(name, version)))
+function fetchBinary(dist) {
+  return fetchUrl(dist.tarball)
 }
 
 function dependenciesToArray(dependencies) {
@@ -128,26 +128,27 @@ function downloadPackage(nameAndVersions) {
              fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions)))
            })
            .flatMap(function(metadataContent) {
-             var paired = nameAndVersions.versions.map(function(version) {
-               return {name: nameAndVersions.name, version: version}
+             var distributions = nameAndVersions.versions.map(function(version) {
+               return {name: nameAndVersions.name, version: version, dist: metadataContent.versions[version].dist }
              })
-             return Bacon.fromArray(paired)
+             return Bacon.fromArray(distributions)
            })
-           .flatMap(function(nameAndVersion) {
-             return fetchVersionMetadata(nameAndVersion.name, nameAndVersion.version)
+           .flatMap(function(distribution) {
+             return fetchVersionMetadata(distribution.name, distribution.version)
                       .doAction(function(metadataContent) {
-                        fs.writeFileSync(packageVersionMetadataFilePath(nameAndVersions.name, nameAndVersion.version), JSON.stringify(metadataContent))
+                        fs.writeFileSync(packageVersionMetadataFilePath(distribution.name, distribution.version), JSON.stringify(metadataContent))
                       })
-                      .map(nameAndVersion)
+                      .map(distribution)
            })
-           .flatMap(function(nameAndVersion) {
-             return fetchBinary(nameAndVersion.name, nameAndVersion.version)
+           .flatMap(function(distribution) {
+             return fetchBinary(distribution.dist)
                       .doAction(function(data) {
-                        fs.writeFileSync(packageBinaryFilePath(nameAndVersion.name, nameAndVersion.version), data)
+                        fs.writeFileSync(packageBinaryFilePath(distribution.name, distribution.version), data)
                       })
+                      .map(distribution)
            })
-           .map(function() {
-             return nameAndVersion.name + '@' + nameAndVersion.version
+           .map(function(distribution) {
+             return distribution.name + '@' + distribution.version
            })
 }
 
