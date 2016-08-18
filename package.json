@@ -1,0 +1,17 @@
+{
+  "name": "offline-npm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Heikki Pora",
+  "license": "ISC",
+  "dependencies": {
+    "baconjs": "0.7.85",
+    "lodash": "4.15.0",
+    "minimist": "1.2.0",
+    "mkdirp": "0.5.1",
+    "request": "2.74.0",
+    "semver": "5.3.0"
+  }
+}
