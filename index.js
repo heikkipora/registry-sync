@@ -28,7 +28,7 @@ function fetchUrl(url) {
   }
 
   return Bacon.fromNodeCallback((callback) => {
-    request(url, (error, response, body) => {
+    request(url, {timeout: 20000}, (error, response, body) => {
       if (!error && response.statusCode == 200) {
         if (!url.endsWith('.tgz')) {
           responseCache[url] = body
@@ -106,7 +106,7 @@ function resolveVersionAndDependencies(package) {
          .flatMap(function(packageAndDependencies) {
            if (collectPackage(packageAndDependencies)) {
              return Bacon.fromArray(packageAndDependencies.dependencies)
-                         .flatMapWithConcurrencyLimit(5, resolveVersionAndDependencies)
+                         .flatMapConcat(resolveVersionAndDependencies)
            }
            return Bacon.never()
          })
