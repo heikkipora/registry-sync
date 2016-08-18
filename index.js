@@ -125,7 +125,7 @@ function downloadPackage(nameAndVersions) {
 
   return fetchMetadata(nameAndVersions.name)
            .doAction(function(metadataContent) {
-             fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions)))
+             fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions), null, 2))
            })
            .flatMap(function(metadataContent) {
              var distributions = nameAndVersions.versions.map(function(version) {
@@ -136,7 +136,7 @@ function downloadPackage(nameAndVersions) {
            .flatMap(function(distribution) {
              return fetchVersionMetadata(distribution.name, distribution.version)
                       .doAction(function(metadataContent) {
-                        fs.writeFileSync(packageVersionMetadataFilePath(distribution.name, distribution.version), JSON.stringify(metadataContent))
+                        fs.writeFileSync(packageVersionMetadataFilePath(distribution.name, distribution.version), JSON.stringify(metadataContent, null, 2))
                       })
                       .map(distribution)
            })
