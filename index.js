@@ -157,7 +157,7 @@ var downloaded = Bacon.fromArray(dependencies)
      .flatMap(resolveVersionAndDependencies)
      .mapEnd(collectedPackagesAsArray)
      .flatMap(Bacon.fromArray)
-     .flatMap(downloadPackage)
+     .flatMapWithConcurrencyLimit(5, downloadPackage)
 
 downloaded.log()
 
