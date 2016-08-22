@@ -112,6 +112,10 @@ function resolveVersionAndDependencies(package) {
          })
 }
 
+function binaryExists(distribution) {
+  return fs.existsSync(packageBinaryFilePath(distribution.name, distribution.version))
+}
+
 function downloadPackage(nameAndVersions) {
   function cleanupMetadata(metadataContent, versions) {
     var content = _.cloneDeep(metadataContent)
@@ -141,14 +145,14 @@ function downloadPackage(nameAndVersions) {
                       .map(distribution)
            })
            .flatMap(function(distribution) {
+             if (binaryExists(distribution)) {
+               return Bacon.once('Already downloaded ' + distribution.name + '@' + distribution.version)
+             }
              return fetchBinary(distribution.dist)
                       .doAction(function(data) {
                         fs.writeFileSync(packageBinaryFilePath(distribution.name, distribution.version), data)
                       })
-                      .map(distribution)
-           })
-           .map(function(distribution) {
-             return distribution.name + '@' + distribution.version
+                      .map('Downloaded ' + distribution.name + '@' + distribution.version)
            })
 }
 
