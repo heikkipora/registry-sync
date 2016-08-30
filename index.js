@@ -141,7 +141,11 @@ function downloadPackage(nameAndVersions) {
 
   return fetchMetadata(nameAndVersions.name)
            .doAction(function(metadataContent) {
-             fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions)))
+             const file = packageMetadataFilePath(nameAndVersions.name)
+             const content = JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions))
+             if (content != fs.readFileSync(file)) {
+               fs.writeFileSync(file, content)
+             }
            })
            .flatMap(function(metadataContent) {
              const distributions = nameAndVersions.versions.map(function(version) {
