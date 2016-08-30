@@ -1,11 +1,14 @@
 {
-  "name": "offline-npm",
+  "name": "registry-sync",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "description": "Synchronizes selected packages and their transitive dependencies from a remote NPM registry to a local folder.",
+  "repository": "https://github.com/heikkipora/registry-sync",
+  "bin": {
+    "registry-serve": "bin/server",
+    "registry-sync": "bin/sync"
+  },
   "author": "Heikki Pora",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "baconjs": "0.7.85",
     "commander": "2.9.0",
