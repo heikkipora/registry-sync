@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "repository": "https://github.com/heikkipora/registry-sync",
   "bin": {
-    "registry-serve": "bin/server",
+    "registry-serve": "bin/serve",
     "registry-sync": "bin/sync"
   },
   "author": "Heikki Pora",
