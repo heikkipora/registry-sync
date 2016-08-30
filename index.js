@@ -1,5 +1,6 @@
 var _ = require('lodash')
 var Bacon = require('baconjs')
+var crypto = require('crypto')
 var fs = require('fs')
 var mkdirp = require('mkdirp')
 var path = require('path')
@@ -22,13 +23,17 @@ if (!targetFolder) {
 
 const responseCache = {}
 
-function fetchUrl(url) {
+function sha1(data) {
+  return crypto.createHash('sha1').update(data).digest('hex')
+}
+
+function fetchUrl(url, bodyIsBinary) {
   if (responseCache[url]) {
     return Bacon.later(0, responseCache[url])
   }
 
   return Bacon.fromNodeCallback((callback) => {
-    request(url, {timeout: 20000}, (error, response, body) => {
+    request(url, { timeout: 20000, encoding: bodyIsBinary ? null : undefined }, (error, response, body) => {
       if (!error && response.statusCode == 200) {
         if (!url.endsWith('.tgz')) {
           responseCache[url] = body
@@ -51,7 +56,7 @@ function fetchVersionMetadata(name, version) {
 }
 
 function fetchBinary(dist) {
-  return fetchUrl(dist.tarball)
+  return fetchUrl(dist.tarball, true)
 }
 
 function dependenciesToArray(dependencies) {
@@ -150,6 +155,9 @@ function downloadPackage(nameAndVersions) {
              }
              return fetchBinary(distribution.dist)
                       .doAction(function(data) {
+                        if (sha1(data) != distribution.dist.shasum) {
+                          throw new Error('SHA checksum of ' + distribution.name + '@' + distribution.version + ' does not match')
+                        }
                         fs.writeFileSync(packageBinaryFilePath(distribution.name, distribution.version), data)
                       })
                       .map('Downloaded ' + distribution.name + '@' + distribution.version)
