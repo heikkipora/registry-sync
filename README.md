@@ -11,9 +11,9 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
 
 ## Usage
 
-Usage: bin/sync [options]
+### Synchronizing packages from the npmjs.org registry:
 
-  Options:
+    registry-sync [options]
 
     -h, --help           output usage information
     -V, --version        output the version number
@@ -22,15 +22,25 @@ Usage: bin/sync [options]
     --localUrl <url>     URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)
     --registryUrl [url]  URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)
 
+Example:
 
-Usage: bin/serve [options]
+    registry-sync --root /tmp/my-registry --manifest ./package.json --localUrl http://localhost:8000
 
-  Options:
+..where the referred ```package.json``` file needs to contain at least a "dependencies" section.
+Re-executing ```registry-sync``` will only download and update files for new package versions.
+
+### Serving the local registry after synchronization:
+
+    registry-serve [options]
 
     -h, --help       output usage information
     -V, --version    output the version number
     --root <path>    Path to serve NPM packages from
     --port [number]  Local HTTP port to bind the server to (defaults to 3000)
+
+Example:
+
+    registry-serve --root /tmp/my-registry --port 8000
 
 ## Using a proper web server instead of bin/serve (recommended)
 
