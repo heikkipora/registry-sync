@@ -1,27 +1,27 @@
-var _ = require('lodash')
-var Bacon = require('baconjs')
-var crypto = require('crypto')
-var fs = require('fs')
-var mkdirp = require('mkdirp')
-var path = require('path')
-var request = require('request')
-var semver = require('semver')
-var url = require('url')
+const _ = require('lodash')
+const Bacon = require('baconjs')
+const crypto = require('crypto')
+const fs = require('fs')
+const mkdirp = require('mkdirp')
+const path = require('path')
+const request = require('request')
+const semver = require('semver')
+const url = require('url')
 
-var argv = require('minimist')(process.argv.slice(2));
-var NPMJS_URL = argv.rootUrl || 'https://registry.npmjs.org'
+const argv = require('minimist')(process.argv.slice(2));
+const NPMJS_URL = argv.rootUrl || 'https://registry.npmjs.org'
 
-var rootPackage = argv.packageJson
+const rootPackage = argv.packageJson
 if (!rootPackage) {
   throw new Error('Mandatory parameter --packageJson missing')
 }
 
-var targetFolder = argv.targetFolder
+const targetFolder = argv.targetFolder
 if (!targetFolder) {
   throw new Error('Mandatory parameter --targetFolder missing')
 }
 
-var serverUrl = argv.serverUrl
+const serverUrl = argv.serverUrl
 if (!serverUrl) {
   throw new Error('Mandatory parameter --serverUrl missing')
 }
@@ -87,10 +87,10 @@ function packageBinaryFileUrl(name, version) {
   return url.resolve(serverUrl, name + '/' + packageFilename(name, version))
 }
 
-var collectedPackages = {}
+const collectedPackages = {}
 
 function collectPackage(package) {
-  var versions = collectedPackages[package.name] || []
+  const versions = collectedPackages[package.name] || []
   if (versions.indexOf(package.version) != -1) {
     return false
   }
@@ -108,8 +108,8 @@ function collectedPackagesAsArray() {
 function resolveVersionAndDependencies(package) {
   return fetchMetadata(package.name)
          .map(function(metadata) {
-           var available = Object.keys(metadata.versions)
-           var version = semver.maxSatisfying(available, package.versionRange)
+           const available = Object.keys(metadata.versions)
+           const version = semver.maxSatisfying(available, package.versionRange)
            return {name: package.name, version: version, dependencies: dependenciesToArray(metadata.versions[version].dependencies)}
          })
          .flatMap(function(packageAndDependencies) {
@@ -127,7 +127,7 @@ function binaryExists(distribution) {
 
 function downloadPackage(nameAndVersions) {
   function cleanupMetadata(metadataContent, versions) {
-    var content = _.cloneDeep(metadataContent)
+    const content = _.cloneDeep(metadataContent)
     Object.keys(content.versions).forEach(function(version) {
       if (versions.indexOf(version) == -1) {
         delete content.versions[version]
@@ -144,7 +144,7 @@ function downloadPackage(nameAndVersions) {
              fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions)))
            })
            .flatMap(function(metadataContent) {
-             var distributions = nameAndVersions.versions.map(function(version) {
+             const distributions = nameAndVersions.versions.map(function(version) {
                return {name: nameAndVersions.name, version: version, dist: metadataContent.versions[version].dist }
              })
              return Bacon.fromArray(distributions)
@@ -164,8 +164,8 @@ function downloadPackage(nameAndVersions) {
            })
 }
 
-var dependencies = dependenciesToArray(require(rootPackage).dependencies)
-var downloaded = Bacon.fromArray(dependencies)
+const dependencies = dependenciesToArray(require(rootPackage).dependencies)
+const downloaded = Bacon.fromArray(dependencies)
      .flatMap(resolveVersionAndDependencies)
      .mapEnd(collectedPackagesAsArray)
      .flatMap(Bacon.fromArray)
