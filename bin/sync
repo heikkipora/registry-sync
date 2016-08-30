@@ -1,30 +1,30 @@
+#!/usr/bin/env node
+
 const _ = require('lodash')
 const Bacon = require('baconjs')
 const crypto = require('crypto')
 const fs = require('fs')
 const mkdirp = require('mkdirp')
 const path = require('path')
+const program = require('commander')
 const request = require('request')
 const semver = require('semver')
 const url = require('url')
 
-const argv = require('minimist')(process.argv.slice(2));
-const NPMJS_URL = argv.rootUrl || 'https://registry.npmjs.org'
+program
+  .version(require(`${__dirname}/../package.json`).version)
+  .option('--root <path>', 'Path to save NPM package tarballs and metadata to')
+  .option('--manifest <file>', 'Path to a package.json file to use as catalog for mirrored NPM packages. Their transitive (production) dependencies are mirrored as well.')
+  .option('--localUrl <url>', 'URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)')
+  .option('--registryUrl [url]', 'URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)')
+  .parse(process.argv);
 
-const rootPackage = argv.packageJson
-if (!rootPackage) {
-  throw new Error('Mandatory parameter --packageJson missing')
+if (!program.root && !program.localUrl && !program.manifest) {
+  console.error(program.help())
+  process.exit(1)
 }
 
-const targetFolder = argv.targetFolder
-if (!targetFolder) {
-  throw new Error('Mandatory parameter --targetFolder missing')
-}
-
-const serverUrl = argv.serverUrl
-if (!serverUrl) {
-  throw new Error('Mandatory parameter --serverUrl missing')
-}
+const NPMJS_URL = program.registryUrl || 'https://registry.npmjs.org'
 
 const responseCache = {}
 
@@ -75,16 +75,16 @@ function packageFilename(name, version) {
 }
 
 function packageMetadataFilePath(name) {
-  mkdirp.sync(path.resolve(targetFolder, name))
-  return path.resolve(targetFolder, name + '/index.json')
+  mkdirp.sync(path.resolve(program.root, name))
+  return path.resolve(program.root, name + '/index.json')
 }
 
 function packageBinaryFilePath(name, version) {
-  return path.resolve(targetFolder, name + '/' + packageFilename(name, version))
+  return path.resolve(program.root, name + '/' + packageFilename(name, version))
 }
 
 function packageBinaryFileUrl(name, version) {
-  return url.resolve(serverUrl, name + '/' + packageFilename(name, version))
+  return url.resolve(program.localUrl, name + '/' + packageFilename(name, version))
 }
 
 const collectedPackages = {}
@@ -168,7 +168,7 @@ function downloadPackage(nameAndVersions) {
            })
 }
 
-const dependencies = dependenciesToArray(require(rootPackage).dependencies)
+const dependencies = dependenciesToArray(require(path.resolve(program.manifest)).dependencies)
 const downloaded = Bacon.fromArray(dependencies)
      .flatMap(resolveVersionAndDependencies)
      .mapEnd(collectedPackagesAsArray)
