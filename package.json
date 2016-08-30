@@ -1,6 +1,6 @@
 {
   "name": "registry-sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": "https://github.com/heikkipora/registry-sync",
   "bin": {
     "registry-serve": "bin/serve",
