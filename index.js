@@ -21,6 +21,11 @@ if (!targetFolder) {
   throw new Error('Mandatory parameter --targetFolder missing')
 }
 
+var serverUrl = argv.serverUrl
+if (!serverUrl) {
+  throw new Error('Mandatory parameter --serverUrl missing')
+}
+
 const responseCache = {}
 
 function sha1(data) {
@@ -145,6 +150,7 @@ function downloadPackage(nameAndVersions) {
            .flatMap(function(distribution) {
              return fetchVersionMetadata(distribution.name, distribution.version)
                       .doAction(function(metadataContent) {
+                        metadataContent.dist.tarball = url.resolve(serverUrl, packageBinaryFilePath(distribution.name, distribution.version))
                         fs.writeFileSync(packageVersionMetadataFilePath(distribution.name, distribution.version), JSON.stringify(metadataContent, null, 2))
                       })
                       .map(distribution)
