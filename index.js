@@ -79,13 +79,12 @@ function packageMetadataFilePath(name) {
   return path.resolve(targetFolder, name + '/index.json')
 }
 
-function packageVersionMetadataFilePath(name, version) {
-  mkdirp.sync(path.resolve(targetFolder, name, version))
-  return path.resolve(targetFolder, name + '/' + version + '/index.json')
+function packageBinaryFilePath(name, version) {
+  return path.resolve(targetFolder, name + '/' + packageFilename(name, version))
 }
 
-function packageBinaryFilePath(name, version) {
-  return path.resolve(targetFolder, name + '/' + version + '/' + packageFilename(name, version))
+function packageBinaryFileUrl(name, version) {
+  return url.resolve(serverUrl, name + '/' + packageFilename(name, version))
 }
 
 var collectedPackages = {}
@@ -132,6 +131,9 @@ function downloadPackage(nameAndVersions) {
     Object.keys(content.versions).forEach(function(version) {
       if (versions.indexOf(version) == -1) {
         delete content.versions[version]
+        delete content.time[version]
+      } else {
+        content.versions[version].dist.tarball = packageBinaryFileUrl(nameAndVersions.name, version)
       }
     })
     return content
@@ -139,21 +141,13 @@ function downloadPackage(nameAndVersions) {
 
   return fetchMetadata(nameAndVersions.name)
            .doAction(function(metadataContent) {
-             fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions), null, 2))
+             fs.writeFileSync(packageMetadataFilePath(nameAndVersions.name), JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions)))
            })
            .flatMap(function(metadataContent) {
              var distributions = nameAndVersions.versions.map(function(version) {
                return {name: nameAndVersions.name, version: version, dist: metadataContent.versions[version].dist }
              })
              return Bacon.fromArray(distributions)
-           })
-           .flatMap(function(distribution) {
-             return fetchVersionMetadata(distribution.name, distribution.version)
-                      .doAction(function(metadataContent) {
-                        metadataContent.dist.tarball = url.resolve(serverUrl, packageBinaryFilePath(distribution.name, distribution.version))
-                        fs.writeFileSync(packageVersionMetadataFilePath(distribution.name, distribution.version), JSON.stringify(metadataContent, null, 2))
-                      })
-                      .map(distribution)
            })
            .flatMap(function(distribution) {
              if (binaryExists(distribution)) {
