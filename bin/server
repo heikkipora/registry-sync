@@ -21,14 +21,7 @@ if (!program.root) {
 
 const port = program.port || 3000
 
-app.get('/:name/', function(req, res){
-    res.sendFile(`${req.params.name}/index.json`, {root: path.resolve(program.root)});
-})
+app.get('/:name/', (req, res) => res.sendFile(`${req.params.name}/index.json`, {root: path.resolve(program.root)}))
+app.get('/:name/:file', (req, res) => res.sendFile(`${req.params.name}/${req.params.file}`, {root: path.resolve(program.root)}))
 
-app.get('/:name/:file', function(req, res){
-    res.sendFile(`${req.params.name}/${req.params.file}`, {root: path.resolve(program.root)});
-})
-
-httpServer.listen(port, () => {
-  console.log(`Listening on port *:${port}`)
-})
+httpServer.listen(port, () => console.log(`Listening on port *:${port}`))
