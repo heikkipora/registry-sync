@@ -24,5 +24,8 @@
     "mirror",
     "private",
     "offline"
-  ]
+  ],
+  "engines": {
+    "node": ">=4.4.0"
+  }
 }

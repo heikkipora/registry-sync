@@ -5,6 +5,10 @@ The local copy can then be used as a simple private NPM registry without publish
 
 Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems to be in hibernation and not compatible with the current registry.npmjs.org
 
+## Pre-requisites
+
+- Node.js v4.4.0 or newer
+
 ## Installation
 
     npm install -g npm-mirror
