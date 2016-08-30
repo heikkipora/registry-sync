@@ -1,7 +1,6 @@
 {
   "name": "registry-sync",
   "version": "1.0.0",
-  "description": "Synchronizes selected packages and their transitive dependencies from a remote NPM registry to a local folder.",
   "repository": "https://github.com/heikkipora/registry-sync",
   "bin": {
     "registry-serve": "bin/server",
@@ -17,5 +16,12 @@
     "mkdirp": "0.5.1",
     "request": "2.74.0",
     "semver": "5.3.0"
-  }
+  },
+  "keywords": [
+    "registry",
+    "synchronize",
+    "mirror",
+    "private",
+    "offline"
+  ]
 }
