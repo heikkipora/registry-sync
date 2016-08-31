@@ -46,6 +46,6 @@ Example:
 
     registry-serve --root /tmp/my-registry --port 8000
 
-## Using a proper web server instead of ```registry-serve``` (recommended)
+## Using a proper web server instead of registry-serve (recommended)
 
 Configure your web server to use `index.json` as index file name instead of `index.html`.
