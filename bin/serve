@@ -11,9 +11,9 @@ program
   .version(require(`${__dirname}/../package.json`).version)
   .option('--root <path>', 'Path to serve NPM packages from')
   .option('--httpPort [number]', 'Local HTTP port to bind the server to (defaults to 8000)')
+  .option('--httpsPort [number]', 'Local HTTPS port to bind the server to (defaults to 8443)')
   .option('--sslCert [path]', 'Optional path to SSL certificate file (defaults to listening only to HTTP)')
   .option('--sslKey [path]', 'Optional path to SSL private key file (defaults to listening only to HTTP)')
-  .option('--httpsPort [number]', 'Local HTTPS port to bind the server to (defaults to 8443)')
   .parse(process.argv);
 
 if (!program.root) {
