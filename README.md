@@ -1,7 +1,7 @@
 # registry-sync
 
 Synchronizes selected packages and their transitive dependencies from a remote NPM registry (such as https://registry.npmjs.org) to a local folder.
-The local copy can then be used as a simple private NPM registry without publishing capabilities.
+The local copy can then be used as a simple private NPM registry without publishing capabilities. node-pre-gyp based pre-built native binaries are also included.
 
 Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems to be in hibernation and not compatible with the current registry.npmjs.org
 
@@ -28,7 +28,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
 
 Example:
 
-    registry-sync --root /tmp/my-registry --manifest ./package.json --localUrl http://localhost:8000
+    registry-sync --root /tmp/my-registry --manifest ./package.json --localUrl http://localhost:8000 --binaryAbi 46,47,48 --binaryArch x64 --binaryPlatform linux,darwin
 
 ..where the referred ```package.json``` file needs to contain at least a "dependencies" section.
 Re-executing ```registry-sync``` will only download and update files for new package versions.

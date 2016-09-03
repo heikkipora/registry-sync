@@ -16,13 +16,27 @@ program
   .option('--root <path>', 'Path to save NPM package tarballs and metadata to')
   .option('--manifest <file>', 'Path to a package.json file to use as catalog for mirrored NPM packages. Their transitive (production) dependencies are mirrored as well.')
   .option('--localUrl <url>', 'URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)')
+  .option('--binaryAbi <list>', 'Comma-separated list of node C++ ABI numbers to download pre-built binaries for. See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/')
+  .option('--binaryArch <list>', 'Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64')
+  .option('--binaryPlatform <list>', 'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix')
   .option('--registryUrl [url]', 'URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)')
   .parse(process.argv);
 
-if (!program.root && !program.localUrl && !program.manifest) {
+if (!program.root || !program.localUrl || !program.manifest || !program.binaryAbi || !program.binaryArch || !program.binaryPlatform) {
   console.error(program.help())
   process.exit(1)
 }
+
+const abis = program.binaryAbi.split(',')
+const architectures = program.binaryArch.split(',')
+const platforms = program.binaryPlatform.split(',')
+const prebuiltBinaryProperties = _.flattenDeep(abis.map(abi => {
+  return architectures.map(arch => {
+    return platforms.map(platform => {
+      return {abi: abi, arch: arch, platform: platform}
+    })
+  })
+}))
 
 const NPMJS_URL = program.registryUrl || 'https://registry.npmjs.org'
 
@@ -62,8 +76,12 @@ function fetchVersionMetadata(name, version) {
   return fetchUrl(url.resolve(NPMJS_URL, name + '/' + version)).map(JSON.parse)
 }
 
-function fetchBinary(dist) {
+function fetchTarball(dist) {
   return fetchUrl(dist.tarball, true)
+}
+
+function fetchPrebuiltBinary(version, binaryMetadata, abi, platform, arch) {
+  return fetchUrl(prebuiltBinaryUrl(version, binaryMetadata, abi, platform, arch), true)
 }
 
 function dependenciesToArray(dependencies) {
@@ -84,11 +102,11 @@ function packageMetadataFilePath(name) {
   return path.resolve(program.root, name + '/index.json')
 }
 
-function packageBinaryFilePath(name, version) {
+function packageTarballFilePath(name, version) {
   return path.resolve(program.root, name + '/' + packageFilename(name, version))
 }
 
-function packageBinaryFileUrl(name, version) {
+function packageTarballFileUrl(name, version) {
   return url.resolve(program.localUrl, name + '/' + packageFilename(name, version))
 }
 
@@ -134,8 +152,30 @@ function resolveVersionAndDependencies(package) {
     })
 }
 
-function binaryExists(distribution) {
-  return fs.existsSync(packageBinaryFilePath(distribution.name, distribution.version))
+function tarballExists(distribution) {
+  return fs.existsSync(packageTarballFilePath(distribution.name, distribution.version))
+}
+
+function prebuiltBinaryExists(name, version, binaryMetadata, abi, platform, arch) {
+  return fs.existsSync(prebuiltBinaryFilePath(name, version, binaryMetadata, abi, platform, arch))
+}
+
+function prebuiltBinaryFilePath(name, version, binaryMetadata, abi, platform, arch) {
+  return path.resolve(program.root, name + '/' + prebuiltBinaryFileName(version, binaryMetadata, abi, platform, arch))
+}
+
+function prebuiltBinaryFileName(version, binaryMetadata, abi, platform, arch) {
+  return binaryMetadata['package_name']
+    .replace('{module_name}', binaryMetadata['module_name'])
+    .replace('{version}', version)
+    .replace('{node_abi}', 'node-v' + abi)
+    .replace('{platform}', platform)
+    .replace('{arch}', arch)
+}
+
+function prebuiltBinaryUrl(version, binaryMetadata, abi, platform, arch) {
+  const remotePath = binaryMetadata['remote_path'].replace('{version}', version)
+  return url.resolve(binaryMetadata.host, remotePath + prebuiltBinaryFileName(version, binaryMetadata, abi, platform, arch))
 }
 
 function downloadPackage(nameAndVersions) {
@@ -147,7 +187,11 @@ function downloadPackage(nameAndVersions) {
         delete content.time[version]
       }
       else {
-        content.versions[version].dist.tarball = packageBinaryFileUrl(nameAndVersions.name, version)
+        content.versions[version].dist.tarball = packageTarballFileUrl(nameAndVersions.name, version)
+        if (content.versions[version].binary) {
+          content.versions[version].binary.host = program.localUrl
+          content.versions[version].binary.remote_path = '/' + nameAndVersions.name + '/'
+        }
       }
     })
     return content
@@ -166,22 +210,46 @@ function downloadPackage(nameAndVersions) {
           return {
             name: nameAndVersions.name,
             version: version,
-            dist: metadataContent.versions[version].dist
+            dist: metadataContent.versions[version].dist,
+            binary: metadataContent.versions[version].binary
           }
         }
       )
       return Bacon.fromArray(distributions)
     })
     .flatMap(distribution => {
-      if (binaryExists(distribution)) {
+      if (distribution.binary && distribution.binary['module_name']) {
+        return Bacon.fromArray(prebuiltBinaryProperties)
+          .flatMapConcat(properties => {
+            if (prebuiltBinaryExists(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch)) {
+              console.log('Already downloaded ' + prebuiltBinaryFileName(distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
+              return Bacon.once(distribution)
+            }
+            return fetchPrebuiltBinary(distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch)
+              .doAction(data => {
+                fs.writeFileSync(prebuiltBinaryFilePath(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch), data)
+                console.log('Downloaded pre-built binary ' + prebuiltBinaryFileName(distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
+              })
+              .mapError(err => {
+                console.log('Pre-built binary not available ' + prebuiltBinaryFileName(distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
+                return distribution
+              })
+              .map(distribution)
+          }).skipDuplicates()
+      } else {
+        return Bacon.once(distribution)
+      }
+    })
+    .flatMap(distribution => {
+      if (tarballExists(distribution)) {
         return Bacon.once('Already downloaded ' + distribution.name + '@' + distribution.version)
       }
-      return fetchBinary(distribution.dist)
+      return fetchTarball(distribution.dist)
         .doAction(data => {
           if (sha1(data) != distribution.dist.shasum) {
             throw new Error('SHA checksum of ' + distribution.name + '@' + distribution.version + ' does not match')
           }
-          fs.writeFileSync(packageBinaryFilePath(distribution.name, distribution.version), data)
+          fs.writeFileSync(packageTarballFilePath(distribution.name, distribution.version), data)
         })
         .map('Downloaded ' + distribution.name + '@' + distribution.version)
     })
