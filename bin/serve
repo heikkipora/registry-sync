@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 
 const express = require('express')
+const fs = require('fs')
 const http = require('http')
+const https = require('https')
 const path = require('path')
 const program = require('commander')
-
-const app = express()
-const httpServer = http.Server(app)
 
 program
   .version(require(`${__dirname}/../package.json`).version)
   .option('--root <path>', 'Path to serve NPM packages from')
-  .option('--port [number]', 'Local HTTP port to bind the server to (defaults to 3000)')
+  .option('--httpPort [number]', 'Local HTTP port to bind the server to (defaults to 8000)')
+  .option('--sslCert [path]', 'Optional path to SSL certificate file (defaults to listening only to HTTP)')
+  .option('--sslKey [path]', 'Optional path to SSL private key file (defaults to listening only to HTTP)')
+  .option('--httpsPort [number]', 'Local HTTPS port to bind the server to (defaults to 8443)')
   .parse(process.argv);
 
 if (!program.root) {
@@ -19,9 +21,22 @@ if (!program.root) {
   process.exit(1)
 }
 
-const port = program.port || 3000
+const sslEnabled = program.sslCert && program.sslKey
+
+const app = express()
+const httpServer = http.Server(app)
+
+const httpPort = program.httpPort || 8000
 
 app.get('/:name/', (req, res) => res.sendFile(`${req.params.name}/index.json`, {root: path.resolve(program.root)}))
 app.get('/:name/:file', (req, res) => res.sendFile(`${req.params.name}/${req.params.file}`, {root: path.resolve(program.root)}))
 
-httpServer.listen(port, () => console.log(`Listening on port *:${port}`))
+httpServer.listen(httpPort, () => console.log(`Listening on HTTP port *:${httpPort}`))
+
+if (sslEnabled) {
+  const httpsPort = program.httpsPort || 8443
+  const privateKey  = fs.readFileSync(program.sslKey, 'utf8')
+  const certificate = fs.readFileSync(program.sslCert, 'utf8')
+  const httpsServer = https.Server({key: privateKey, cert: certificate}, app);
+  httpsServer.listen(httpsPort, () => console.log(`Listening on HTTPS port *:${httpsPort}`))
+}
