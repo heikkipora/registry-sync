@@ -1,10 +1,5 @@
 #!/usr/bin/env node
 
-const express = require('express')
-const fs = require('fs')
-const http = require('http')
-const https = require('https')
-const path = require('path')
 const program = require('commander')
 
 program
@@ -22,21 +17,16 @@ if (!program.root) {
 }
 
 const sslEnabled = program.sslCert && program.sslKey
+const httpsOptions = sslEnabled ? {
+  port: program.httpsPort || 8443,
+  sslCert: program.sslCert,
+  sslKey: program.sslKey
+} : undefined
 
-const app = express()
-const httpServer = http.Server(app)
-
-const httpPort = program.httpPort || 8000
-
-app.get('/:name/', (req, res) => res.sendFile(`${req.params.name}/index.json`, {root: path.resolve(program.root)}))
-app.get('/:name/:file', (req, res) => res.sendFile(`${req.params.name}/${req.params.file}`, {root: path.resolve(program.root)}))
-
-httpServer.listen(httpPort, () => console.log(`Listening on HTTP port *:${httpPort}`))
-
-if (sslEnabled) {
-  const httpsPort = program.httpsPort || 8443
-  const privateKey  = fs.readFileSync(program.sslKey, 'utf8')
-  const certificate = fs.readFileSync(program.sslCert, 'utf8')
-  const httpsServer = https.Server({key: privateKey, cert: certificate}, app);
-  httpsServer.listen(httpsPort, () => console.log(`Listening on HTTPS port *:${httpsPort}`))
+const options = {
+  port: program.httpPort || 8000,
+  root: program.root,
+  https: httpsOptions
 }
+
+require(`${__dirname}/../lib/server`)(options)
