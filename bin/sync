@@ -201,7 +201,7 @@ function downloadPackage(nameAndVersions) {
     .doAction(metadataContent => {
       const file = packageMetadataFilePath(nameAndVersions.name)
       const content = JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions))
-      if (content != fs.readFileSync(file)) {
+      if (!fs.existsSync(file) || content != fs.readFileSync(file)) {
         fs.writeFileSync(file, content)
       }
     })
