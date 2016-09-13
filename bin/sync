@@ -156,7 +156,6 @@ function tarballExists(distribution) {
   return fs.existsSync(packageTarballFilePath(distribution.name, distribution.version))
 }
 
-
 // see node-pre-gyp: /lib/util/versioning.js for documentation of possible values
 function formatPrebuilt(formatString, name, version, moduleName, abi, platform, arch) {
   const moduleVersion = semver.parse(version)
@@ -245,7 +244,7 @@ function downloadPackage(nameAndVersions) {
         return Bacon.fromArray(prebuiltBinaryProperties)
           .flatMapConcat(properties => {
             if (prebuiltBinaryExists(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch)) {
-              console.log('Already downloaded ' + prebuiltBinaryFileName(distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
+              console.log('Already downloaded ' + prebuiltBinaryFileName(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
               return Bacon.once(distribution)
             }
             return fetchPrebuiltBinary(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch)
