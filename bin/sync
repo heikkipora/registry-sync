@@ -20,6 +20,7 @@ program
   .option('--binaryArch <list>', 'Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64')
   .option('--binaryPlatform <list>', 'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix')
   .option('--registryUrl [url]', 'URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)')
+  .option('--pretty', 'Optionally pretty print JSON metadata files')
   .parse(process.argv);
 
 if (!program.root || !program.localUrl || !program.manifest || !program.binaryAbi || !program.binaryArch || !program.binaryPlatform) {
@@ -222,7 +223,7 @@ function downloadPackage(nameAndVersions) {
   return fetchMetadata(nameAndVersions.name)
     .doAction(metadataContent => {
       const file = packageMetadataFilePath(nameAndVersions.name)
-      const content = JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions))
+      const content = JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions), null, program.pretty ? 2 : undefined)
       if (!fs.existsSync(file) || content != fs.readFileSync(file)) {
         fs.writeFileSync(file, content)
       }
