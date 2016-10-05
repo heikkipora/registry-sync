@@ -1,0 +1,9 @@
+{
+  "name": "dependencies-with-pregyp-binaries",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "fsevents": "1.0.14",
+    "sqlite3": "3.1.5"
+  }
+}
