@@ -28,6 +28,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
     --binaryArch <list>      Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64
     --binaryPlatform <list>  Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix
     --registryUrl [url]      URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)
+    --prune                  Optionally remove orphaned files from the root folder
     --pretty                 Optionally pretty print JSON metadata files
 
 Example:
