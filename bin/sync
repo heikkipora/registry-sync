@@ -91,7 +91,7 @@ function fetchPrebuiltBinary(name, version, binaryMetadata, abi, platform, arch)
 function dependenciesToArray(dependencies) {
   return Object.keys(dependencies || {}).map(key => {
     return {
-      name: key,
+      name: key.replace("\/", "%2F"),
       versionRange: dependencies[key]
     }
   })
