@@ -176,7 +176,7 @@ function formatPrebuilt(formatString, name, version, moduleName, abi, platform, 
   const build = moduleVersion.build.length ? moduleVersion.build.join('.') : ''
 
   return formatString
-    .replace('{name}', name)
+    .replace('{name}', encodeScopedPackage(name))
     .replace('{version}', version)
     .replace('{major}', moduleVersion.major)
     .replace('{minor}', moduleVersion.minor)
