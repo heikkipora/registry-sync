@@ -72,12 +72,16 @@ function fetchUrl(url, bodyIsBinary) {
   })
 }
 
+function encodeScopedPackage(name) {
+  return name.replace("\/", "%2f");
+}
+
 function fetchMetadata(name) {
-  return fetchUrl(url.resolve(NPMJS_URL, name)).map(JSON.parse)
+  return fetchUrl(url.resolve(NPMJS_URL, encodeScopedPackage(name))).map(JSON.parse)
 }
 
 function fetchVersionMetadata(name, version) {
-  return fetchUrl(url.resolve(NPMJS_URL, name + '/' + version)).map(JSON.parse)
+  return fetchUrl(url.resolve(NPMJS_URL, encodeScopedPackage(name) + '/' + version)).map(JSON.parse)
 }
 
 function fetchTarball(dist) {
@@ -91,27 +95,27 @@ function fetchPrebuiltBinary(name, version, binaryMetadata, abi, platform, arch)
 function dependenciesToArray(dependencies) {
   return Object.keys(dependencies || {}).map(key => {
     return {
-      name: key.replace("\/", "%2F"),
+      name: key,
       versionRange: dependencies[key]
     }
   })
 }
 
 function packageFilename(name, version) {
-  return name + '-' + version + '.tgz'
+  return encodeScopedPackage(name) + '-' + version + '.tgz'
 }
 
 function packageMetadataFilePath(name) {
-  mkdirp.sync(path.resolve(program.root, name))
-  return path.resolve(program.root, name + '/index.json')
+  mkdirp.sync(path.resolve(program.root, encodeScopedPackage(name)))
+  return path.resolve(program.root, encodeScopedPackage(name) + '/index.json')
 }
 
 function packageTarballFilePath(name, version) {
-  return path.resolve(program.root, name + '/' + packageFilename(name, version))
+  return path.resolve(program.root, encodeScopedPackage(name) + '/' + packageFilename(name, version))
 }
 
 function packageTarballFileUrl(name, version) {
-  return url.resolve(program.localUrl, name + '/' + packageFilename(name, version))
+  return url.resolve(program.localUrl, encodeScopedPackage(name) + '/' + packageFilename(name, version))
 }
 
 const collectedPackages = {}
@@ -192,7 +196,7 @@ function prebuiltBinaryExists(name, version, binaryMetadata, abi, platform, arch
 }
 
 function prebuiltBinaryFilePath(name, version, binaryMetadata, abi, platform, arch) {
-  return path.resolve(program.root, name + '/' + prebuiltBinaryFileName(name, version, binaryMetadata, abi, platform, arch))
+  return path.resolve(program.root, encodeScopedPackage(name) + '/' + prebuiltBinaryFileName(name, version, binaryMetadata, abi, platform, arch))
 }
 
 function prebuiltBinaryRemotePath(name, version, binaryMetadata, abi, platform, arch) {
@@ -221,7 +225,7 @@ function downloadPackage(nameAndVersions) {
         content.versions[version].dist.tarball = packageTarballFileUrl(nameAndVersions.name, version)
         if (content.versions[version].binary) {
           content.versions[version].binary.host = program.localUrl
-          content.versions[version].binary.remote_path = '/' + nameAndVersions.name + '/'
+          content.versions[version].binary.remote_path = '/' + encodeScopedPackage(nameAndVersions.name) + '/'
         }
       }
     })
