@@ -56,4 +56,4 @@ Example:
 
 ## Using a proper web server instead of registry-serve (recommended)
 
-Configure your web server to use `index.json` as index file name instead of `index.html`.
+Configure your web server to use `index.json` as index file name instead of `index.html`. Also configure 404 responses to have an application/json body of "{}".
