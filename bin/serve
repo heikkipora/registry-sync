@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const program = require('commander')
+const program = require('commander');
 
 program
   .version(require(`${__dirname}/../package.json`).version)
@@ -12,21 +12,21 @@ program
   .parse(process.argv);
 
 if (!program.root) {
-  console.error(program.help())
-  process.exit(1)
+  console.error(program.help());
+  process.exit(1);
 }
 
-const sslEnabled = program.sslCert && program.sslKey
+const sslEnabled = program.sslCert && program.sslKey;
 const httpsOptions = sslEnabled ? {
   port: program.httpsPort || 8443,
   sslCert: program.sslCert,
   sslKey: program.sslKey
-} : undefined
+} : undefined;
 
 const options = {
   port: program.httpPort || 8000,
   root: program.root,
   https: httpsOptions
-}
+};
 
-require(`${__dirname}/../lib/server`)(options)
+require(`${__dirname}/../lib/server`)(options);

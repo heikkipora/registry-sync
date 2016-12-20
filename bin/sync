@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const _ = require('lodash')
-const program = require('commander')
+const _ = require('lodash');
+const program = require('commander');
 
 program
   .version(require(`${__dirname}/../package.json`).version)
@@ -17,20 +17,20 @@ program
   .parse(process.argv);
 
 if (!program.root || !program.localUrl || !program.manifest || !program.binaryAbi || !program.binaryArch || !program.binaryPlatform) {
-  console.error(program.help())
-  process.exit(1)
+  console.error(program.help());
+  process.exit(1);
 }
 
-const abis = program.binaryAbi.split(',')
-const architectures = program.binaryArch.split(',')
-const platforms = program.binaryPlatform.split(',')
+const abis = program.binaryAbi.split(',');
+const architectures = program.binaryArch.split(',');
+const platforms = program.binaryPlatform.split(',');
 const prebuiltBinaryProperties = _.flattenDeep(abis.map(abi => {
   return architectures.map(arch => {
     return platforms.map(platform => {
-      return {abi: abi, arch: arch, platform: platform}
+      return {abi: abi, arch: arch, platform: platform};
     })
   })
-}))
+}));
 
 const options = {
   localUrl: program.localUrl,
@@ -40,6 +40,6 @@ const options = {
   prune: program.prune,
   registryUrl: program.registryUrl || 'https://registry.npmjs.org',
   rootFolder: program.root
-}
+};
 
-require(`${__dirname}/../lib/sync`)(options)
+require(`${__dirname}/../lib/sync`)(options);
