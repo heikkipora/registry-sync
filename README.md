@@ -13,7 +13,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
 
 ## Installation
 
-    npm install -g npm-mirror
+    npm install -g registry-sync
 
 ## Usage
 
