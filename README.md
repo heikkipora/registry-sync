@@ -37,8 +37,7 @@ Example:
 
     registry-sync --root /tmp/my-registry --manifest ./package.json --localUrl http://localhost:8000 --binaryAbi 46,47,48 --binaryArch x64 --binaryPlatform linux,darwin
 
-..where the referred ```package.json``` file needs to contain at least a "dependencies" section.
-Re-executing ```registry-sync``` will only download and update files for new package versions.
+..where the referred ```package.json``` file needs to contain at least a "dependencies" section. An extension to the standard ```package.json``` syntax allows defining multiple versions of a top-level dependency (see [test/package.json](https://github.com/heikkipora/registry-sync/blob/master/test/package.json) for an example). Re-executing ```registry-sync``` will only download and update files for new package versions.
 
 ### Serving the local registry after synchronization:
 
