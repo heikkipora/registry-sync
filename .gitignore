@@ -3,3 +3,4 @@ download/
 npm-debug.log
 *.iml
 .DS_Store
+test-root/
