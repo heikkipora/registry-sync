@@ -1,3 +1,4 @@
 *.log
 download
 npm-debug.log
+.idea/
