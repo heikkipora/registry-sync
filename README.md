@@ -6,6 +6,7 @@ The local copy can then be used as a simple private NPM registry without publish
 Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems to be in hibernation and not compatible with the current registry.npmjs.org
 
 [![npm version](https://badge.fury.io/js/registry-sync.svg)](https://badge.fury.io/js/registry-sync)
+[![build status](https://travis-ci.org/heikkipora/registry-sync.svg?branch=master)](https://travis-ci.org/heikkipora/registry-sync)
 
 ## Pre-requisites
 
