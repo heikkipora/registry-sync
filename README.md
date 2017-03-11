@@ -5,7 +5,7 @@ The local copy can then be used as a simple private NPM registry without publish
 
 Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems to be in hibernation and not compatible with the current registry.npmjs.org
 
-[![npm version](https://badge.fury.io/js/registry-sync.svg)](https://badge.fury.io/js/registry-sync) [![bitHound Dependencies](https://www.bithound.io/github/heikkipora/registry-sync/badges/dependencies.svg)](https://www.bithound.io/github/heikkipora/registry-sync/master/dependencies/npm) [![bitHound Code](https://www.bithound.io/github/heikkipora/registry-sync/badges/code.svg)](https://www.bithound.io/github/heikkipora/registry-sync)
+[![npm version](https://badge.fury.io/js/registry-sync.svg)](https://badge.fury.io/js/registry-sync)
 
 ## Pre-requisites
 
