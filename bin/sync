@@ -18,6 +18,7 @@ program
 
 if (!program.root || !program.localUrl || !program.manifest || !program.binaryAbi || !program.binaryArch || !program.binaryPlatform) {
   console.error(program.help());
+  // eslint-disable-next-line no-process-exit
   process.exit(1);
 }
 
