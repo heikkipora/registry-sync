@@ -59,3 +59,7 @@ Example:
 ## Using a proper web server instead of registry-serve (recommended)
 
 Configure your web server to use `index.json` as index file name instead of `index.html`. Also configure 404 responses to have an application/json body of "{}".
+
+## Contributing
+
+Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm test``` first.
