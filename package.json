@@ -7,6 +7,9 @@
     "registry-serve": "bin/serve",
     "registry-sync": "bin/sync"
   },
+  "scripts": {
+    "eslint": "./node_modules/.bin/eslint bin/* lib"
+  },
   "author": "Heikki Pora",
   "license": "MIT",
   "dependencies": {
@@ -28,5 +31,8 @@
   ],
   "engines": {
     "node": ">=4.4.0"
+  },
+  "devDependencies": {
+    "eslint": "3.17.1"
   }
 }
