@@ -2,5 +2,5 @@ node_modules/
 download/
 npm-debug.log
 *.iml
-.idea/
 .DS_Store
+test-root/
