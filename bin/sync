@@ -12,7 +12,6 @@ program
   .option('--binaryArch <list>', 'Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64')
   .option('--binaryPlatform <list>', 'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix')
   .option('--registryUrl [url]', 'URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)')
-  .option('--prune', 'Optionally remove orphaned files from the root folder')
   .option('--pretty', 'Optionally pretty print JSON metadata files')
   .parse(process.argv);
 
@@ -38,7 +37,6 @@ const options = {
   manifest: program.manifest,
   prebuiltBinaryProperties: prebuiltBinaryProperties,
   pretty: program.pretty,
-  prune: program.prune,
   registryUrl: program.registryUrl || 'https://registry.npmjs.org',
   rootFolder: program.root
 };
