@@ -3,7 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "bluebird": ["3.4.0","3.3.4","2.9.26"],
+    "bluebird": [
+      "3.4.0",
+      "3.3.4",
+      "2.9.26"
+    ],
     "fsevents": "1.0.14",
     "sqlite3": "3.1.5",
     "@marsaud/smb2": "0.7.2"
