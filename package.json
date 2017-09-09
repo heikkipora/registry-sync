@@ -37,6 +37,6 @@
     "node": ">=4.4.0"
   },
   "devDependencies": {
-    "eslint": "4.5.0"
+    "eslint": "4.6.1"
   }
 }
