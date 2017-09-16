@@ -20,7 +20,7 @@
     "mkdirp": "0.5.1",
     "readdirp": "2.1.0",
     "request": "2.81.0",
-    "rimraf": "2.6.1",
+    "rimraf": "2.6.2",
     "semver": "5.4.1",
     "ssri": "4.1.6",
     "streamifier": "0.1.1",
@@ -37,6 +37,6 @@
     "node": ">=4.4.0"
   },
   "devDependencies": {
-    "eslint": "4.6.1"
+    "eslint": "4.7.0"
   }
 }
