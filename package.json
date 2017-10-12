@@ -15,7 +15,7 @@
   "dependencies": {
     "baconjs": "0.7.95",
     "commander": "2.11.0",
-    "express": "4.16.1",
+    "express": "4.16.2",
     "lodash": "4.17.4",
     "mkdirp": "0.5.1",
     "readdirp": "2.1.0",
@@ -24,7 +24,7 @@
     "semver": "5.4.1",
     "ssri": "4.1.6",
     "streamifier": "0.1.1",
-    "tar-fs": "1.15.3"
+    "tar-fs": "1.16.0"
   },
   "keywords": [
     "registry",
