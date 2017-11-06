@@ -22,7 +22,7 @@
     "request": "2.83.0",
     "rimraf": "2.6.2",
     "semver": "5.4.1",
-    "ssri": "4.1.6",
+    "ssri": "5.0.0",
     "streamifier": "0.1.1",
     "tar-fs": "1.16.0"
   },
@@ -37,6 +37,6 @@
     "node": ">=4.4.0"
   },
   "devDependencies": {
-    "eslint": "4.8.0"
+    "eslint": "4.10.0"
   }
 }
