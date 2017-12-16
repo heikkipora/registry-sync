@@ -13,7 +13,7 @@
   "author": "Heikki Pora",
   "license": "MIT",
   "dependencies": {
-    "baconjs": "0.7.95",
+    "baconjs": "1.0.0",
     "commander": "2.12.2",
     "express": "4.16.2",
     "lodash": "4.17.4",
@@ -37,6 +37,6 @@
     "node": ">=4.4.0"
   },
   "devDependencies": {
-    "eslint": "4.12.0"
+    "eslint": "4.13.1"
   }
 }
