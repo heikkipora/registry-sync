@@ -3,7 +3,7 @@
 const program = require('commander');
 
 program
-  .version(require(`${__dirname}/../package.json`).version)
+  .version(require(`${__dirname}/../../package.json`).version)
   .option('--root <path>', 'Path to serve NPM packages from')
   .option('--httpPort [number]', 'Local HTTP port to bind the server to (defaults to 8000)')
   .option('--httpsPort [number]', 'Local HTTPS port to bind the server to (defaults to 8443)')
@@ -30,4 +30,4 @@ const options = {
   https: httpsOptions
 };
 
-require(`${__dirname}/../lib/server`)(options);
+require(`${__dirname}/server`)(options);
