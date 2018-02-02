@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "./build-npm",
-    "eslint": "eslint --fix src/* bin/* test/*",
+    "eslint": "eslint --fix src/* bin/*",
     "test": "mocha --require babel-register --require babel-polyfill --timeout 20000 test/*.js"
   },
   "author": "Heikki Pora",

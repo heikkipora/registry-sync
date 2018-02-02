@@ -1,9 +1,21 @@
 module.exports = {
     "env": {
         "es6": true,
+        "mocha": true,
         "node": true
     },
     "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+        },
+        "ecmaVersion": 2017,
+        "sourceType": "module"
+    },
+    "parser": "babel-eslint",
+    "plugins": [
+        "mocha"
+    ],
     "rules": {
         "accessor-pairs": "error",
         "array-bracket-spacing": "error",
@@ -109,7 +121,7 @@ module.exports = {
         "newline-per-chained-call": "off",
         "no-alert": "error",
         "no-array-constructor": "error",
-        "no-await-in-loop": "error",
+        "no-await-in-loop": "off",
         "no-bitwise": "error",
         "no-caller": "error",
         "no-catch-shadow": "error",
@@ -160,7 +172,7 @@ module.exports = {
         "no-path-concat": "error",
         "no-plusplus": "error",
         "no-process-env": "error",
-        "no-process-exit": "error",
+        "no-process-exit": "off",
         "no-proto": "error",
         "no-prototype-builtins": "error",
         "no-restricted-globals": "error",
