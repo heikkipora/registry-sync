@@ -246,7 +246,7 @@ module.exports = {
         "semi": "off",
         "semi-spacing": "error",
         "sort-imports": ["error", {
-            "ignoreCase": false,
+            "ignoreCase": true,
             "ignoreMemberSort": false,
             "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
         }],

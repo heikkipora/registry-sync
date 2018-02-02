@@ -4,22 +4,21 @@ const metadataCache = {}
 const timeout = 60 * 1000
 
 export async function fetchUrl(url, isBinary = false) {
-  if (metadataCache[url]) {
-    return metadataCache[url]
+  if (isBinary) {
+    return fetchBinary(url)
   }
 
-  const encoding = isBinary ? null : 'utf8'
-  const body = await request({encoding, url, timeout})
-  return cacheMetadata(url, parseJson(body, isBinary))
-}
-
-function cacheMetadata(url, body) {
-  if (!url.endsWith('.tgz')) {
-    metadataCache[url] = body
+  if (!metadataCache[url]) {
+    metadataCache[url] = await fetchJson(url)
   }
-  return body
+  return metadataCache[url]
 }
 
-function parseJson(body, isBinary) {
-  return isBinary ? body : JSON.parse(body)
+function fetchBinary(url) {
+  return request({encoding: null, url, timeout})
+}
+
+async function fetchJson(url) {
+  const body = await request({gzip: true, url, timeout})
+  return JSON.parse(body)
 }

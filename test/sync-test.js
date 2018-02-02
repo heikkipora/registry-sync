@@ -6,7 +6,7 @@ import {synchronize} from '../src/sync'
 const rimrafAsync = Promise.promisify(rimraf)
 const rootFolder = `${__dirname}/download`
 
-describe('registry-sync', () => {
+describe.skip('registry-sync', () => {
   beforeEach(async () => {
     await rimrafAsync(rootFolder)
   })
@@ -29,7 +29,7 @@ describe('registry-sync', () => {
     expect(skipped).to.deep.equal()
   })
 
-  it.skip('Should download the dependency tree of given packages', async () => {
+  it('Should download the dependency tree of given packages', async () => {
     const manifest = {
       dependencies: {
         bluebird: [
