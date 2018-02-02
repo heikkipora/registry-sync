@@ -245,7 +245,11 @@ module.exports = {
         "rest-spread-spacing": "error",
         "semi": "off",
         "semi-spacing": "error",
-        "sort-imports": "error",
+        "sort-imports": ["error", {
+            "ignoreCase": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "single", "multiple"]
+        }],
         "sort-keys": "off",
         "sort-vars": "error",
         "space-before-blocks": "error",

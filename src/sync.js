@@ -1,8 +1,8 @@
 import _ from 'lodash'
 import {fetchUrl} from './client'
-import fs from 'fs'
 import mkdirp from 'mkdirp'
 import path from 'path'
+import Promise from 'bluebird'
 import readdirp from 'readdirp'
 import rimraf from 'rimraf'
 import semver from 'semver'
@@ -12,17 +12,17 @@ import tar from 'tar-fs'
 import url from 'url'
 import zlib from 'zlib'
 
+const fs = Promise.promisifyAll(require('fs'))
+
+const CONCURRENCY = 5
+
 /* eslint-disable no-warning-comments, no-inline-comments, line-comment-position, max-depth */
 export async function synchronize(topLevelManifest, options) {
   const dependencies = dependenciesToArray(_.merge(topLevelManifest.dependencies, topLevelManifest.devDependencies))
-  for (const dependency of dependencies) {
-    // tODO: controlled concurrency
-    await resolveVersionAndDependenciesRecursive(dependency, options)
-  }
+  await Promise.map(dependencies, dependency => resolveVersionAndDependenciesRecursive(dependency, options), {concurrency: CONCURRENCY})
+
   const packages = collectedPackagesAsArray()
-  for (const pkg of packages) {
-    await downloadPackage(pkg, options) // tODO: controlled concurrency
-  }
+  await Promise.map(packages, pkg => downloadPackage(pkg, options), {concurrency: CONCURRENCY})
   await prune(options)
 }
 
@@ -45,7 +45,7 @@ async function downloadPackage(nameAndVersions, options) {
         } else {
           try {
             const data = await fetchPrebuiltBinary(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch)
-            await fs.writeFile(prebuiltBinaryFilePath(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch, options), data)
+            await fs.writeFileAsync(prebuiltBinaryFilePath(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch, options), data)
             console.log('Downloaded pre-built binary ' + prebuiltBinaryUrl(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
           } catch (err) {
             console.log('Pre-built binary not available ' + prebuiltBinaryUrl(distribution.name, distribution.version, distribution.binary, properties.abi, properties.platform, properties.arch))
@@ -59,7 +59,7 @@ async function downloadPackage(nameAndVersions, options) {
     const needMetadataRewrite = distribution.binary
     if (await tarballExists(distribution, options)) {
       if (needMetadataRewrite) {
-        const data = fs.readFileSync(packageTarballFilePath(distribution.name, distribution.version, options))
+        const data = await fs.readFileAsync(packageTarballFilePath(distribution.name, distribution.version, options))
         metadataContent.versions[distribution.version].dist.shasum = sha1(data)
         metadataContent.versions[distribution.version].dist.integrity = sha512(data)
       }
@@ -79,15 +79,15 @@ async function downloadPackage(nameAndVersions, options) {
           metadataContent.versions[distribution.version].dist.shasum = sha1(data)
           metadataContent.versions[distribution.version].dist.integrity = sha512(data)
         }
-        await fs.writeFile(packageTarballFilePath(distribution.name, distribution.version, options), data)
+        await fs.writeFileAsync(packageTarballFilePath(distribution.name, distribution.version, options), data)
       }
       console.log('Downloaded ' + distribution.name + '@' + distribution.version)
     }
   }
 
   const content = JSON.stringify(cleanupMetadata(metadataContent, nameAndVersions.versions), null, options.pretty ? 2 : undefined)
-  if (!await fileExists(file) || content != await fs.readFile(file)) {
-    await fs.writeFile(file, content)
+  if (!await fileExists(file) || content != await fs.readFileAsync(file)) {
+    await fs.writeFileAsync(file, content)
   }
 
   function cleanupMetadata(metadataContent, versions) {
@@ -287,7 +287,7 @@ function sha512(data) {
 }
 
 export async function readJson(path) {
-  const content = await fs.readFile(path, 'utf8')
+  const content = await fs.readFileAsync(path, 'utf8')
   return JSON.parse(content)
 }
 
@@ -295,7 +295,7 @@ const requiredFiles = {}
 
 function fileExists(file) {
   requiredFiles[file] = true
-  return fs.exists(file)
+  return fs.existsAsync(file)
 }
 
 function prune(options) {

@@ -9,12 +9,13 @@
   "scripts": {
     "build": "./build-npm",
     "eslint": "eslint --fix src/* bin/*",
-    "test": "mocha --require babel-register --require babel-polyfill --timeout 20000 test/*.js"
+    "test": "mocha --require babel-register --require babel-polyfill --timeout 60000 test/*.js"
   },
   "author": "Heikki Pora",
   "license": "MIT",
   "dependencies": {
     "babel-runtime": "6.26.0",
+    "bluebird": "3.5.1",
     "commander": "2.13.0",
     "lodash": "4.17.4",
     "mkdirp": "0.5.1",
