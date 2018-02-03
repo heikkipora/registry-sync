@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const program = require('commander');
+const program = require('commander')
 
 program
   .version(require(`${__dirname}/../../package.json`).version)
@@ -9,25 +9,25 @@ program
   .option('--httpsPort [number]', 'Local HTTPS port to bind the server to (defaults to 8443)')
   .option('--sslCert [path]', 'Optional path to SSL certificate file (defaults to listening only to HTTP)')
   .option('--sslKey [path]', 'Optional path to SSL private key file (defaults to listening only to HTTP)')
-  .parse(process.argv);
+  .parse(process.argv)
 
 if (!program.root) {
-  console.error(program.help());
+  console.error(program.help())
   // eslint-disable-next-line no-process-exit
-  process.exit(1);
+  process.exit(1)
 }
 
-const sslEnabled = program.sslCert && program.sslKey;
+const sslEnabled = program.sslCert && program.sslKey
 const httpsOptions = sslEnabled ? {
   port: program.httpsPort || 8443,
   sslCert: program.sslCert,
   sslKey: program.sslKey
-} : undefined;
+} : undefined
 
 const options = {
   port: program.httpPort || 8000,
   root: program.root,
   https: httpsOptions
-};
+}
 
-require(`${__dirname}/server`)(options);
+require(`${__dirname}/server`)(options)

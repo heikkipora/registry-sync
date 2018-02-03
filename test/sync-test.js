@@ -4,45 +4,33 @@ import rimraf from 'rimraf'
 import {synchronize} from '../src/sync'
 
 const rimrafAsync = Promise.promisify(rimraf)
-const rootFolder = `${__dirname}/download`
+const rootFolder = `${__dirname}/.download`
 
-describe.skip('registry-sync', () => {
-  beforeEach(async () => {
+const options = {
+  localUrl: 'https://localhost:8443',
+  manifest: `${__dirname}/package-lock.json`,
+  registryUrl: 'https://registry.npmjs.org',
+  rootFolder
+}
+
+describe.only('synchronize', () => {
+  before(async () => {
     await rimrafAsync(rootFolder)
   })
 
-  it('Should download a single package', async () => {
-    const manifest = {
-      dependencies: {
-        bluebird: '3.4.0'
-      }
-    }
-
-    const options = {
-      localUrl: 'https://localhost:8443',
-      registryUrl: 'https://registry.npmjs.org',
-      rootFolder
-    }
-
-    const {downloaded, skipped} = await synchronize(manifest, options)
-    expect(downloaded).to.deep.equal(['bluebird@3.4.0'])
-    expect(skipped).to.deep.equal()
+  it('Should download a bunch of packages', async () => {
+    const downloaded = await synchronize(options)
+    expect(downloaded).to.have.lengthOf(141)
   })
 
-  it('Should download the dependency tree of given packages', async () => {
-    const manifest = {
-      dependencies: {
-        bluebird: [
-          '3.4.0',
-          '3.3.4',
-          '2.9.26'
-        ],
-        fsevents: '1.0.14',
-        sqlite3: '3.1.5',
-        '@marsaud/smb2': '0.7.2'
-      }
-    }
-    
+  it('Should already have all of the packages', async () => {
+    const downloaded = await synchronize(options)
+    expect(downloaded).to.have.lengthOf(0)
+  })
+
+})
+
+/*
     const prebuiltBinaryProperties = [
       {abi: 46, arch: 'x64', platform: 'darwin'},
       {abi: 46, arch: 'x64', platform: 'linux'},
@@ -51,15 +39,4 @@ describe.skip('registry-sync', () => {
       {abi: 48, arch: 'x64', platform: 'darwin'},
       {abi: 48, arch: 'x64', platform: 'linux'}
     ]
-    
-    const options = {
-      localUrl: 'https://localhost:8443',
-      prebuiltBinaryProperties,
-      pretty: true,
-      registryUrl: 'https://registry.npmjs.org',
-      rootFolder: `${__dirname}/download`
-    }
-
-    await synchronize(manifest, options)
-  })
-})
+*/

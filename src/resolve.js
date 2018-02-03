@@ -3,17 +3,27 @@ import Promise from 'bluebird'
 
 const fs = Promise.promisifyAll(require('fs'))
 
-export function updateDependenciesCache(dependencies, cacheFilePath) {
-  return fs.writeFileAsync(cacheFilePath, JSON.stringify(dependencies), 'utf8')
+export async function updateDependenciesCache(newDependencies, cacheFilePath) {
+  const cachedDependencies = await loadCache(cacheFilePath)
+  const allDependencies = _(cachedDependencies)
+    .concat(newDependencies)
+    .sortBy('id')
+    .sortedUniqBy('id')
+    .value()
+  return fs.writeFileAsync(cacheFilePath, JSON.stringify(allDependencies), 'utf8')
 }
 
 export async function dependenciesNotInCache(dependencies, cacheFilePath) {
+  const cachedDependencies = await loadCache(cacheFilePath)
+  return _.differenceBy(dependencies, cachedDependencies, 'id')
+}
+
+export async function loadCache(cacheFilePath) {
   try {
     const json = await fs.readFileAsync(cacheFilePath, 'utf8')
-    const cachedDependencies = JSON.parse(json)
-    return _.differenceBy(dependencies, cachedDependencies, 'id')
+    return JSON.parse(json)  
   } catch (fileNotFound) {
-    return dependencies
+    return []
   }
 }
 

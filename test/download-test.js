@@ -9,7 +9,7 @@ const options = {
   rootFolder: `${__dirname}/.download`
 }
 
-describe.only('download', () => {
+describe('download', () => {
   before(done => rimraf(options.rootFolder, done))
 
   it('Should download all packages and create metadata files', async () => {
