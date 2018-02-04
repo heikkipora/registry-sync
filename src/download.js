@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {fetchUrl} from './client'
 import mkdirp from 'mkdirp'
 import path from 'path'
@@ -20,7 +21,7 @@ export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, regis
 
 async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, {name, version}) {
   const registryMetadata = await fetchMetadata(name, registryUrl)
-  const versionMetadata = registryMetadata.versions[version]
+  const versionMetadata = _.cloneDeep(registryMetadata.versions[version])
   if (!versionMetadata) {
     throw new Error(`Unknown package version ${name}@${version}`)
   }
@@ -34,8 +35,8 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   }
   await saveTarball(versionMetadata, data, localFolder)
 
-  const localVersionMetadata = rewriteVersionMetadata(versionMetadata, data, localUrl)
-  await updateMetadata(localVersionMetadata, registryMetadata, registryUrl, localFolder)
+  rewriteVersionMetadata(versionMetadata, data, localUrl)
+  await updateMetadata(versionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
 async function downloadTarball({_id: id, dist}) {

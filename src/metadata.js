@@ -14,33 +14,14 @@ const mkdirpAsync = Promise.promisify(mkdirp)
 const rimrafAsync = Promise.promisify(rimraf)
 
 export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
-  const dist = {
-    integrity: sha512(data),
-    shasum: sha1(data),
-    tarball: localTarballUrl(versionMetadata, localUrl)
-  }
-  const binaryHostAndRemotePath = hasPrebuiltBinaries(versionMetadata) && hostAndRemotePath(versionMetadata, localUrl)
-  const binary = {
-    ...versionMetadata.binary,
-    ...binaryHostAndRemotePath
-  }
-  return {...versionMetadata, dist, binary}
-}
+  versionMetadata.dist.tarball = localTarballUrl(versionMetadata, localUrl)
 
-function hostAndRemotePath({name, version}, host) {
-  return {
-    host,
-    remote_path: `/${name}/${version}/`
+  if (hasPrebuiltBinaries(versionMetadata)) {
+    versionMetadata.binary.host = localUrl
+    versionMetadata.binary.remote_path = `/${versionMetadata.name}/${versionMetadata.version}/`
+    versionMetadata.dist.integrity = sha512(data)
+    versionMetadata.dist.shasum = sha1(data)
   }
-}
-
-function localTarballUrl({name, version}, localUrl) {
-  return url.resolve(localUrl, `${name}/${tarballFilename(name, version)}`)
-}
-
-export function tarballFilename(name, version) {
-  const normalized = name.replace(/\//g, '-')
-  return `${normalized}-${version}.tgz`
 }
 
 export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder) {
@@ -51,11 +32,8 @@ export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, 
   const manifestPath = path.join(tmpFolder, 'package', 'package.json')
   const json = await fs.readFileAsync(manifestPath, 'utf8')
   const metadata = JSON.parse(json)
-  // eslint-disable-next-line camelcase
-  const {host, remote_path} = hostAndRemotePath(versionMetadata, localUrl)
-  metadata.binary.host = host
-  // eslint-disable-next-line camelcase
-  metadata.binary.remote_path = remote_path
+  metadata.binary.host = localUrl
+  metadata.binary.remote_path = `/${versionMetadata.name}/${versionMetadata.version}/`
   await fs.writeFileAsync(manifestPath, JSON.stringify(metadata, null, 2))
 
   const updatedData = await compressTgz(tmpFolder)
@@ -85,4 +63,13 @@ function compressTgz(folder) {
     tgz.on('end', () => resolve(Buffer.concat(chunks)))
     tgz.on('error', reject)
   })
+}
+
+function localTarballUrl({name, version}, localUrl) {
+  return url.resolve(localUrl, `${name}/${tarballFilename(name, version)}`)
+}
+
+export function tarballFilename(name, version) {
+  const normalized = name.replace(/\//g, '-')
+  return `${normalized}-${version}.tgz`
 }
