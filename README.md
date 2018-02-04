@@ -18,7 +18,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
 
 ## Usage
 
-### Synchronizing packages from the npmjs.org registry:
+### Synchronizing packages from the npmjs.org registry
 
     registry-sync [options]
 
@@ -38,11 +38,17 @@ Example:
 
 Re-executing ```registry-sync``` will only download and update files for new package versions.
 
-### Serving the local root folder after synchronization:
+### Serving the local root folder after synchronization
 
 Configure a web server to use `index.json` as index file name instead of `index.html`.
 Also configure ```HTTP 404``` responses to have an ```application/json``` body of ```{}```.
 
+## Breaking changes from 1.x to 2.0
+
+ - ```--manifest``` argument needs to point to a ```package-lock.json``` file instead of ```package.json```
+ - ```--pretty``` command line argument has been removed, metadata files are always pretty printed
+
 ## Contributing
 
 Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm run eslint``` first.
+Integration tests can be run with ```npm test```. Both are anyway run automatically by Travis CI.
