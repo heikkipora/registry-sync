@@ -31,7 +31,6 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
     --binaryArch <list>      Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64
     --binaryPlatform <list>  Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix
     --registryUrl [url]      URL to use as NPM registry when fetching packages (defaults to https://registry.npmjs.org)
-    --pretty                 Optionally pretty print JSON metadata files
 
 Example:
 
@@ -39,26 +38,11 @@ Example:
 
 ..where the referred ```package.json``` file needs to contain at least a "dependencies" section. An extension to the standard ```package.json``` syntax allows defining multiple versions of a top-level dependency (see [test/package.json](https://github.com/heikkipora/registry-sync/blob/master/test/package.json) for an example). Re-executing ```registry-sync``` will only download and update files for new package versions.
 
-### Serving the local registry after synchronization:
+### Serving the local root folder after synchronization:
 
-    registry-serve [options]
-
-    -h, --help            output usage information
-    -V, --version         output the version number
-    --root <path>         Path to serve NPM packages from
-    --httpPort [number]   Local HTTP port to bind the server to (defaults to 8000)
-    --httpsPort [number]  Local HTTPS port to bind the server to (defaults to 8443)
-    --sslCert [path]      Optional path to SSL certificate file (defaults to listening only to HTTP)
-    --sslKey [path]       Optional path to SSL private key file (defaults to listening only to HTTP)
-
-Example:
-
-    registry-serve --root /tmp/my-registry
-
-## Using a proper web server instead of registry-serve (recommended)
-
-Configure your web server to use `index.json` as index file name instead of `index.html`. Also configure 404 responses to have an application/json body of "{}".
+Configure a web server to use `index.json` as index file name instead of `index.html`.
+Also configure ```HTTP 404``` responses to have an ```application/json``` body of ```{}```.
 
 ## Contributing
 
-Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm test``` first.
+Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm run eslint``` first.
