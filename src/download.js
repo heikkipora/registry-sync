@@ -5,9 +5,11 @@ import Promise from 'bluebird'
 import semver from 'semver'
 import url from 'url'
 import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
+import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
 import {sha1, sha512, verifyIntegrity} from './integrity'
 
 const fs = Promise.promisifyAll(require('fs'))
+const mkdirpAsync = Promise.promisify(mkdirp)
 
 const concurrency = 5
 
@@ -24,35 +26,26 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   }
 
   const localFolder = await ensureLocalFolderExists(name, rootFolder)
+  let data = await downloadTarball(versionMetadata, localFolder)
   if (hasPrebuiltBinaries(versionMetadata)) {
     const localPregypFolder = await ensureLocalFolderExists(version, localFolder)
     await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)  
+    data = await rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder)
   }
-  const data = await downloadTarball(versionMetadata, localFolder) 
+  await saveTarball(versionMetadata, data, localFolder)
 
   const localVersionMetadata = rewriteVersionMetadata(versionMetadata, data, localUrl)
   await updateMetadata(localVersionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
-function rewriteVersionMetadata(versionMetadata, data, localUrl) {
-  const dist = {
-    integrity: sha512(data),
-    shasum: sha1(data),
-    tarball: tarballUrl(versionMetadata.name, versionMetadata.version, localUrl)
-  }
-  const binaryHostAndRemotePath = hasPrebuiltBinaries(versionMetadata) && {host: localUrl, remote_path: `/${versionMetadata.name}/${versionMetadata.version}/`}
-  const binary = {
-    ...versionMetadata.binary,
-    ...binaryHostAndRemotePath
-  }
-  return {...versionMetadata, dist, binary}
-}
-
 async function downloadTarball({_id: id, name, version, dist}, localFolder) {
   const data = await fetchTarball(dist.tarball)
   verifyIntegrity(data, id, dist)
-  await fs.writeFileAsync(tarballPath(name, version, localFolder), data)
   return data
+}
+
+function saveTarball({name, version}, data, localFolder) {
+  return fs.writeFileAsync(tarballPath(name, version, localFolder), data)
 }
 
 async function updateMetadata(versionMetadata, defaultMetadata, registryUrl, localFolder) {
@@ -88,18 +81,9 @@ function tarballPath(name, version, localFolder) {
   return path.join(localFolder, tarballFilename(name, version))
 }
 
-function tarballUrl(name, version, localUrl) {
-  return url.resolve(localUrl, `${name}/${tarballFilename(name, version)}`)
-}
-
-function tarballFilename(name, version) {
-  const normalized = name.replace(/\//g, '-')
-  return `${normalized}-${version}.tgz`
-}
-
 async function ensureLocalFolderExists(name, rootFolder) {
   const localFolder = path.resolve(rootFolder, name)
-  await mkdirp(localFolder)
+  await mkdirpAsync(localFolder)
   return localFolder
 }
 
