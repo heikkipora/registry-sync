@@ -12,7 +12,6 @@ program
   .option('--binaryPlatform <list>', 'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix')
   .option('--concurrency [value]', 'Optional value to to control concurrency when downloading packages from registry. Default value is 5.')
   .option('--registryUrl [url]', 'Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org')
-  .option('--pretty', 'Optionally pretty print JSON metadata files')
   .parse(process.argv)
 
 if (!program.root || !program.localUrl || !program.manifest || !program.binaryAbi || !program.binaryArch || !program.binaryPlatform) {
@@ -35,7 +34,6 @@ const options = {
   localUrl: program.localUrl,
   manifest: program.manifest,
   prebuiltBinaryProperties,
-  pretty: program.pretty,
   registryUrl: program.registryUrl || 'https://registry.npmjs.org',
   rootFolder: program.root
 }
