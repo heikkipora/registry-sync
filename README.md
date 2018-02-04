@@ -48,6 +48,12 @@ Also configure ```HTTP 404``` responses to have an ```application/json``` body o
  - ```--manifest``` argument needs to point to a ```package-lock.json``` file instead of ```package.json```
  - ```--pretty``` command line argument has been removed, metadata files are always pretty printed
 
+```registry-sync``` now keeps a cache file (```.registry-sync-cache.json```) under ```--root``` folder to optimize the synchronization process over concecutive passes.
+Updating the ```--manifest``` file and executing ```registry-sync``` will only download the missing files and keep all the existing ones even if they are no longer present in the manifest.
+If you only want to keep the latest versions, remove the ```--root``` folder by hand before synchronization.
+
+```registry-sync``` v2 is remarkably faster (because of the cache file) and produces stable dependency trees as it doesn't do any version resolving by itself anymore.
+
 ## Contributing
 
 Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm run eslint``` first.
