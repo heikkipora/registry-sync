@@ -49,7 +49,7 @@ Also configure ```HTTP 404``` responses to have an ```application/json``` body o
  - ```--pretty``` command line argument has been removed, metadata files are always pretty printed
  - ```registry-serve``` executable has been retired to limit the amout of needed dependencies - use a real web server instead. The implementation still lives under ```test/manual/server``` though.
 
-```registry-sync``` now keeps a cache file (```.registry-sync-cache.json```) under ```--root``` folder to optimize the synchronization process over concecutive passes.
+```registry-sync``` now keeps a cache file (```.registry-sync-cache.json```) under ```--root``` folder to optimize the synchronization process over consecutive passes.
 Updating the ```--manifest``` file and executing ```registry-sync``` will only download the missing files and keep all the existing ones even if they are no longer present in the manifest.
 If you only want to keep the latest versions, remove the ```--root``` folder by hand before synchronization.
 
