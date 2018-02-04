@@ -34,7 +34,5 @@ describe('resolve', () => {
     expect(changedDependencies).to.deep.equal(expectedDependencies)
   })
 
-  after(() =>
-    fs.unlinkSync(cacheFilePath)
-  )
+  after(() => fs.unlinkSync(cacheFilePath))
 })

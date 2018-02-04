@@ -1,9 +1,7 @@
 import {expect} from 'chai'
-import Promise from 'bluebird'
 import rimraf from 'rimraf'
 import {synchronize} from '../src/sync'
 
-const rimrafAsync = Promise.promisify(rimraf)
 const rootFolder = `${__dirname}/.download`
 
 const prebuiltBinaryProperties = [
@@ -21,10 +19,8 @@ const options = {
   prebuiltBinaryProperties
 }
 
-describe.only('synchronize', () => {
-  before(async () => {
-    await rimrafAsync(rootFolder)
-  })
+describe('synchronize', () => {
+  before(done => rimraf(rootFolder, done))
 
   it('Should download a bunch of packages', async () => {
     const downloaded = await synchronize(options)
@@ -35,7 +31,6 @@ describe.only('synchronize', () => {
     const downloaded = await synchronize(options)
     expect(downloaded).to.have.lengthOf(0)
   })
-
 })
 
 
