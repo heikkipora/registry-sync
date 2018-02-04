@@ -19,7 +19,6 @@
     "commander": "2.13.0",
     "lodash": "4.17.4",
     "mkdirp": "0.5.1",
-    "readdirp": "2.1.0",
     "request": "2.83.0",
     "request-promise": "4.2.2",
     "rimraf": "2.6.2",
