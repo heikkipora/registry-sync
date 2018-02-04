@@ -4,18 +4,19 @@ import path from 'path'
 import Promise from 'bluebird'
 import semver from 'semver'
 import url from 'url'
+import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
 import {sha1, sha512, verifyIntegrity} from './integrity'
 
 const fs = Promise.promisifyAll(require('fs'))
 
 const concurrency = 5
 
-export function downloadAll(packages, {registryUrl, localUrl, rootFolder}) {
-  const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder)
+export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder}) {
+  const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties)
   return Promise.map(packages, downloadFromRegistry, {concurrency})
 }
 
-async function download(registryUrl, localUrl, rootFolder, {name, version}) {
+async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, {name, version}) {
   const registryMetadata = await fetchMetadata(name, registryUrl)
   const versionMetadata = registryMetadata.versions[version]
   if (!versionMetadata) {
@@ -23,7 +24,11 @@ async function download(registryUrl, localUrl, rootFolder, {name, version}) {
   }
 
   const localFolder = await ensureLocalFolderExists(name, rootFolder)
-  const data = await downloadTarball(versionMetadata, localFolder)
+  if (hasPrebuiltBinaries(versionMetadata)) {
+    const localPregypFolder = await ensureLocalFolderExists(version, localFolder)
+    await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)  
+  }
+  const data = await downloadTarball(versionMetadata, localFolder) 
 
   const localVersionMetadata = rewriteVersionMetadata(versionMetadata, data, localUrl)
   await updateMetadata(localVersionMetadata, registryMetadata, registryUrl, localFolder)
@@ -35,7 +40,12 @@ function rewriteVersionMetadata(versionMetadata, data, localUrl) {
     shasum: sha1(data),
     tarball: tarballUrl(versionMetadata.name, versionMetadata.version, localUrl)
   }
-  return {...versionMetadata, dist}
+  const binaryHostAndRemotePath = hasPrebuiltBinaries(versionMetadata) && {host: localUrl, remote_path: `/${versionMetadata.name}/${versionMetadata.version}/`}
+  const binary = {
+    ...versionMetadata.binary,
+    ...binaryHostAndRemotePath
+  }
+  return {...versionMetadata, dist, binary}
 }
 
 async function downloadTarball({_id: id, name, version, dist}, localFolder) {

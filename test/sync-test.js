@@ -6,11 +6,19 @@ import {synchronize} from '../src/sync'
 const rimrafAsync = Promise.promisify(rimraf)
 const rootFolder = `${__dirname}/.download`
 
+const prebuiltBinaryProperties = [
+  {abi: 57, arch: 'x64', platform: 'darwin'},
+  {abi: 57, arch: 'x64', platform: 'linux'},
+  {abi: 48, arch: 'x64', platform: 'darwin'},
+  {abi: 48, arch: 'x64', platform: 'linux'}
+]
+
 const options = {
   localUrl: 'https://localhost:8443',
   manifest: `${__dirname}/package-lock.json`,
   registryUrl: 'https://registry.npmjs.org',
-  rootFolder
+  rootFolder,
+  prebuiltBinaryProperties
 }
 
 describe.only('synchronize', () => {
@@ -30,13 +38,5 @@ describe.only('synchronize', () => {
 
 })
 
-/*
-    const prebuiltBinaryProperties = [
-      {abi: 46, arch: 'x64', platform: 'darwin'},
-      {abi: 46, arch: 'x64', platform: 'linux'},
-      {abi: 47, arch: 'x64', platform: 'darwin'},
-      {abi: 47, arch: 'x64', platform: 'linux'},
-      {abi: 48, arch: 'x64', platform: 'darwin'},
-      {abi: 48, arch: 'x64', platform: 'linux'}
-    ]
-*/
+
+
