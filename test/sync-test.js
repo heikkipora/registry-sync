@@ -20,8 +20,6 @@ const options = {
 }
 
 describe('synchronize', () => {
-  before(done => rimraf(rootFolder, done))
-
   it('Should download a bunch of packages', async () => {
     const downloaded = await synchronize(options)
     expect(downloaded).to.have.lengthOf(141)
@@ -31,6 +29,8 @@ describe('synchronize', () => {
     const downloaded = await synchronize(options)
     expect(downloaded).to.have.lengthOf(0)
   })
+
+  after(done => rimraf(rootFolder, done))
 })
 
 

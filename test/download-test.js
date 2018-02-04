@@ -3,15 +3,14 @@ import fs from 'fs'
 import {downloadAll} from '../src/download'
 import rimraf from 'rimraf'
 
+const rootFolder = `${__dirname}/.download`
 const options = {
   registryUrl: 'https://registry.npmjs.org',
   localUrl: 'https://localhost:8443',
-  rootFolder: `${__dirname}/.download`
+  rootFolder
 }
 
 describe('download', () => {
-  before(done => rimraf(options.rootFolder, done))
-
   it('Should download all packages and create metadata files', async () => {
       const packages = [
         {id: "abbrev@1.1.0", name: "abbrev", version: "1.1.0"},
@@ -20,4 +19,6 @@ describe('download', () => {
       ]
       await downloadAll(packages, options)
   })
+
+  after(done => rimraf(rootFolder, done))
 })
