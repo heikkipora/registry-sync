@@ -1,13 +1,13 @@
+import {hasPrebuiltBinaries} from './pregyp'
+import mkdirp from 'mkdirp'
 import path from 'path'
 import Promise from 'bluebird'
-import mkdirp from 'mkdirp'
 import rimraf from 'rimraf'
 import streamifier from 'streamifier'
 import tar from 'tar-fs'
 import url from 'url'
 import zlib from 'zlib'
 import {sha1, sha512} from './integrity'
-import {hasPrebuiltBinaries} from './pregyp'
 
 const fs = Promise.promisifyAll(require('fs'))
 const mkdirpAsync = Promise.promisify(mkdirp)
@@ -51,8 +51,10 @@ export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, 
   const manifestPath = path.join(tmpFolder, 'package', 'package.json')
   const json = await fs.readFileAsync(manifestPath, 'utf8')
   const metadata = JSON.parse(json)
+  // eslint-disable-next-line camelcase
   const {host, remote_path} = hostAndRemotePath(versionMetadata, localUrl)
   metadata.binary.host = host
+  // eslint-disable-next-line camelcase
   metadata.binary.remote_path = remote_path
   await fs.writeFileAsync(manifestPath, JSON.stringify(metadata, null, 2))
 

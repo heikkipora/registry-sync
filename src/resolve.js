@@ -21,7 +21,7 @@ export async function dependenciesNotInCache(dependencies, cacheFilePath) {
 export async function loadCache(cacheFilePath) {
   try {
     const json = await fs.readFileAsync(cacheFilePath, 'utf8')
-    return JSON.parse(json)  
+    return JSON.parse(json)
   } catch (fileNotFound) {
     return []
   }

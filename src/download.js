@@ -4,9 +4,9 @@ import path from 'path'
 import Promise from 'bluebird'
 import semver from 'semver'
 import url from 'url'
+import {verifyIntegrity} from './integrity'
 import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
-import {sha1, sha512, verifyIntegrity} from './integrity'
 
 const fs = Promise.promisifyAll(require('fs'))
 const mkdirpAsync = Promise.promisify(mkdirp)
@@ -26,10 +26,10 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   }
 
   const localFolder = await ensureLocalFolderExists(name, rootFolder)
-  let data = await downloadTarball(versionMetadata, localFolder)
+  let data = await downloadTarball(versionMetadata)
   if (hasPrebuiltBinaries(versionMetadata)) {
     const localPregypFolder = await ensureLocalFolderExists(version, localFolder)
-    await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)  
+    await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)
     data = await rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder)
   }
   await saveTarball(versionMetadata, data, localFolder)
@@ -38,7 +38,7 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   await updateMetadata(localVersionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
-async function downloadTarball({_id: id, name, version, dist}, localFolder) {
+async function downloadTarball({_id: id, dist}) {
   const data = await fetchTarball(dist.tarball)
   verifyIntegrity(data, id, dist)
   return data

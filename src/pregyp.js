@@ -1,4 +1,3 @@
-import errors from 'request-promise/errors'
 import {fetchUrl} from './client'
 import path from 'path'
 import Promise from 'bluebird'
@@ -19,7 +18,7 @@ export async function downloadPrebuiltBinaries(versionMetadata, localFolder, pre
       const data = await fetchPrebuiltBinary(name, version, binary, abi, platform, arch)
       await fs.writeFileAsync(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, localFolder), data)
     } catch (err) {
-      // Pre-built binaries are commonly not available on all platforms
+      // pre-built binaries are commonly not available on all platforms
       if (err.statusCode !== 404) {
         throw err
       }

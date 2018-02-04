@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import path from 'path'
 import program from 'commander'
 import {synchronize} from './sync'
 
@@ -41,5 +40,5 @@ const options = {
   rootFolder: program.root
 }
 
-const newPackages = await synchronize(options)
-console.log('Downloaded', newPackages)
+synchronize(options)
+  .then(newPackages => console.log('Downloaded', newPackages))
