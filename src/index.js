@@ -10,7 +10,6 @@ program
   .option('--binaryAbi <list>', 'Comma-separated list of node C++ ABI numbers to download pre-built binaries for. See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/')
   .option('--binaryArch <list>', 'Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64')
   .option('--binaryPlatform <list>', 'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix')
-  .option('--concurrency [value]', 'Optional value to to control concurrency when downloading packages from registry. Default value is 5.')
   .option('--registryUrl [url]', 'Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org')
   .parse(process.argv)
 
@@ -39,4 +38,4 @@ const options = {
 }
 
 synchronize(options)
-  .then(newPackages => console.log('Downloaded', newPackages))
+  .then(newPackages => console.log(`Downloaded ${newPackages.length} packages`))
