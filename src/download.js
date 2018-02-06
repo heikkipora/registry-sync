@@ -12,7 +12,7 @@ import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from 
 const fs = Promise.promisifyAll(require('fs'))
 const mkdirpAsync = Promise.promisify(mkdirp)
 
-const concurrency = 5
+const concurrency = 1
 
 export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder}) {
   const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties)
