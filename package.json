@@ -1,6 +1,6 @@
 {
   "name": "registry-sync",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "synchronize a remote npm registry for private use",
   "repository": "https://github.com/heikkipora/registry-sync",
   "bin": {
