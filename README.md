@@ -7,6 +7,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
 
 [![npm version](https://badge.fury.io/js/registry-sync.svg)](https://badge.fury.io/js/registry-sync)
 [![build status](https://travis-ci.org/heikkipora/registry-sync.svg?branch=master)](https://travis-ci.org/heikkipora/registry-sync)
+[![Known Vulnerabilities](https://snyk.io/test/github/heikkipora/registry-sync/badge.svg)](https://snyk.io/test/github/heikkipora/registry-sync)
 
 ## Pre-requisites
 
