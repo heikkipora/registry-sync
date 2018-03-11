@@ -1,7 +1,11 @@
 import axios from 'axios'
+import https from 'https'
 
 const metadataCache = {}
-const client = axios.create({timeout: 60 * 1000})
+const client = axios.create({
+  httpsAgent: new https.Agent({keepAlive: true}),
+  timeout: 10 * 1000
+})
 
 export async function fetchUrl(url, isBinary = false) {
   if (isBinary) {
