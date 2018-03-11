@@ -1,24 +1,19 @@
-import request from 'request-promise'
+import axios from 'axios'
 
 const metadataCache = {}
-const timeout = 60 * 1000
+const client = axios.create({timeout: 60 * 1000})
 
 export async function fetchUrl(url, isBinary = false) {
   if (isBinary) {
-    return fetchBinary(url)
+    return fetch(url, 'arraybuffer')
   }
 
   if (!metadataCache[url]) {
-    metadataCache[url] = await fetchJson(url)
+    metadataCache[url] = await fetch(url, 'json')
   }
   return metadataCache[url]
 }
 
-function fetchBinary(url) {
-  return request({encoding: null, url, timeout})
-}
-
-async function fetchJson(url) {
-  const body = await request({gzip: true, url, timeout})
-  return JSON.parse(body)
+async function fetch(url, responseType) {
+  return (await client.get(url, {responseType})).data
 }

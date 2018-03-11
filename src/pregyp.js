@@ -19,7 +19,7 @@ export async function downloadPrebuiltBinaries(versionMetadata, localFolder, pre
       await fs.writeFileAsync(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, localFolder), data)
     } catch (err) {
       // pre-built binaries are commonly not available on all platforms
-      if (err.statusCode !== 404) {
+      if (!err.response || err.response.status !== 404) {
         throw err
       }
     }
