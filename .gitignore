@@ -1,6 +1,4 @@
-node_modules/
-download/
-npm-debug.log
-*.iml
-.idea/
 .DS_Store
+node_modules
+download
+build
