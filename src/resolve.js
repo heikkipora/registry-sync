@@ -40,6 +40,7 @@ export async function dependenciesFromPackageLock(path) {
 
 function dependenciesRecursive({dependencies}) {
   return _(dependencies)
+    .omitBy(({bundled, dev}) => bundled || dev)
     .mapValues((props, name) => [{name, version: props.version}].concat(dependenciesRecursive(props)))
     .values()
     .value()
