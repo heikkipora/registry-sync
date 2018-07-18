@@ -20,6 +20,7 @@ export async function downloadPrebuiltBinaries(versionMetadata, localFolder, pre
     } catch (err) {
       // pre-built binaries are commonly not available on all platforms
       if (!err.response || err.response.status !== 404) {
+        console.error(`Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform}`)
         throw err
       }
     }
