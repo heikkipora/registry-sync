@@ -18,11 +18,13 @@ export async function downloadPrebuiltBinaries(versionMetadata, localFolder, pre
       const data = await fetchPrebuiltBinary(name, version, binary, abi, platform, arch)
       await fs.writeFileAsync(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, localFolder), data)
     } catch (err) {
-      // pre-built binaries are commonly not available on all platforms
-      if (!err.response || err.response.status !== 404) {
-        console.error(`Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform}`)
-        throw err
+      // pre-built binaries are commonly not available on all platforms (and S3 will commonly respond with 403 for a non-existent file)
+      if (err.response && (err.response.status == 403 || err.response.status == 404)) {
+        // fail download silently
+        return
       }
+      console.error(`Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform}`)
+      throw err
     }
   }
 }
