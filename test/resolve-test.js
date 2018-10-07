@@ -11,7 +11,7 @@ const cacheFilePath = `${__dirname}/.cache.json`
 
 describe('resolve', () => {
   it('Should resolve a linear list of packages from a package-lock.json file', async () => {
-    const packages = await dependenciesFromPackageLock(`${__dirname}/package-lock.json`)
+    const packages = await dependenciesFromPackageLock(`${__dirname}/manifests/package-lock.json`)
     expect(packages).to.deep.equal(expectedPackages)
   })
 

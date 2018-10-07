@@ -13,7 +13,7 @@ const prebuiltBinaryProperties = [
 
 const options = {
   localUrl: 'https://localhost:8443',
-  manifest: `${__dirname}/package-lock.json`,
+  manifest: `${__dirname}/manifests/package-lock.json`,
   registryUrl: 'https://registry.npmjs.org',
   rootFolder,
   prebuiltBinaryProperties
