@@ -69,6 +69,7 @@ function formatPrebuilt(formatString, name, version, moduleName, abi, platform, 
     .replace('{node_abi}', `node-v${abi}`)
     .replace('{platform}', platform)
     .replace('{arch}', arch)
+    .replace('{libc}', 'glibc')
     .replace('{configuration}', 'Release')
     .replace('{toolset}', '')
     .replace(/[\/]+/g, '/')

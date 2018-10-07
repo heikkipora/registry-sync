@@ -22,7 +22,7 @@ const options = {
 describe('synchronize', () => {
   it('Should download a bunch of packages', async () => {
     const downloaded = await synchronize(options)
-    expect(downloaded).to.have.lengthOf(118)
+    expect(downloaded).to.have.lengthOf(120)
   })
 
   it('Should already have all of the packages', async () => {
