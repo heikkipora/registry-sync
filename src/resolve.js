@@ -3,27 +3,42 @@ import Promise from 'bluebird'
 
 const fs = Promise.promisifyAll(require('fs'))
 
-export async function updateDependenciesCache(newDependencies, cacheFilePath) {
-  const cachedDependencies = await loadCache(cacheFilePath)
-  const allDependencies = _(cachedDependencies)
+export async function updateDependenciesCache(newDependencies, cacheFilePath, prebuiltBinaryProperties) {
+  const {dependencies: cachedDependencies} = await loadCache(cacheFilePath)
+  const dependencies = _(cachedDependencies)
     .concat(newDependencies)
     .sortBy('id')
     .sortedUniqBy('id')
     .value()
-  return fs.writeFileAsync(cacheFilePath, JSON.stringify(allDependencies), 'utf8')
+
+  const data = {
+    dependencies,
+    prebuiltBinaryProperties
+  }
+  return fs.writeFileAsync(cacheFilePath, JSON.stringify(data), 'utf8')
 }
 
 export async function dependenciesNotInCache(dependencies, cacheFilePath) {
-  const cachedDependencies = await loadCache(cacheFilePath)
+  const {dependencies: cachedDependencies, prebuiltBinaryProperties} = await loadCache(cacheFilePath)
   return _.differenceBy(dependencies, cachedDependencies, 'id')
 }
 
-export async function loadCache(cacheFilePath) {
+async function loadCache(cacheFilePath) {
   try {
     const json = await fs.readFileAsync(cacheFilePath, 'utf8')
-    return JSON.parse(json)
+    const data = JSON.parse(json)
+    if (Array.isArray(data)) {
+      return {
+        dependencies: data,
+        prebuiltBinaryProperties: []
+      }
+    }
+    return data
   } catch (fileNotFound) {
-    return []
+    return {
+      dependencies: [],
+      prebuiltBinaryProperties: []
+    }
   }
 }
 
