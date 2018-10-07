@@ -1,5 +1,5 @@
 #!/bin/bash
 
-npm cache clean --force
-rm -fr ./node_modules
-npm install
+rm -fr ./node_modules ./.npm-cache ./package-lock.json
+npm install --cache ./.npm-cache
+rm -fr .npm-cache
