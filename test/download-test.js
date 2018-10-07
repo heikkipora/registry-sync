@@ -1,5 +1,3 @@
-import {expect} from 'chai'
-import fs from 'fs'
 import {downloadAll} from '../src/download'
 import rimraf from 'rimraf'
 
