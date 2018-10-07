@@ -10,7 +10,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
 
 ## Pre-requisites
 
-- Node.js v5.0.0 or newer
+- Node.js v6.0.0 or newer
 
 ## Installation
 
