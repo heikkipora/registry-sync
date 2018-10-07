@@ -69,8 +69,12 @@ function formatPrebuilt(formatString, name, version, moduleName, abi, platform, 
     .replace('{node_abi}', `node-v${abi}`)
     .replace('{platform}', platform)
     .replace('{arch}', arch)
-    .replace('{libc}', 'glibc')
+    .replace('{libc}', libc(platform))
     .replace('{configuration}', 'Release')
     .replace('{toolset}', '')
     .replace(/[\/]+/g, '/')
+}
+
+function libc(platform) {
+  return platform === 'linux' ? 'glibc' : 'unknown'
 }
