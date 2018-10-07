@@ -18,8 +18,12 @@ export async function updateDependenciesCache(newDependencies, cacheFilePath, pr
   return fs.writeFileAsync(cacheFilePath, JSON.stringify(data), 'utf8')
 }
 
-export async function dependenciesNotInCache(dependencies, cacheFilePath) {
-  const {dependencies: cachedDependencies, prebuiltBinaryProperties} = await loadCache(cacheFilePath)
+export async function dependenciesNotInCache(dependencies, cacheFilePath, prebuiltBinaryProperties) {
+  const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties} = await loadCache(cacheFilePath)
+  if (cachedDependencies.length > 0 && !_.isEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties)) {
+    console.log(`Pre-built binary properties changed, re-evaluating all packages`)
+    return dependencies
+  }
   return _.differenceBy(dependencies, cachedDependencies, 'id')
 }
 

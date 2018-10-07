@@ -30,6 +30,11 @@ describe('synchronize', () => {
     expect(downloaded).to.have.lengthOf(0)
   })
 
+  it('Should detect a change to pre-built binary properties and re-trigger download', async () => {
+    const downloaded = await synchronize({...options, prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 64, arch: 'x64', platform: 'darwin'})})
+    expect(downloaded).to.have.lengthOf(120)
+  })
+
   after(done => rimraf(rootFolder, done))
 })
 
