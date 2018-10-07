@@ -21,7 +21,7 @@ export async function updateDependenciesCache(newDependencies, cacheFilePath, pr
 export async function dependenciesNotInCache(dependencies, cacheFilePath, prebuiltBinaryProperties) {
   const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties} = await loadCache(cacheFilePath)
   if (cachedDependencies.length > 0 && !_.isEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties)) {
-    console.log(`Pre-built binary properties changed, re-evaluating all packages`)
+    console.log(`Pre-built binary properties changed, re-downloading all current packages`)
     return dependencies
   }
   return _.differenceBy(dependencies, cachedDependencies, 'id')
