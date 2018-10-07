@@ -38,8 +38,9 @@ function prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, loca
 
 function prebuiltBinaryUrl(name, version, binary, abi, platform, arch) {
   const remotePath = prebuiltBinaryRemotePath(name, version, binary, abi, platform, arch)
+                       .replace(/\/$/, '')
   const fileName = prebuiltBinaryFileName(name, version, binary, abi, platform, arch)
-  return url.resolve(binary.host, remotePath + fileName)
+  return url.resolve(binary.host, `${remotePath}/${fileName}`)
 }
 
 function prebuiltBinaryRemotePath(name, version, binary, abi, platform, arch) {
