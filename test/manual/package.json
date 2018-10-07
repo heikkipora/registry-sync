@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "bluebird": "3.5.1",
+    "@marsaud/smb2": "0.9.0",
+    "bcrypt": "3.0.1",
+    "bluebird": "3.5.2",
     "fsevents": "1.2.4",
-    "sqlite3": "4.0.2",
-    "@marsaud/smb2": "0.8.0"
+    "sqlite3": "4.0.2"
   }
 }
