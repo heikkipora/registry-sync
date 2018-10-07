@@ -1,6 +1,6 @@
 {
   "name": "registry-sync",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "synchronize a remote npm registry for private use",
   "repository": "https://github.com/heikkipora/registry-sync",
   "bin": {
@@ -14,8 +14,8 @@
   "author": "Heikki Pora",
   "license": "MIT",
   "dependencies": {
-    "axios": "0.18.0",
     "@babel/runtime": "7.1.2",
+    "axios": "0.18.0",
     "bluebird": "3.5.2",
     "commander": "2.18.0",
     "lodash": "4.17.11",
