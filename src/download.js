@@ -12,12 +12,12 @@ import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from 
 const fs = Promise.promisifyAll(require('fs'))
 const mkdirpAsync = Promise.promisify(mkdirp)
 
-export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder}) {
-  const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties)
+export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps = true}) {
+  const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps)
   return Promise.mapSeries(packages, downloadFromRegistry)
 }
 
-async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, {name, version}) {
+async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps, {name, version}) {
   const registryMetadata = await fetchMetadata(name, registryUrl)
   const versionMetadata = _.cloneDeep(registryMetadata.versions[version])
   if (!versionMetadata) {
@@ -25,7 +25,7 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   }
 
   const localFolder = await ensureLocalFolderExists(name, rootFolder)
-  let data = await downloadTarball(versionMetadata)
+  let data = await downloadTarball(versionMetadata, enforceTarballsOverHttps)
   if (hasPrebuiltBinaries(versionMetadata)) {
     const localPregypFolder = await ensureLocalFolderExists(version, localFolder)
     await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)
@@ -37,8 +37,9 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   await updateMetadata(versionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
-async function downloadTarball({_id: id, dist}) {
-  const data = await fetchTarball(dist.tarball)
+async function downloadTarball({_id: id, dist}, enforceTarballsOverHttps) {
+  const tarballUrl = enforceTarballsOverHttps ? dist.tarball.replace('http://', 'https://') : dist.tarball
+  const data = await fetchTarball(tarballUrl)
   verifyIntegrity(data, id, dist)
   return data
 }
