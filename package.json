@@ -14,7 +14,7 @@
   "author": "Heikki Pora",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "7.3.1",
+    "@babel/runtime": "7.3.4",
     "axios": "0.18.0",
     "bluebird": "3.5.3",
     "commander": "2.19.0",
@@ -28,18 +28,18 @@
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
-    "@babel/core": "7.2.2",
-    "@babel/plugin-proposal-object-rest-spread": "7.3.2",
-    "@babel/plugin-transform-runtime": "7.2.0",
+    "@babel/core": "7.3.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.3.4",
+    "@babel/plugin-transform-runtime": "7.3.4",
     "@babel/polyfill": "7.2.5",
-    "@babel/preset-env": "7.3.1",
+    "@babel/preset-env": "7.3.4",
     "@babel/register": "7.0.0",
     "babel-eslint": "10.0.1",
     "chai": "4.2.0",
-    "eslint": "5.13.0",
-    "eslint-plugin-mocha": "5.2.1",
+    "eslint": "5.15.1",
+    "eslint-plugin-mocha": "5.3.0",
     "express": "4.16.4",
-    "mocha": "5.2.0"
+    "mocha": "6.0.2"
   },
   "keywords": [
     "registry",
