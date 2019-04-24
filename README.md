@@ -44,6 +44,10 @@ Re-executing ```registry-sync``` will only download and update files for new pac
 Configure a web server to use `index.json` as index file name instead of `index.html`.
 Also configure ```HTTP 404``` responses to have an ```application/json``` body of ```{}```.
 
+## Changelog
+
+See [releases](https://github.com/heikkipora/registry-sync/releases).
+
 ## Breaking changes from 1.x to 2.0
 
  - ```--manifest``` argument needs to point to a ```package-lock.json``` file instead of ```package.json```
