@@ -13,6 +13,7 @@ export async function fetchUrl(url, isBinary = false) {
   }
 
   if (!metadataCache[url]) {
+    // eslint-disable-next-line require-atomic-updates
     metadataCache[url] = await fetch(url, 'json')
   }
   return metadataCache[url]
