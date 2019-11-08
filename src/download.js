@@ -53,7 +53,7 @@ async function updateMetadata(versionMetadata, defaultMetadata, registryUrl, loc
   const localMetadataPath = metadataPath(name, localFolder)
   const localMetadata = await loadMetadata(localMetadataPath, defaultMetadata)
   localMetadata.versions[version] = versionMetadata
-  localMetadata.time[version] = defaultMetadata.time[version]
+  localMetadata.time[version] = (defaultMetadata.time) ? defaultMetadata.time[version] : "";
   localMetadata['dist-tags'].latest = Object.keys(localMetadata.versions).sort(semver.compare).pop()
   await saveMetadata(localMetadataPath, localMetadata)
 }

@@ -13,7 +13,8 @@ describe('download', () => {
       const packages = [
         {id: "abbrev@1.1.0", name: "abbrev", version: "1.1.0"},
         {id: "abbrev@1.1.1", name: "abbrev", version: "1.1.1"},
-        {id: "aproba@1.2.0",name: "aproba", version: "1.2.0"}
+        {id: "aproba@1.2.0",name: "aproba", version: "1.2.0"},
+        {id: "@csstools/normalize.css@9.0.1", name: "@csstools/normalize.css", version: "9.0.1"}
       ]
       await downloadAll(packages, options)
   })
