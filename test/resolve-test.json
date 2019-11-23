@@ -1,5 +1,10 @@
 [
   {
+    "id": "@csstools/normalize.css@10.1.0",
+    "name": "@csstools/normalize.css",
+    "version": "10.1.0"
+  },
+  {
     "id": "@marsaud/smb2@0.8.0",
     "name": "@marsaud/smb2",
     "version": "0.8.0"

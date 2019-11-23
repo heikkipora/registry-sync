@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@csstools/normalize.css": "10.1.0",
     "@marsaud/smb2": "0.8.0",
     "bcrypt": "3.0.1",
     "bluebird": "3.5.1",
