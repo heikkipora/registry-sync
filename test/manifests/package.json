@@ -4,10 +4,10 @@
   "private": true,
   "dependencies": {
     "@csstools/normalize.css": "10.1.0",
-    "@marsaud/smb2": "0.8.0",
-    "bcrypt": "3.0.1",
-    "bluebird": "3.5.1",
-    "fsevents": "1.2.4",
-    "sqlite3": "4.0.2"
+    "@marsaud/smb2": "0.14.0",
+    "bcrypt": "3.0.7",
+    "bluebird": "3.7.1",
+    "fsevents": "2.1.2",
+    "sqlite3": "4.1.0"
   }
 }
