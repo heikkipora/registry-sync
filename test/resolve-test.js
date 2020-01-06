@@ -7,12 +7,18 @@ import {
 } from '../src/resolve'
 
 const expectedPackages = require('./resolve-test.json')
+const expectedPackagesWithDev = require('./resolve-test-with-dev.json')
 const cacheFilePath = `${__dirname}/.cache.json`
 
 describe('resolve', () => {
   it('Should resolve a linear list of packages from a package-lock.json file', async () => {
-    const packages = await dependenciesFromPackageLock(`${__dirname}/manifests/package-lock.json`)
+    const packages = await dependenciesFromPackageLock(`${__dirname}/manifests/package-lock.json`, false)
     expect(packages).to.deep.equal(expectedPackages)
+  })
+
+  it('Should resolve a linear list of packages from a package-lock.json file with devDependencies', async () => {
+    const packages = await dependenciesFromPackageLock(`${__dirname}/manifests/package-lock.json`, true)
+    expect(packages).to.deep.equal(expectedPackagesWithDev)
   })
 
   it('Should detect packages that are new (compared to cache)', async () => {

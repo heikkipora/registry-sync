@@ -46,9 +46,9 @@ async function loadCache(cacheFilePath) {
   }
 }
 
-export async function dependenciesFromPackageLock(path) {
+export async function dependenciesFromPackageLock(path, includeDevDependencies) {
   const json = await fs.readFileAsync(path, 'utf8')
-  const dependencyTree = dependenciesRecursive(JSON.parse(json))
+  const dependencyTree = dependenciesRecursive(JSON.parse(json), includeDevDependencies)
   return _(dependencyTree)
     .flattenDeep()
     .map(({name, version}) => ({id: `${name}@${version}`, name, version}))
@@ -57,11 +57,19 @@ export async function dependenciesFromPackageLock(path) {
     .value()
 }
 
-function dependenciesRecursive({dependencies}) {
+function dependenciesRecursive({dependencies}, includeDevDependencies) {
+  const omitFn = includeDevDependencies ? noBundled : noBundledNoDev
   return _(dependencies)
-    .omitBy(({bundled, dev}) => bundled || dev)
+    .omitBy(omitFn)
     .mapValues((props, name) => [{name, version: props.version}].concat(dependenciesRecursive(props)))
     .values()
     .value()
 }
 
+function noBundled({bundled}) {
+  return bundled
+}
+
+function noBundledNoDev({bundled, dev}) {
+  return bundled || dev
+}

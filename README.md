@@ -32,6 +32,7 @@ Inspired by https://www.npmjs.com/package/npm-mirror, which unfortunately seems 
     --binaryPlatform <list>  Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix
     --registryUrl [url]      Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org
     --dontEnforceHttps       Disable the default behavior of downloading tarballs over HTTPS (will use whichever protocol is defined in the registry metadata)
+    --includeDev             Include also packages found from devDependencies section of the --manifest. Not included by default.
 
 Example:
 

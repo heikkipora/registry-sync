@@ -9,5 +9,8 @@
     "bluebird": "3.7.1",
     "fsevents": "2.1.2",
     "sqlite3": "4.1.0"
+  },
+  "devDependencies": {
+    "lodash": "4.17.15"
   }
 }

@@ -12,6 +12,7 @@ program
   .requiredOption('--binaryPlatform <list>', 'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix')
   .option('--registryUrl [url]', 'Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org')
   .option('--dontEnforceHttps', 'Disable the default behavior of downloading tarballs over HTTPS (will use whichever protocol is defined in the registry metadata)')
+  .option('--includeDev', 'Include also packages found from devDependencies section of the --manifest')
   .parse(process.argv)
 
 const abis = program.binaryAbi.split(',')
@@ -31,7 +32,8 @@ const options = {
   prebuiltBinaryProperties,
   registryUrl: program.registryUrl || 'https://registry.npmjs.org',
   rootFolder: program.root,
-  enforceTarballsOverHttps: !program.dontEnforceHttps
+  enforceTarballsOverHttps: Boolean(!program.dontEnforceHttps),
+  includeDevDependencies: Boolean(program.includeDev)
 }
 
 synchronize(options)
