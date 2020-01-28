@@ -10,7 +10,6 @@ import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
 
 const fs = Promise.promisifyAll(require('fs'))
-const mkdirpAsync = Promise.promisify(mkdirp)
 
 export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps = true}) {
   const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps)
@@ -83,7 +82,7 @@ function tarballPath(name, version, localFolder) {
 
 async function ensureLocalFolderExists(name, rootFolder) {
   const localFolder = path.resolve(rootFolder, name)
-  await mkdirpAsync(localFolder)
+  await mkdirp(localFolder)
   return localFolder
 }
 

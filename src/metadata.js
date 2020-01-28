@@ -10,7 +10,6 @@ import zlib from 'zlib'
 import {sha1, sha512} from './integrity'
 
 const fs = Promise.promisifyAll(require('fs'))
-const mkdirpAsync = Promise.promisify(mkdirp)
 const rimrafAsync = Promise.promisify(rimraf)
 
 export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
@@ -26,7 +25,7 @@ export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
 
 export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder) {
   const tmpFolder = path.join(localFolder, '.tmp')
-  await mkdirpAsync(tmpFolder)
+  await mkdirp(tmpFolder)
   await extractTgz(data, tmpFolder)
 
   const manifestPath = path.join(tmpFolder, 'package', 'package.json')
