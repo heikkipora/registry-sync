@@ -5,7 +5,6 @@ import Promise from 'bluebird'
 import rimraf from 'rimraf'
 import streamifier from 'streamifier'
 import tar from 'tar-fs'
-import url from 'url'
 import zlib from 'zlib'
 import {sha1, sha512} from './integrity'
 
@@ -16,8 +15,8 @@ export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
   versionMetadata.dist.tarball = localTarballUrl(versionMetadata, localUrl)
 
   if (hasPrebuiltBinaries(versionMetadata)) {
-    versionMetadata.binary.host = localUrl
-    versionMetadata.binary.remote_path = `/${versionMetadata.name}/${versionMetadata.version}/`
+    versionMetadata.binary.host = localUrl.origin
+    versionMetadata.binary.remote_path = createPrebuiltBinaryRemotePath(localUrl, versionMetadata)
     versionMetadata.dist.integrity = sha512(data)
     versionMetadata.dist.shasum = sha1(data)
   }
@@ -31,8 +30,8 @@ export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, 
   const manifestPath = path.join(tmpFolder, 'package', 'package.json')
   const json = await fs.readFileAsync(manifestPath, 'utf8')
   const metadata = JSON.parse(json)
-  metadata.binary.host = localUrl
-  metadata.binary.remote_path = `/${versionMetadata.name}/${versionMetadata.version}/`
+  metadata.binary.host = localUrl.origin
+  metadata.binary.remote_path = createPrebuiltBinaryRemotePath(localUrl, versionMetadata)
   await fs.writeFileAsync(manifestPath, JSON.stringify(metadata, null, 2))
 
   const updatedData = await compressTgz(tmpFolder)
@@ -40,7 +39,11 @@ export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, 
   return updatedData
 }
 
-function extractTgz(data, folder) {
+function createPrebuiltBinaryRemotePath(url, versionMetadata) {
+  return `${removeTrailingSlash(url.pathname)}/${versionMetadata.name}/${versionMetadata.version}/`
+}
+
+export function extractTgz(data, folder) {
   return new Promise((resolve, reject) => {
     const tgz = streamifier
       .createReadStream(data)
@@ -65,10 +68,14 @@ function compressTgz(folder) {
 }
 
 function localTarballUrl({name, version}, localUrl) {
-  return url.resolve(localUrl, `${name}/${tarballFilename(name, version)}`)
+  return `${localUrl.origin}${removeTrailingSlash(localUrl.pathname)}/${name}/${tarballFilename(name, version)}`
 }
 
 export function tarballFilename(name, version) {
   const normalized = name.replace(/\//g, '-')
   return `${normalized}-${version}.tgz`
+}
+
+function removeTrailingSlash(str) {
+  return str.replace(/\/$/, "")
 }

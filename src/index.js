@@ -27,7 +27,7 @@ const prebuiltBinaryProperties = _.flattenDeep(
 )
 
 const options = {
-  localUrl: program.localUrl,
+  localUrl: new URL(program.localUrl),
   manifest: program.manifest,
   prebuiltBinaryProperties,
   registryUrl: program.registryUrl || 'https://registry.npmjs.org',
