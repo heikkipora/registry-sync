@@ -61,7 +61,7 @@ function dependenciesRecursive({dependencies}, includeDevDependencies) {
   const omitFn = includeDevDependencies ? noBundled : noBundledNoDev
   return _(dependencies)
     .omitBy(omitFn)
-    .mapValues((props, name) => [{name, version: props.version}].concat(dependenciesRecursive(props)))
+    .mapValues((props, name) => [{name, version: props.version}].concat(dependenciesRecursive(props, includeDevDependencies)))
     .values()
     .value()
 }
