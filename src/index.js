@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import program from 'commander'
 import {synchronize} from './sync'
+import {URL} from 'url'
 
 program
   .version(require(`${__dirname}/../package.json`).version)

@@ -1,6 +1,7 @@
 import {expect} from 'chai'
 import rimraf from 'rimraf'
 import {synchronize} from '../src/sync'
+import {URL} from 'url'
 
 const rootFolder = `${__dirname}/.download`
 

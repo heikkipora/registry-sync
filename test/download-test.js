@@ -1,10 +1,11 @@
-import { downloadAll } from "../src/download"
-import { expect } from "chai"
-import { extractTgz } from "../src/metadata"
+import {downloadAll} from "../src/download"
+import {expect} from "chai"
+import {extractTgz} from "../src/metadata"
 import mkdirp from "mkdirp"
 import path from "path"
 import Promise from "bluebird"
 import rimraf from "rimraf"
+import {URL} from "url"
 
 const fs = Promise.promisifyAll(require('fs'))
 const rimrafAsync = Promise.promisify(rimraf)
