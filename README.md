@@ -43,6 +43,17 @@ Re-executing ```registry-sync``` will only download and update files for new pac
 Configure a web server to use `index.json` as index file name instead of `index.html`.
 Also configure ```HTTP 404``` responses to have an ```application/json``` body of ```{}```.
 
+### Creating a separate lockfile for synchronization
+
+In some cases `npm` might not include all optional packages that are needed for all platforms to `package-lock.json`, depending on which OS you used to create the lockfile.
+
+In this case it might be useful to copy the `package.json` that you want to synchronize as a local repository to somewhere else and create a new cross platform `package-lock.json` by running:
+```
+npm install --force --package-lock-only
+```
+
+After this you can pass the new lockfile to `registry-sync`.
+
 ## Changelog
 
 See [releases](https://github.com/heikkipora/registry-sync/releases).
