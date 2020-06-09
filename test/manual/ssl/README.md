@@ -41,7 +41,7 @@ openssl x509 \
   -CAkey localhost-ca.key \
   -CAcreateserial \
   -out localhost.crt \
-  -days 500
+  -days 1000
 
 rm localhost-ca.key localhost-ca.srl localhost.csr
 ```
