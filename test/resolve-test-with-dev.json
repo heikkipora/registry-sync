@@ -5,19 +5,14 @@
     "version": "10.1.0"
   },
   {
-    "id": "@marsaud/smb2@0.14.0",
+    "id": "@marsaud/smb2@0.16.0",
     "name": "@marsaud/smb2",
-    "version": "0.14.0"
+    "version": "0.16.0"
   },
   {
     "id": "abbrev@1.1.1",
     "name": "abbrev",
     "version": "1.1.1"
-  },
-  {
-    "id": "ajv@6.10.2",
-    "name": "ajv",
-    "version": "6.10.2"
   },
   {
     "id": "ansi-regex@2.1.1",
@@ -35,49 +30,19 @@
     "version": "1.1.5"
   },
   {
-    "id": "asn1@0.2.4",
-    "name": "asn1",
-    "version": "0.2.4"
-  },
-  {
-    "id": "assert-plus@1.0.0",
-    "name": "assert-plus",
-    "version": "1.0.0"
-  },
-  {
-    "id": "asynckit@0.4.0",
-    "name": "asynckit",
-    "version": "0.4.0"
-  },
-  {
-    "id": "aws-sign2@0.7.0",
-    "name": "aws-sign2",
-    "version": "0.7.0"
-  },
-  {
-    "id": "aws4@1.8.0",
-    "name": "aws4",
-    "version": "1.8.0"
-  },
-  {
     "id": "balanced-match@1.0.0",
     "name": "balanced-match",
     "version": "1.0.0"
   },
   {
-    "id": "bcrypt-pbkdf@1.0.2",
-    "name": "bcrypt-pbkdf",
-    "version": "1.0.2"
-  },
-  {
-    "id": "bcrypt@3.0.7",
+    "id": "bcrypt@5.0.0",
     "name": "bcrypt",
-    "version": "3.0.7"
+    "version": "5.0.0"
   },
   {
-    "id": "bluebird@3.7.1",
+    "id": "bluebird@3.7.2",
     "name": "bluebird",
-    "version": "3.7.1"
+    "version": "3.7.2"
   },
   {
     "id": "brace-expansion@1.1.11",
@@ -85,24 +50,14 @@
     "version": "1.1.11"
   },
   {
-    "id": "caseless@0.12.0",
-    "name": "caseless",
-    "version": "0.12.0"
-  },
-  {
-    "id": "chownr@1.1.3",
+    "id": "chownr@1.1.4",
     "name": "chownr",
-    "version": "1.1.3"
+    "version": "1.1.4"
   },
   {
     "id": "code-point-at@1.1.0",
     "name": "code-point-at",
     "version": "1.1.0"
-  },
-  {
-    "id": "combined-stream@1.0.8",
-    "name": "combined-stream",
-    "version": "1.0.8"
   },
   {
     "id": "concat-map@0.0.1",
@@ -120,11 +75,6 @@
     "version": "1.0.2"
   },
   {
-    "id": "dashdash@1.14.1",
-    "name": "dashdash",
-    "version": "1.14.1"
-  },
-  {
     "id": "debug@3.2.6",
     "name": "debug",
     "version": "3.2.6"
@@ -133,11 +83,6 @@
     "id": "deep-extend@0.6.0",
     "name": "deep-extend",
     "version": "0.6.0"
-  },
-  {
-    "id": "delayed-stream@1.0.0",
-    "name": "delayed-stream",
-    "version": "1.0.0"
   },
   {
     "id": "delegates@1.0.0",
@@ -150,41 +95,6 @@
     "version": "1.0.3"
   },
   {
-    "id": "ecc-jsbn@0.1.2",
-    "name": "ecc-jsbn",
-    "version": "0.1.2"
-  },
-  {
-    "id": "extend@3.0.2",
-    "name": "extend",
-    "version": "3.0.2"
-  },
-  {
-    "id": "extsprintf@1.3.0",
-    "name": "extsprintf",
-    "version": "1.3.0"
-  },
-  {
-    "id": "fast-deep-equal@2.0.1",
-    "name": "fast-deep-equal",
-    "version": "2.0.1"
-  },
-  {
-    "id": "fast-json-stable-stringify@2.0.0",
-    "name": "fast-json-stable-stringify",
-    "version": "2.0.0"
-  },
-  {
-    "id": "forever-agent@0.6.1",
-    "name": "forever-agent",
-    "version": "0.6.1"
-  },
-  {
-    "id": "form-data@2.3.3",
-    "name": "form-data",
-    "version": "2.3.3"
-  },
-  {
     "id": "fs-minipass@1.2.7",
     "name": "fs-minipass",
     "version": "1.2.7"
@@ -195,9 +105,9 @@
     "version": "1.0.0"
   },
   {
-    "id": "fsevents@2.1.2",
+    "id": "fsevents@2.1.3",
     "name": "fsevents",
-    "version": "2.1.2"
+    "version": "2.1.3"
   },
   {
     "id": "gauge@2.7.4",
@@ -205,34 +115,14 @@
     "version": "2.7.4"
   },
   {
-    "id": "getpass@0.1.7",
-    "name": "getpass",
-    "version": "0.1.7"
-  },
-  {
     "id": "glob@7.1.6",
     "name": "glob",
     "version": "7.1.6"
   },
   {
-    "id": "har-schema@2.0.0",
-    "name": "har-schema",
-    "version": "2.0.0"
-  },
-  {
-    "id": "har-validator@5.1.3",
-    "name": "har-validator",
-    "version": "5.1.3"
-  },
-  {
     "id": "has-unicode@2.0.1",
     "name": "has-unicode",
     "version": "2.0.1"
-  },
-  {
-    "id": "http-signature@1.2.0",
-    "name": "http-signature",
-    "version": "1.2.0"
   },
   {
     "id": "iconv-lite@0.4.24",
@@ -265,44 +155,9 @@
     "version": "1.0.0"
   },
   {
-    "id": "is-typedarray@1.0.0",
-    "name": "is-typedarray",
-    "version": "1.0.0"
-  },
-  {
     "id": "isarray@1.0.0",
     "name": "isarray",
     "version": "1.0.0"
-  },
-  {
-    "id": "isstream@0.1.2",
-    "name": "isstream",
-    "version": "0.1.2"
-  },
-  {
-    "id": "jsbn@0.1.1",
-    "name": "jsbn",
-    "version": "0.1.1"
-  },
-  {
-    "id": "json-schema-traverse@0.4.1",
-    "name": "json-schema-traverse",
-    "version": "0.4.1"
-  },
-  {
-    "id": "json-schema@0.2.3",
-    "name": "json-schema",
-    "version": "0.2.3"
-  },
-  {
-    "id": "json-stringify-safe@5.0.1",
-    "name": "json-stringify-safe",
-    "version": "5.0.1"
-  },
-  {
-    "id": "jsprim@1.4.1",
-    "name": "jsprim",
-    "version": "1.4.1"
   },
   {
     "id": "lodash@4.17.15",
@@ -310,29 +165,14 @@
     "version": "4.17.15"
   },
   {
-    "id": "mime-db@1.42.0",
-    "name": "mime-db",
-    "version": "1.42.0"
-  },
-  {
-    "id": "mime-types@2.1.25",
-    "name": "mime-types",
-    "version": "2.1.25"
-  },
-  {
     "id": "minimatch@3.0.4",
     "name": "minimatch",
     "version": "3.0.4"
   },
   {
-    "id": "minimist@0.0.8",
+    "id": "minimist@1.2.5",
     "name": "minimist",
-    "version": "0.0.8"
-  },
-  {
-    "id": "minimist@1.2.0",
-    "name": "minimist",
-    "version": "1.2.0"
+    "version": "1.2.5"
   },
   {
     "id": "minipass@2.9.0",
@@ -345,9 +185,9 @@
     "version": "1.3.3"
   },
   {
-    "id": "mkdirp@0.5.1",
+    "id": "mkdirp@0.5.5",
     "name": "mkdirp",
-    "version": "0.5.1"
+    "version": "0.5.5"
   },
   {
     "id": "ms@2.1.2",
@@ -355,14 +195,19 @@
     "version": "2.1.2"
   },
   {
-    "id": "nan@2.14.0",
+    "id": "nan@2.14.1",
     "name": "nan",
-    "version": "2.14.0"
+    "version": "2.14.1"
   },
   {
-    "id": "needle@2.4.0",
+    "id": "needle@2.5.0",
     "name": "needle",
-    "version": "2.4.0"
+    "version": "2.5.0"
+  },
+  {
+    "id": "node-addon-api@3.0.0",
+    "name": "node-addon-api",
+    "version": "3.0.0"
   },
   {
     "id": "node-pre-gyp@0.11.0",
@@ -370,24 +215,29 @@
     "version": "0.11.0"
   },
   {
-    "id": "node-pre-gyp@0.13.0",
+    "id": "node-pre-gyp@0.15.0",
     "name": "node-pre-gyp",
-    "version": "0.13.0"
+    "version": "0.15.0"
   },
   {
-    "id": "nopt@4.0.1",
+    "id": "nopt@4.0.3",
     "name": "nopt",
-    "version": "4.0.1"
+    "version": "4.0.3"
   },
   {
-    "id": "npm-bundled@1.0.6",
+    "id": "npm-bundled@1.1.1",
     "name": "npm-bundled",
-    "version": "1.0.6"
+    "version": "1.1.1"
   },
   {
-    "id": "npm-packlist@1.4.6",
+    "id": "npm-normalize-package-bin@1.0.1",
+    "name": "npm-normalize-package-bin",
+    "version": "1.0.1"
+  },
+  {
+    "id": "npm-packlist@1.4.8",
     "name": "npm-packlist",
-    "version": "1.4.6"
+    "version": "1.4.8"
   },
   {
     "id": "npmlog@4.1.2",
@@ -403,11 +253,6 @@
     "id": "number-is-nan@1.0.1",
     "name": "number-is-nan",
     "version": "1.0.1"
-  },
-  {
-    "id": "oauth-sign@0.9.0",
-    "name": "oauth-sign",
-    "version": "0.9.0"
   },
   {
     "id": "object-assign@4.1.1",
@@ -440,34 +285,9 @@
     "version": "1.0.1"
   },
   {
-    "id": "performance-now@2.1.0",
-    "name": "performance-now",
-    "version": "2.1.0"
-  },
-  {
     "id": "process-nextick-args@2.0.1",
     "name": "process-nextick-args",
     "version": "2.0.1"
-  },
-  {
-    "id": "psl@1.4.0",
-    "name": "psl",
-    "version": "1.4.0"
-  },
-  {
-    "id": "punycode@1.4.1",
-    "name": "punycode",
-    "version": "1.4.1"
-  },
-  {
-    "id": "punycode@2.1.1",
-    "name": "punycode",
-    "version": "2.1.1"
-  },
-  {
-    "id": "qs@6.5.2",
-    "name": "qs",
-    "version": "6.5.2"
   },
   {
     "id": "rc@1.2.8",
@@ -475,19 +295,14 @@
     "version": "1.2.8"
   },
   {
-    "id": "readable-stream@2.3.6",
+    "id": "readable-stream@2.3.7",
     "name": "readable-stream",
-    "version": "2.3.6"
+    "version": "2.3.7"
   },
   {
-    "id": "readable-stream@3.4.0",
+    "id": "readable-stream@3.6.0",
     "name": "readable-stream",
-    "version": "3.4.0"
-  },
-  {
-    "id": "request@2.88.0",
-    "name": "request",
-    "version": "2.88.0"
+    "version": "3.6.0"
   },
   {
     "id": "rimraf@2.7.1",
@@ -500,9 +315,9 @@
     "version": "5.1.2"
   },
   {
-    "id": "safe-buffer@5.2.0",
+    "id": "safe-buffer@5.2.1",
     "name": "safe-buffer",
-    "version": "5.2.0"
+    "version": "5.2.1"
   },
   {
     "id": "safer-buffer@2.1.2",
@@ -525,19 +340,14 @@
     "version": "2.0.0"
   },
   {
-    "id": "signal-exit@3.0.2",
+    "id": "signal-exit@3.0.3",
     "name": "signal-exit",
-    "version": "3.0.2"
+    "version": "3.0.3"
   },
   {
-    "id": "sqlite3@4.1.0",
+    "id": "sqlite3@4.2.0",
     "name": "sqlite3",
-    "version": "4.1.0"
-  },
-  {
-    "id": "sshpk@1.16.1",
-    "name": "sshpk",
-    "version": "1.16.1"
+    "version": "4.2.0"
   },
   {
     "id": "string-width@1.0.2",
@@ -570,39 +380,9 @@
     "version": "4.4.13"
   },
   {
-    "id": "tough-cookie@2.4.3",
-    "name": "tough-cookie",
-    "version": "2.4.3"
-  },
-  {
-    "id": "tunnel-agent@0.6.0",
-    "name": "tunnel-agent",
-    "version": "0.6.0"
-  },
-  {
-    "id": "tweetnacl@0.14.5",
-    "name": "tweetnacl",
-    "version": "0.14.5"
-  },
-  {
-    "id": "uri-js@4.2.2",
-    "name": "uri-js",
-    "version": "4.2.2"
-  },
-  {
     "id": "util-deprecate@1.0.2",
     "name": "util-deprecate",
     "version": "1.0.2"
-  },
-  {
-    "id": "uuid@3.3.3",
-    "name": "uuid",
-    "version": "3.3.3"
-  },
-  {
-    "id": "verror@1.10.0",
-    "name": "verror",
-    "version": "1.10.0"
   },
   {
     "id": "wide-align@1.1.3",
