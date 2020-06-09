@@ -14,45 +14,53 @@ export async function downloadPrebuiltBinaries(versionMetadata, localFolder, pre
   const {binary, name, version} = versionMetadata
 
   for (const {abi, arch, platform} of prebuiltBinaryProperties) {
-    try {
-      const data = await fetchPrebuiltBinary(name, version, binary, abi, platform, arch)
-      await fs.writeFileAsync(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, localFolder), data)
-    } catch (err) {
-      // pre-built binaries are commonly not available on all platforms (and S3 will commonly respond with 403 for a non-existent file)
-      const fileNotFoundError = err.response && (err.response.status == 403 || err.response.status == 404)
-      if (!fileNotFoundError) {
-        console.error(`Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform}`)
-        throw err
-      }
+    const napiVersions = binary.napi_versions || ['unknown']
+    for (const napiVersion of napiVersions) {
+      await downloadPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion, localFolder)
     }
   }
 }
 
-function fetchPrebuiltBinary(name, version, binary, abi, platform, arch) {
-  return fetchUrl(prebuiltBinaryUrl(name, version, binary, abi, platform, arch), true)
+async function downloadPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion, localFolder) {
+  try {
+    const data = await fetchPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion)
+    await fs.writeFileAsync(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, napiVersion, localFolder), data)
+  }
+  catch (err) {
+    // pre-built binaries are commonly not available on all platforms (and S3 will commonly respond with 403 for a non-existent file)
+    const fileNotFoundError = err.response && (err.response.status == 403 || err.response.status == 404)
+    if (!fileNotFoundError) {
+      console.error(`Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform} (n-api version ${napiVersion})`)
+      throw err
+    }
+  }
 }
 
-function prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, localFolder) {
-  return path.join(localFolder, prebuiltBinaryFileName(name, version, binary, abi, platform, arch))
+function fetchPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion) {
+  return fetchUrl(prebuiltBinaryUrl(name, version, binary, abi, platform, arch, napiVersion), true)
 }
 
-function prebuiltBinaryUrl(name, version, binary, abi, platform, arch) {
-  const remotePath = prebuiltBinaryRemotePath(name, version, binary, abi, platform, arch)
+function prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, napiVersion, localFolder) {
+  return path.join(localFolder, prebuiltBinaryFileName(name, version, binary, abi, platform, arch, napiVersion))
+}
+
+function prebuiltBinaryUrl(name, version, binary, abi, platform, arch, napiVersion) {
+  const remotePath = prebuiltBinaryRemotePath(name, version, binary, abi, platform, arch, napiVersion)
                        .replace(/\/$/, '')
-  const fileName = prebuiltBinaryFileName(name, version, binary, abi, platform, arch)
+  const fileName = prebuiltBinaryFileName(name, version, binary, abi, platform, arch, napiVersion)
   return url.resolve(binary.host, `${remotePath}/${fileName}`)
 }
 
-function prebuiltBinaryRemotePath(name, version, binary, abi, platform, arch) {
-  return formatPrebuilt(binary.remote_path, name, version, binary.module_name, abi, platform, arch)
+function prebuiltBinaryRemotePath(name, version, binary, abi, platform, arch, napiVersion) {
+  return formatPrebuilt(binary.remote_path, name, version, binary.module_name, abi, platform, arch, napiVersion)
 }
 
-function prebuiltBinaryFileName(name, version, binary, abi, platform, arch) {
-  return formatPrebuilt(binary.package_name, name, version, binary.module_name, abi, platform, arch)
+function prebuiltBinaryFileName(name, version, binary, abi, platform, arch, napiVersion) {
+  return formatPrebuilt(binary.package_name, name, version, binary.module_name, abi, platform, arch, napiVersion)
 }
 
 // see node-pre-gyp: /lib/util/versioning.js for documentation of possible values
-function formatPrebuilt(formatString, name, version, moduleName, abi, platform, arch) {
+function formatPrebuilt(formatString, name, version, moduleName, abi, platform, arch, napiVersion) {
   const moduleVersion = semver.parse(version)
   const prerelease = (moduleVersion.prerelease || []).join('.')
   const build = (moduleVersion.build || []).join('.')
@@ -72,6 +80,7 @@ function formatPrebuilt(formatString, name, version, moduleName, abi, platform, 
     .replace('{libc}', libc(platform))
     .replace('{configuration}', 'Release')
     .replace('{toolset}', '')
+    .replace('{napi_build_version}', napiVersion)
     .replace(/[\/]+/g, '/')
 }
 

@@ -13,14 +13,15 @@ export async function updateDependenciesCache(newDependencies, cacheFilePath, pr
 
   const data = {
     dependencies,
-    prebuiltBinaryProperties
+    prebuiltBinaryProperties,
+    prebuiltBinaryNApiSupport: true
   }
   return fs.writeFileAsync(cacheFilePath, JSON.stringify(data), 'utf8')
 }
 
 export async function dependenciesNotInCache(dependencies, cacheFilePath, prebuiltBinaryProperties) {
-  const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties} = await loadCache(cacheFilePath)
-  if (cachedDependencies.length > 0 && !_.isEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties)) {
+  const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties, prebuiltBinaryNApiSupport} = await loadCache(cacheFilePath)
+  if (cachedDependencies.length > 0 && (!_.isEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport)) {
     console.log(`Pre-built binary properties changed, re-downloading all current packages`)
     return dependencies
   }
@@ -34,14 +35,16 @@ async function loadCache(cacheFilePath) {
     if (Array.isArray(data)) {
       return {
         dependencies: data,
-        prebuiltBinaryProperties: []
+        prebuiltBinaryProperties: [],
+        prebuiltBinaryNApiSupport: true
       }
     }
     return data
   } catch (fileNotFound) {
     return {
       dependencies: [],
-      prebuiltBinaryProperties: []
+      prebuiltBinaryProperties: [],
+      prebuiltBinaryNApiSupport: true
     }
   }
 }
