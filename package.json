@@ -18,7 +18,7 @@
     "axios": "0.19.2",
     "bluebird": "3.7.2",
     "commander": "5.1.0",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "mkdirp": "1.0.4",
     "rimraf": "3.0.2",
     "semver": "7.3.2",
