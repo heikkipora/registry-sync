@@ -160,9 +160,9 @@
     "version": "1.0.0"
   },
   {
-    "id": "lodash@4.17.15",
+    "id": "lodash@4.17.19",
     "name": "lodash",
-    "version": "4.17.15"
+    "version": "4.17.19"
   },
   {
     "id": "minimatch@3.0.4",
