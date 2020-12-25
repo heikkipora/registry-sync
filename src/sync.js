@@ -1,9 +1,9 @@
-import {downloadAll} from '../src/download'
+import {downloadAll} from './download'
 import {
   dependenciesFromPackageLock,
   dependenciesNotInCache,
   updateDependenciesCache
-} from '../src/resolve'
+} from './resolve'
 
 export async function synchronize(options) {
   const cacheFilePath = `${options.rootFolder}/.registry-sync-cache.json`
