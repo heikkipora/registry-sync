@@ -4,7 +4,7 @@ Synchronizes selected NPM packages from a remote NPM registry (such as https://r
 The local copy can then be used as a simple private NPM registry without publishing capabilities. Pre-built native binaries bundled with node-pre-gyp are also included.
 
 [![npm version](https://badge.fury.io/js/registry-sync.svg)](https://badge.fury.io/js/registry-sync)
-[![build status](https://travis-ci.org/heikkipora/registry-sync.svg?branch=master)](https://travis-ci.org/heikkipora/registry-sync)
+![Run tests](https://github.com/heikkipora/registry-sync/workflows/Run%20tests/badge.svg)
 
 ## Pre-requisites
 
@@ -61,4 +61,4 @@ See [releases](https://github.com/heikkipora/registry-sync/releases).
 ## Contributing
 
 Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm run eslint``` first.
-Integration tests can be run with ```npm test```. Both are anyway run automatically by Travis CI.
+Integration tests can be run with ```npm test```. Both are anyway run automatically by GitHub Actions.
