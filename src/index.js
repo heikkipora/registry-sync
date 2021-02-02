@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import program from 'commander'
 import {synchronize} from './sync'
 import {URL} from 'url'
@@ -20,13 +19,12 @@ program
 const abis = program.binaryAbi.split(',')
 const architectures = program.binaryArch.split(',')
 const platforms = program.binaryPlatform.split(',')
-const prebuiltBinaryProperties = _.flattenDeep(
+const prebuiltBinaryProperties =
   abis.map(abi =>
     architectures.map(arch =>
       platforms.map(platform => ({abi, arch, platform}))
-    )
-  )
-)
+    ).flat()
+  ).flat()
 
 const options = {
   localUrl: new URL(program.localUrl),
