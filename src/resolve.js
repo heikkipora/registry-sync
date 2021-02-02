@@ -3,11 +3,10 @@ import fs from 'fs'
 
 export async function updateDependenciesCache(newDependencies, cacheFilePath, prebuiltBinaryProperties) {
   const {dependencies: cachedDependencies} = await loadCache(cacheFilePath)
-  const dependencies = _(cachedDependencies)
+  const dependencies = cachedDependencies
     .concat(newDependencies)
-    .sortBy('id')
-    .sortedUniqBy('id')
-    .value()
+    .sort(sortById)
+    .filter(uniqueById)
 
   const data = {
     dependencies,
@@ -50,27 +49,35 @@ async function loadCache(cacheFilePath) {
 export async function dependenciesFromPackageLock(path, includeDevDependencies) {
   const json = await fs.promises.readFile(path, 'utf8')
   const dependencyTree = dependenciesRecursive(JSON.parse(json), includeDevDependencies)
-  return _(dependencyTree)
-    .flattenDeep()
+  return dependencyTree
     .map(({name, version}) => ({id: `${name}@${version}`, name, version}))
-    .sortBy('id')
-    .sortedUniqBy('id')
-    .value()
+    .sort(sortById)
+    .filter(uniqueById)
+}
+
+function sortById(a, b) {
+  return a.id.localeCompare(b.id)
+}
+
+function uniqueById(value, index, values) {
+  return values.findIndex(v => v.id === value.id) === index
 }
 
 function dependenciesRecursive({dependencies}, includeDevDependencies) {
-  const omitFn = includeDevDependencies ? noBundled : noBundledNoDev
-  return _(dependencies)
-    .omitBy(omitFn)
-    .mapValues((props, name) => [{name, version: props.version}].concat(dependenciesRecursive(props, includeDevDependencies)))
-    .values()
-    .value()
+  if (!dependencies) {
+    return []
+  }
+  const includeFn = includeDevDependencies ? filterOutBundledDependencies : filterOutBundledAndDevDependencies
+  return Object.entries(dependencies)
+    .filter(includeFn)
+    .map(([name, props]) => [{name, version: props.version}].concat(dependenciesRecursive(props, includeDevDependencies)))
+    .flat()
 }
 
-function noBundled({bundled}) {
-  return bundled
+function filterOutBundledDependencies([, props]) {
+  return !props.bundled
 }
 
-function noBundledNoDev({bundled, dev}) {
-  return bundled || dev
+function filterOutBundledAndDevDependencies([, props]) {
+  return !(props.bundled || props.dev)
 }
