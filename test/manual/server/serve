@@ -3,6 +3,7 @@
 const program = require('commander')
 
 program
+  .storeOptionsAsProperties()
   .version(require(`${__dirname}/../../../package.json`).version)
   .option('--root <path>', 'Path to serve NPM packages from')
   .option('--httpPort [number]', 'Local HTTP port to bind the server to (defaults to 8000)')

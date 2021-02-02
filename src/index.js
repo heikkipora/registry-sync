@@ -4,6 +4,7 @@ import {synchronize} from './sync'
 import {URL} from 'url'
 
 program
+  .storeOptionsAsProperties()
   .version(require(`${__dirname}/../package.json`).version)
   .requiredOption('--root <path>', 'Path to save NPM package tarballs and metadata to')
   .requiredOption('--manifest <file>', 'Path to a package-lock.json file to use as catalog for mirrored NPM packages.')

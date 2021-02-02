@@ -15,10 +15,10 @@
   "license": "MIT",
   "dependencies": {
     "axios": "0.21.1",
-    "commander": "6.2.1",
+    "commander": "7.0.0",
     "lodash": "4.17.20",
     "semver": "7.3.4",
-    "ssri": "8.0.0",
+    "ssri": "8.0.1",
     "streamifier": "0.1.1",
     "tar-fs": "2.1.1"
   },
@@ -30,7 +30,7 @@
     "@babel/register": "7.12.10",
     "babel-eslint": "10.1.0",
     "chai": "4.2.0",
-    "eslint": "7.16.0",
+    "eslint": "7.19.0",
     "eslint-plugin-mocha": "8.0.0",
     "express": "4.17.1",
     "mocha": "8.2.1"
