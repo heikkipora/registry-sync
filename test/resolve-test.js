@@ -24,21 +24,21 @@ describe('resolve', () => {
   it('Should detect packages that are new (compared to cache)', async () => {
     const dependenciesV1 = [
       {id: "abbrev@1.1.1", name: "abbrev", version: "1.1.1"},
-      {id: "ajv@4.11.8",name: "ajv",version: "4.11.8"}
+      {id: "ajv@4.11.8", name: "ajv", version: "4.11.8"}
     ]
     const dependenciesV2 = [
       {id: "abbrev@1.1.2", name: "abbrev", version: "1.1.2"},
-      {id: "ajv@4.11.8",name: "ajv",version: "4.11.8"},
-      {id: "aproba@1.2.0",name: "aproba",version: "1.2.0"}
+      {id: "ajv@4.11.8", name: "ajv", version: "4.11.8"},
+      {id: "aproba@1.2.0", name: "aproba", version: "1.2.0"}
     ]
     const expectedDependencies = [
       {id: "abbrev@1.1.2", name: "abbrev", version: "1.1.2"},
-      {id: "aproba@1.2.0",name: "aproba",version: "1.2.0"}
+      {id: "aproba@1.2.0", name: "aproba", version: "1.2.0"}
     ]
     await updateDependenciesCache(dependenciesV1, cacheFilePath)
     const changedDependencies = await dependenciesNotInCache(dependenciesV2, cacheFilePath)
     expect(changedDependencies).to.deep.equal(expectedDependencies)
   })
 
-  after(() => fs.unlinkSync(cacheFilePath))
+  after(() => fs.promises.unlink(cacheFilePath).catch(() => {}))
 })
