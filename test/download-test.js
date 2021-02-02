@@ -1,14 +1,9 @@
 import {downloadAll} from '../src/download'
 import {expect} from 'chai'
 import {extractTgz} from '../src/metadata'
-import mkdirp from 'mkdirp'
+import fs from 'fs'
 import path from 'path'
-import Promise from 'bluebird'
-import rimraf from 'rimraf'
 import {URL} from 'url'
-
-const fs = Promise.promisifyAll(require('fs'))
-const rimrafAsync = Promise.promisify(rimraf)
 
 const rootFolder = `${__dirname}/.download`
 const tmpFolder = path.join(__dirname, '.tmp')
@@ -71,10 +66,10 @@ describe('download', () => {
   it('Should download a node-pre-gyp package and correctly rewrite metadata', async () => {
     const packages = [{ id: 'node-gtk@0.4.0', name: 'node-gtk', version: '0.4.0' }]
     await downloadAll(packages, { ...options, prebuiltBinaryProperties })
-    await mkdirp(tmpFolder)
+    await fs.promises.mkdir(tmpFolder, {recursive: true})
     const data = await readTarball('node-gtk', '0.4.0')
     await extractTgz(data, tmpFolder)
-    const fileStr = await fs.readFileAsync(path.join(tmpFolder, 'package', 'package.json'))
+    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'))
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
     expect(fileContents.binary.remote_path).equal('/node-gtk/0.4.0/')
@@ -83,10 +78,10 @@ describe('download', () => {
   it('Should download a node-pre-gyp package and correctly rewrite metadata when localUrl contains a path', async () => {
     const packages = [{ id: 'node-gtk@0.4.0', name: 'node-gtk', version: '0.4.0' }]
     await downloadAll(packages, { ...options, prebuiltBinaryProperties, localUrl: new URL('https://localhost:8443/registry') })
-    await mkdirp(tmpFolder)
+    await fs.promises.mkdir(tmpFolder, {recursive: true})
     const data = await readTarball('node-gtk', '0.4.0')
     await extractTgz(data, tmpFolder)
-    const fileStr = await fs.readFileAsync(path.join(tmpFolder, 'package', 'package.json'))
+    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'))
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
     expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
@@ -95,27 +90,27 @@ describe('download', () => {
   it('Should download a node-pre-gyp package and correctly rewrite metadata when localUrl contains a path with ending slash', async () => {
     const packages = [{ id: 'node-gtk@0.4.0', name: 'node-gtk', version: '0.4.0' }]
     await downloadAll(packages, { ...options, prebuiltBinaryProperties, localUrl: new URL('https://localhost:8443/registry/') })
-    await mkdirp(tmpFolder)
+    await fs.promises.mkdir(tmpFolder, {recursive: true})
     const data = await readTarball('node-gtk', '0.4.0')
     await extractTgz(data, tmpFolder)
-    const fileStr = await fs.readFileAsync(path.join(tmpFolder, 'package', 'package.json'))
+    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'))
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
     expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
   })
 
   after(async () => {
-    await rimrafAsync(rootFolder)
-    await rimrafAsync(tmpFolder)
+    await fs.promises.rmdir(rootFolder, {recursive: true})
+    await fs.promises.rmdir(tmpFolder, {recursive: true})
   })
 })
 
 function readTarball(name, version) {
-  return fs.readFileAsync(path.join(rootFolder, name, `${name}-${version}.tgz`))
+  return fs.promises.readFile(path.join(rootFolder, name, `${name}-${version}.tgz`))
 }
 
 async function readMetadataFile(moduleName) {
-  const f = await fs.readFileAsync(
+  const f = await fs.promises.readFile(
     path.join(rootFolder, moduleName, 'index.json'), { encoding: 'utf-8' }
   )
 

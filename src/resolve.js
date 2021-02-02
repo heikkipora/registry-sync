@@ -1,7 +1,5 @@
 import _ from 'lodash'
-import Promise from 'bluebird'
-
-const fs = Promise.promisifyAll(require('fs'))
+import fs from 'fs'
 
 export async function updateDependenciesCache(newDependencies, cacheFilePath, prebuiltBinaryProperties) {
   const {dependencies: cachedDependencies} = await loadCache(cacheFilePath)
@@ -16,7 +14,7 @@ export async function updateDependenciesCache(newDependencies, cacheFilePath, pr
     prebuiltBinaryProperties,
     prebuiltBinaryNApiSupport: true
   }
-  return fs.writeFileAsync(cacheFilePath, JSON.stringify(data), 'utf8')
+  return fs.promises.writeFile(cacheFilePath, JSON.stringify(data), 'utf8')
 }
 
 export async function dependenciesNotInCache(dependencies, cacheFilePath, prebuiltBinaryProperties) {
@@ -30,7 +28,7 @@ export async function dependenciesNotInCache(dependencies, cacheFilePath, prebui
 
 async function loadCache(cacheFilePath) {
   try {
-    const json = await fs.readFileAsync(cacheFilePath, 'utf8')
+    const json = await fs.promises.readFile(cacheFilePath, 'utf8')
     const data = JSON.parse(json)
     if (Array.isArray(data)) {
       return {
@@ -50,7 +48,7 @@ async function loadCache(cacheFilePath) {
 }
 
 export async function dependenciesFromPackageLock(path, includeDevDependencies) {
-  const json = await fs.readFileAsync(path, 'utf8')
+  const json = await fs.promises.readFile(path, 'utf8')
   const dependencyTree = dependenciesRecursive(JSON.parse(json), includeDevDependencies)
   return _(dependencyTree)
     .flattenDeep()

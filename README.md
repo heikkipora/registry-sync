@@ -8,7 +8,7 @@ The local copy can then be used as a simple private NPM registry without publish
 
 ## Pre-requisites
 
-- Node.js v8.0.0 or newer
+- Node.js v12.0.0 or newer
 
 ## Installation
 

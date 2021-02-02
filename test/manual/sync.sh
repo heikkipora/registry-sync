@@ -1,4 +1,4 @@
 #!/bin/bash
 
 (cd ../../ && npm run build)
-../../build/bin/sync --manifest ./package-lock.json --root ./.download --localUrl https://localhost:8443 --binaryAbi 57,64,72 --binaryArch x64 --binaryPlatform darwin
+../../build/bin/sync --manifest ./package-lock.json --root ./.download --localUrl https://localhost:8443 --binaryAbi 72,83 --binaryArch x64 --binaryPlatform darwin

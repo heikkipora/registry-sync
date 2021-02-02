@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import rimraf from 'rimraf'
+import fs from 'fs'
 import {synchronize} from '../src/sync'
 import {URL} from 'url'
 
@@ -36,5 +36,6 @@ describe('synchronize', () => {
     expect(downloaded).to.have.lengthOf(79)
   })
 
-  after(done => rimraf(rootFolder, done))
+  after(() => fs.promises.rmdir(rootFolder, {recursive: true})
+  )
 })

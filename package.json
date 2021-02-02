@@ -14,13 +14,9 @@
   "author": "Heikki Pora",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "7.12.5",
     "axios": "0.21.1",
-    "bluebird": "3.7.2",
     "commander": "6.2.1",
     "lodash": "4.17.20",
-    "mkdirp": "1.0.4",
-    "rimraf": "3.0.2",
     "semver": "7.3.4",
     "ssri": "8.0.0",
     "streamifier": "0.1.1",
@@ -29,8 +25,6 @@
   "devDependencies": {
     "@babel/cli": "7.12.10",
     "@babel/core": "7.12.10",
-    "@babel/plugin-proposal-object-rest-spread": "7.12.1",
-    "@babel/plugin-transform-runtime": "7.12.10",
     "@babel/polyfill": "7.11.5",
     "@babel/preset-env": "7.12.11",
     "@babel/register": "7.12.10",
@@ -49,6 +43,6 @@
     "offline"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=12.0.0"
   }
 }

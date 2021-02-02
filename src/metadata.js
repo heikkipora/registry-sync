@@ -1,15 +1,10 @@
+import fs from 'fs'
 import {hasPrebuiltBinaries} from './pregyp'
-import mkdirp from 'mkdirp'
 import path from 'path'
-import Promise from 'bluebird'
-import rimraf from 'rimraf'
 import streamifier from 'streamifier'
 import tar from 'tar-fs'
 import zlib from 'zlib'
 import {sha1, sha512} from './integrity'
-
-const fs = Promise.promisifyAll(require('fs'))
-const rimrafAsync = Promise.promisify(rimraf)
 
 export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
   versionMetadata.dist.tarball = localTarballUrl(versionMetadata, localUrl)
@@ -24,18 +19,18 @@ export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
 
 export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder) {
   const tmpFolder = path.join(localFolder, '.tmp')
-  await mkdirp(tmpFolder)
+  await fs.promises.mkdir(tmpFolder, {recursive: true})
   await extractTgz(data, tmpFolder)
 
   const manifestPath = path.join(tmpFolder, 'package', 'package.json')
-  const json = await fs.readFileAsync(manifestPath, 'utf8')
+  const json = await fs.promises.readFile(manifestPath, 'utf8')
   const metadata = JSON.parse(json)
   metadata.binary.host = localUrl.origin
   metadata.binary.remote_path = createPrebuiltBinaryRemotePath(localUrl, versionMetadata)
-  await fs.writeFileAsync(manifestPath, JSON.stringify(metadata, null, 2))
+  await fs.promises.writeFile(manifestPath, JSON.stringify(metadata, null, 2))
 
   const updatedData = await compressTgz(tmpFolder)
-  await rimrafAsync(tmpFolder)
+  await fs.promises.rmdir(tmpFolder, {recursive: true})
   return updatedData
 }
 

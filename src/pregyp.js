@@ -1,10 +1,8 @@
 import {fetchUrl} from './client'
+import fs from 'fs'
 import path from 'path'
-import Promise from 'bluebird'
 import semver from 'semver'
 import url from 'url'
-
-const fs = Promise.promisifyAll(require('fs'))
 
 export function hasPrebuiltBinaries({binary}) {
   return binary && binary.module_name
@@ -24,7 +22,7 @@ export async function downloadPrebuiltBinaries(versionMetadata, localFolder, pre
 async function downloadPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion, localFolder) {
   try {
     const data = await fetchPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion)
-    await fs.writeFileAsync(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, napiVersion, localFolder), data)
+    await fs.promises.writeFile(prebuiltBinaryFilePath(name, version, binary, abi, platform, arch, napiVersion, localFolder), data)
   }
   catch (err) {
     // pre-built binaries are commonly not available on all platforms (and S3 will commonly respond with 403 for a non-existent file)

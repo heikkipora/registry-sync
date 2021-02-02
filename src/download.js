@@ -1,19 +1,18 @@
 import _ from 'lodash'
 import {fetchUrl} from './client'
-import mkdirp from 'mkdirp'
+import fs from 'fs'
 import path from 'path'
-import Promise from 'bluebird'
 import semver from 'semver'
 import url from 'url'
 import {verifyIntegrity} from './integrity'
 import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
 
-const fs = Promise.promisifyAll(require('fs'))
-
-export function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps = true}) {
+export async function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps = true}) {
   const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps)
-  return Promise.mapSeries(packages, downloadFromRegistry)
+  for (const pkg of packages) {
+    await downloadFromRegistry(pkg)
+  }
 }
 
 async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps, {name, version}) {
@@ -44,7 +43,7 @@ async function downloadTarball({_id: id, dist}, enforceTarballsOverHttps) {
 }
 
 function saveTarball({name, version}, data, localFolder) {
-  return fs.writeFileAsync(tarballPath(name, version, localFolder), data)
+  return fs.promises.writeFile(tarballPath(name, version, localFolder), data)
 }
 
 async function updateMetadata(versionMetadata, defaultMetadata, registryUrl, localFolder) {
@@ -59,16 +58,16 @@ async function updateMetadata(versionMetadata, defaultMetadata, registryUrl, loc
 
 async function loadMetadata(path, defaultMetadata) {
   try {
-    const json = await fs.readFileAsync(path, 'utf8')
+    const json = await fs.promises.readFile(path, 'utf8')
     return JSON.parse(json)
   } catch (fileNotFound) {
     return {...defaultMetadata, 'dist-tags': {}, time: {}, versions: {}}
   }
 }
 
-async function saveMetadata(path, metadata) {
+function saveMetadata(path, metadata) {
   const json = JSON.stringify(metadata, null, 2)
-  await fs.writeFileAsync(path, json, 'utf8')
+  return fs.promises.writeFile(path, json, 'utf8')
 }
 
 
@@ -82,7 +81,7 @@ function tarballPath(name, version, localFolder) {
 
 async function ensureLocalFolderExists(name, rootFolder) {
   const localFolder = path.resolve(rootFolder, name)
-  await mkdirp(localFolder)
+  await fs.promises.mkdir(localFolder, {recursive: true})
   return localFolder
 }
 
