@@ -9,7 +9,8 @@
   "scripts": {
     "build": "./build-npm",
     "eslint": "eslint . --ext .ts --fix",
-    "test": "mocha -r ts-node/register --timeout 120000 test/*.ts"
+    "test": "mocha -r ts-node/register --timeout 120000 test/*.ts",
+    "release-test": "cd release-test && ./run-sync-install-cycle.sh"
   },
   "author": "Heikki Pora",
   "license": "MIT",

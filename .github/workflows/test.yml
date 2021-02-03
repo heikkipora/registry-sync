@@ -25,4 +25,4 @@ jobs:
      - run: npm audit
      - run: npm run eslint
      - run: npm test
-     - run: npm run build
+     - run: npm run release-test

@@ -1,4 +1,5 @@
 .DS_Store
 node_modules
-download
 build
+release-test/.test-execution
+release-test/server/server.pid

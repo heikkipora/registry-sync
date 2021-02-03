@@ -36,7 +36,7 @@ function bindRoutes(app, rootFolder) {
   })
 }
 
-function init(options) {
+function startServer(options) {
   const app = express()
   bindRoutes(app, options.root)
   startHttpServer(app, options.port)
@@ -45,4 +45,6 @@ function init(options) {
   }
 }
 
-module.exports = init
+module.exports = {
+  startServer
+}

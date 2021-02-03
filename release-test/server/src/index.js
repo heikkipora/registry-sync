@@ -1,6 +1,5 @@
-#!/usr/bin/env node
-
 const program = require('commander')
+const {startServer} = require('./server')
 
 program
   .storeOptionsAsProperties()
@@ -14,7 +13,6 @@ program
 
 if (!program.root) {
   console.error(program.help())
-  // eslint-disable-next-line no-process-exit
   process.exit(1)
 }
 
@@ -31,4 +29,4 @@ const options = {
   https: httpsOptions
 }
 
-require(`${__dirname}/server`)(options)
+startServer(options)

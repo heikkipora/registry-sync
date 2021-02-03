@@ -1,0 +1,2 @@
+cafile = ../server/ssl/localhost-ca.pem
+registry = https://localhost:8443
