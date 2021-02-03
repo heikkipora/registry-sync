@@ -1,12 +1,14 @@
-import fs from 'fs'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as tar from 'tar-fs'
+import * as zlib from 'zlib'
 import {hasPrebuiltBinaries} from './pregyp'
-import path from 'path'
-import streamifier from 'streamifier'
-import tar from 'tar-fs'
-import zlib from 'zlib'
+import {Readable} from 'stream'
+import type {URL} from 'url'
+import type {VersionMetadata} from './types'
 import {sha1, sha512} from './integrity'
 
-export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
+export function rewriteVersionMetadata(versionMetadata: VersionMetadata, data: Buffer, localUrl: URL): void {
   versionMetadata.dist.tarball = localTarballUrl(versionMetadata, localUrl)
 
   if (hasPrebuiltBinaries(versionMetadata)) {
@@ -17,7 +19,7 @@ export function rewriteVersionMetadata(versionMetadata, data, localUrl) {
   }
 }
 
-export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder) {
+export async function rewriteMetadataInTarball(data: Buffer, versionMetadata: VersionMetadata, localUrl: URL, localFolder: string): Promise<Buffer> {
   const tmpFolder = path.join(localFolder, '.tmp')
   await fs.promises.mkdir(tmpFolder, {recursive: true})
   await extractTgz(data, tmpFolder)
@@ -34,14 +36,13 @@ export async function rewriteMetadataInTarball(data, versionMetadata, localUrl, 
   return updatedData
 }
 
-function createPrebuiltBinaryRemotePath(url, versionMetadata) {
+function createPrebuiltBinaryRemotePath(url: URL, versionMetadata: VersionMetadata): string {
   return `${removeTrailingSlash(url.pathname)}/${versionMetadata.name}/${versionMetadata.version}/`
 }
 
-export function extractTgz(data, folder) {
+export function extractTgz(data: Buffer, folder: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const tgz = streamifier
-      .createReadStream(data)
+    const tgz = Readable.from(data)
       .pipe(zlib.createGunzip())
       .pipe(tar.extract(folder))
 
@@ -50,27 +51,27 @@ export function extractTgz(data, folder) {
   })
 }
 
-function compressTgz(folder) {
+function compressTgz(folder: string): Promise<Buffer> {
   return new Promise((resolve, reject) => {
-    const chunks = []
+    const chunks: Buffer[] = []
     const tgz = tar
       .pack(folder)
       .pipe(zlib.createGzip())
-    tgz.on('data', chunk => chunks.push(chunk))
+    tgz.on('data', (chunk: Buffer) => chunks.push(chunk))
     tgz.on('end', () => resolve(Buffer.concat(chunks)))
     tgz.on('error', reject)
   })
 }
 
-function localTarballUrl({name, version}, localUrl) {
+function localTarballUrl({name, version}: {name: string, version: string}, localUrl: URL) {
   return `${localUrl.origin}${removeTrailingSlash(localUrl.pathname)}/${name}/${tarballFilename(name, version)}`
 }
 
-export function tarballFilename(name, version) {
+export function tarballFilename(name: string, version: string): string {
   const normalized = name.replace(/\//g, '-')
   return `${normalized}-${version}.tgz`
 }
 
-function removeTrailingSlash(str) {
+function removeTrailingSlash(str: string): string {
   return str.replace(/\/$/, "")
 }

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 rm -fr build
-mkdir -p build/src
-
+mkdir build
 cp LICENSE package.json README.md build
 cp -r bin build
-node_modules/.bin/babel src --out-dir build/src
+
+npx tsc

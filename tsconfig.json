@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "./build/src",
+        "allowJs": true,
+        "checkJs": false,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "es2019",
+        "moduleResolution": "node",
+        "lib": [
+            "es2019"
+        ]
+    },
+    "include": ["src/**/*"]
+}

@@ -1,5 +1,5 @@
+import * as fs from 'fs'
 import {expect} from 'chai'
-import fs from 'fs'
 import {synchronize} from '../src/sync'
 import {URL} from 'url'
 
@@ -17,7 +17,9 @@ const options = {
   manifest: `${__dirname}/manifests/package-lock.json`,
   registryUrl: 'https://registry.npmjs.org',
   rootFolder,
-  prebuiltBinaryProperties
+  prebuiltBinaryProperties,
+  enforceTarballsOverHttps: true,
+  includeDevDependencies: false
 }
 
 describe('synchronize', () => {

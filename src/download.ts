@@ -1,23 +1,24 @@
-import _ from 'lodash'
-import {fetchUrl} from './client'
-import fs from 'fs'
-import path from 'path'
-import semver from 'semver'
-import url from 'url'
+import * as _ from 'lodash'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as semver from 'semver'
+import * as url from 'url'
 import {verifyIntegrity} from './integrity'
+import type {CommandLineOptions, PackageWithId, PlatformVariant, RegistryMetadata, VersionMetadata} from './types'
 import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
+import {fetchBinaryData, fetchJsonWithCache} from './client'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
 
-export async function downloadAll(packages, {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps = true}) {
+export async function downloadAll(packages: PackageWithId[], {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps}: Omit<CommandLineOptions, "manifest" | "includeDevDependencies">): Promise<void> {
   const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps)
   for (const pkg of packages) {
     await downloadFromRegistry(pkg)
   }
 }
 
-async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps, {name, version}) {
+async function download(registryUrl: string, localUrl: url.URL, rootFolder: string, prebuiltBinaryProperties: PlatformVariant[], enforceTarballsOverHttps: boolean, {name, version}: PackageWithId): Promise<void> {
   const registryMetadata = await fetchMetadata(name, registryUrl)
-  const versionMetadata = _.cloneDeep(registryMetadata.versions[version])
+  const versionMetadata: VersionMetadata | undefined = _.cloneDeep(registryMetadata.versions[version])
   if (!versionMetadata) {
     throw new Error(`Unknown package version ${name}@${version}`)
   }
@@ -35,20 +36,20 @@ async function download(registryUrl, localUrl, rootFolder, prebuiltBinaryPropert
   await updateMetadata(versionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
-async function downloadTarball({_id: id, dist}, enforceTarballsOverHttps) {
+async function downloadTarball({_id: id, dist}: VersionMetadata, enforceTarballsOverHttps: boolean): Promise<Buffer> {
   const tarballUrl = enforceTarballsOverHttps ? dist.tarball.replace('http://', 'https://') : dist.tarball
-  const data = await fetchTarball(tarballUrl)
+  const data = await fetchBinaryData(tarballUrl)
   verifyIntegrity(data, id, dist)
   return data
 }
 
-function saveTarball({name, version}, data, localFolder) {
+function saveTarball({name, version}: VersionMetadata, data: Buffer, localFolder: string) {
   return fs.promises.writeFile(tarballPath(name, version, localFolder), data)
 }
 
-async function updateMetadata(versionMetadata, defaultMetadata, registryUrl, localFolder) {
-  const {name, version} = versionMetadata
-  const localMetadataPath = metadataPath(name, localFolder)
+async function updateMetadata(versionMetadata: VersionMetadata, defaultMetadata: RegistryMetadata, registryUrl: string, localFolder: string) {
+  const {version} = versionMetadata
+  const localMetadataPath = path.join(localFolder, 'index.json')
   const localMetadata = await loadMetadata(localMetadataPath, defaultMetadata)
   localMetadata.versions[version] = versionMetadata
   localMetadata.time[version] = defaultMetadata.time[version]
@@ -56,7 +57,7 @@ async function updateMetadata(versionMetadata, defaultMetadata, registryUrl, loc
   await saveMetadata(localMetadataPath, localMetadata)
 }
 
-async function loadMetadata(path, defaultMetadata) {
+async function loadMetadata(path: string, defaultMetadata: RegistryMetadata): Promise<RegistryMetadata> {
   try {
     const json = await fs.promises.readFile(path, 'utf8')
     return JSON.parse(json)
@@ -65,31 +66,22 @@ async function loadMetadata(path, defaultMetadata) {
   }
 }
 
-function saveMetadata(path, metadata) {
+function saveMetadata(path: string, metadata: RegistryMetadata): Promise<void> {
   const json = JSON.stringify(metadata, null, 2)
   return fs.promises.writeFile(path, json, 'utf8')
 }
 
-
-function metadataPath(name, localFolder) {
-  return path.join(localFolder, 'index.json')
-}
-
-function tarballPath(name, version, localFolder) {
+function tarballPath(name: string, version: string, localFolder: string) {
   return path.join(localFolder, tarballFilename(name, version))
 }
 
-async function ensureLocalFolderExists(name, rootFolder) {
+async function ensureLocalFolderExists(name: string, rootFolder: string): Promise<string> {
   const localFolder = path.resolve(rootFolder, name)
   await fs.promises.mkdir(localFolder, {recursive: true})
   return localFolder
 }
 
-function fetchTarball(tarballUrl) {
-  return fetchUrl(tarballUrl, true)
-}
-
-function fetchMetadata(name, registryUrl) {
+function fetchMetadata(name: string, registryUrl: string): Promise<RegistryMetadata> {
   const urlSafeName = name.replace(/\//g, '%2f')
-  return fetchUrl(url.resolve(registryUrl, urlSafeName))
+  return fetchJsonWithCache(url.resolve(registryUrl, urlSafeName))
 }

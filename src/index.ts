@@ -1,10 +1,14 @@
-import program from 'commander'
+import * as fs from 'fs'
+import * as path from 'path'
+import * as program from 'commander'
+import type {CommandLineOptions, PlatformVariant} from './types'
 import {synchronize} from './sync'
 import {URL} from 'url'
 
+const {version} = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8'))
+
 program
-  .storeOptionsAsProperties()
-  .version(require(`${__dirname}/../package.json`).version)
+  .version(version)
   .requiredOption('--root <path>', 'Path to save NPM package tarballs and metadata to')
   .requiredOption('--manifest <file>', 'Path to a package-lock.json file to use as catalog for mirrored NPM packages.')
   .requiredOption('--localUrl <url>', 'URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)')
@@ -16,24 +20,26 @@ program
   .option('--includeDev', 'Include also packages found from devDependencies section of the --manifest')
   .parse(process.argv)
 
-const abis = program.binaryAbi.split(',')
-const architectures = program.binaryArch.split(',')
-const platforms = program.binaryPlatform.split(',')
-const prebuiltBinaryProperties =
+const rawOptions: program.OptionValues = program.opts()
+
+const abis: number[] = rawOptions.binaryAbi.split(',').map(Number)
+const architectures: string[] = rawOptions.binaryArch.split(',')
+const platforms: string[] = rawOptions.binaryPlatform.split(',')
+const prebuiltBinaryProperties: PlatformVariant[] =
   abis.map(abi =>
     architectures.map(arch =>
       platforms.map(platform => ({abi, arch, platform}))
     ).flat()
   ).flat()
 
-const options = {
-  localUrl: new URL(program.localUrl),
-  manifest: program.manifest,
+const options: CommandLineOptions = {
+  localUrl: new URL(rawOptions.localUrl),
+  manifest: rawOptions.manifest,
   prebuiltBinaryProperties,
-  registryUrl: program.registryUrl || 'https://registry.npmjs.org',
-  rootFolder: program.root,
-  enforceTarballsOverHttps: Boolean(!program.dontEnforceHttps),
-  includeDevDependencies: Boolean(program.includeDev)
+  registryUrl: rawOptions.registryUrl || 'https://registry.npmjs.org',
+  rootFolder: rawOptions.root,
+  enforceTarballsOverHttps: Boolean(!rawOptions.dontEnforceHttps),
+  includeDevDependencies: Boolean(rawOptions.includeDev)
 }
 
 synchronize(options)

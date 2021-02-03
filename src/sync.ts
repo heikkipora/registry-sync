@@ -1,3 +1,4 @@
+import type {CommandLineOptions, PackageWithId} from './types'
 import {downloadAll} from './download'
 import {
   dependenciesFromPackageLock,
@@ -5,7 +6,7 @@ import {
   updateDependenciesCache
 } from './resolve'
 
-export async function synchronize(options) {
+export async function synchronize(options: CommandLineOptions): Promise<PackageWithId[]> {
   const cacheFilePath = `${options.rootFolder}/.registry-sync-cache.json`
 
   const packages = await dependenciesFromPackageLock(options.manifest, options.includeDevDependencies)

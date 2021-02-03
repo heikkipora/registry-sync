@@ -1,8 +1,9 @@
+import * as fs from 'fs'
+import * as path from 'path'
 import {downloadAll} from '../src/download'
 import {expect} from 'chai'
 import {extractTgz} from '../src/metadata'
-import fs from 'fs'
-import path from 'path'
+import {PlatformVariant, RegistryMetadata} from '../src/types'
 import {URL} from 'url'
 
 const rootFolder = `${__dirname}/.download`
@@ -10,7 +11,9 @@ const tmpFolder = path.join(__dirname, '.tmp')
 const options = {
   registryUrl: 'https://registry.npmjs.org',
   localUrl: new URL('https://localhost:8443'),
-  rootFolder
+  rootFolder,
+  prebuiltBinaryProperties: [] as PlatformVariant[],
+  enforceTarballsOverHttps: true
 }
 
 const prebuiltBinaryProperties = [
@@ -69,7 +72,7 @@ describe('download', () => {
     await fs.promises.mkdir(tmpFolder, {recursive: true})
     const data = await readTarball('node-gtk', '0.4.0')
     await extractTgz(data, tmpFolder)
-    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'))
+    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
     expect(fileContents.binary.remote_path).equal('/node-gtk/0.4.0/')
@@ -81,7 +84,7 @@ describe('download', () => {
     await fs.promises.mkdir(tmpFolder, {recursive: true})
     const data = await readTarball('node-gtk', '0.4.0')
     await extractTgz(data, tmpFolder)
-    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'))
+    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
     expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
@@ -93,7 +96,7 @@ describe('download', () => {
     await fs.promises.mkdir(tmpFolder, {recursive: true})
     const data = await readTarball('node-gtk', '0.4.0')
     await extractTgz(data, tmpFolder)
-    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'))
+    const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
     expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
@@ -105,11 +108,11 @@ describe('download', () => {
   })
 })
 
-function readTarball(name, version) {
+function readTarball(name: string, version: string): Promise<Buffer> {
   return fs.promises.readFile(path.join(rootFolder, name, `${name}-${version}.tgz`))
 }
 
-async function readMetadataFile(moduleName) {
+async function readMetadataFile(moduleName: string): Promise<RegistryMetadata> {
   const f = await fs.promises.readFile(
     path.join(rootFolder, moduleName, 'index.json'), { encoding: 'utf-8' }
   )
