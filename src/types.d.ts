@@ -43,19 +43,23 @@ export interface Package {
   version: string
 }
 
-export interface CacheSchema {
+export interface CacheSchemaV3 extends CacheSchemaV2 {
+  prebuiltBinaryNApiSupportWithoutBrokenVersions: boolean
+}
+
+export interface CacheSchemaV2 {
   dependencies: PackageWithId[],
   prebuiltBinaryProperties: PlatformVariant[],
   prebuiltBinaryNApiSupport: boolean
 }
+
+export type CacheSchemaV1 = PackageWithId[]
 
 export interface PlatformVariant {
   abi: number,
   arch: string,
   platform: string
 }
-
-export type OldCacheSchema = PackageWithId[]
 
 export interface RegistryMetadata {
   _id: string,
