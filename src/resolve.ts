@@ -1,5 +1,6 @@
 import * as _ from 'lodash'
 import * as fs from 'fs'
+import {deepStrictEqual} from 'assert'
 import type {CacheSchema, OldCacheSchema, Package, PackageLock, PackageLockDependency, PackageWithId, PlatformVariant} from './types'
 
 export async function updateDependenciesCache(newDependencies: PackageWithId[], cacheFilePath: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<void> {
@@ -19,7 +20,7 @@ export async function updateDependenciesCache(newDependencies: PackageWithId[], 
 
 export async function dependenciesNotInCache(dependencies: PackageWithId[], cacheFilePath: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<PackageWithId[]> {
   const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties, prebuiltBinaryNApiSupport} = await loadCache(cacheFilePath)
-  if (cachedDependencies.length > 0 && (!_.isEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport)) {
+  if (cachedDependencies.length > 0 && (!isDeepEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport)) {
     console.log(`Pre-built binary properties changed, re-downloading all current packages`)
     return dependencies
   }
@@ -81,4 +82,13 @@ function filterOutBundledDependencies([, props]: [string, PackageLockDependency]
 
 function filterOutBundledAndDevDependencies([, props]: [string, PackageLockDependency]): boolean {
   return !(props.bundled || props.dev)
+}
+
+function isDeepEqual(a: PlatformVariant[], b: PlatformVariant[]): boolean {
+  try {
+    deepStrictEqual(a, b)
+    return true
+  } catch(ignored) {
+    return false
+  }
 }
