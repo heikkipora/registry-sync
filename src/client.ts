@@ -9,12 +9,16 @@ const client = axios.create({
   timeout: 30 * 1000
 })
 
-export async function fetchJsonWithCache(url: string): Promise<RegistryMetadata> {
+export async function fetchJsonWithCacheCloned(url: string): Promise<RegistryMetadata> {
   if (!metadataCache[url]) {
     // eslint-disable-next-line require-atomic-updates
     metadataCache[url] = await fetch<RegistryMetadata>(url, 'json')
   }
-  return metadataCache[url]
+  return cloneDeep(metadataCache[url])
+}
+
+function cloneDeep(metadata: RegistryMetadata): RegistryMetadata {
+  return JSON.parse(JSON.stringify(metadata))
 }
 
 export function fetchBinaryData(url: string): Promise<Buffer> {

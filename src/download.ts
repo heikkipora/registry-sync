@@ -1,4 +1,3 @@
-import * as _ from 'lodash'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as semver from 'semver'
@@ -6,7 +5,7 @@ import * as url from 'url'
 import {verifyIntegrity} from './integrity'
 import type {CommandLineOptions, PackageWithId, PlatformVariant, RegistryMetadata, VersionMetadata} from './types'
 import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
-import {fetchBinaryData, fetchJsonWithCache} from './client'
+import {fetchBinaryData, fetchJsonWithCacheCloned} from './client'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
 
 export async function downloadAll(packages: PackageWithId[], {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps}: Omit<CommandLineOptions, "manifest" | "includeDevDependencies">): Promise<void> {
@@ -17,8 +16,8 @@ export async function downloadAll(packages: PackageWithId[], {localUrl, prebuilt
 }
 
 async function download(registryUrl: string, localUrl: url.URL, rootFolder: string, prebuiltBinaryProperties: PlatformVariant[], enforceTarballsOverHttps: boolean, {name, version}: PackageWithId): Promise<void> {
-  const registryMetadata = await fetchMetadata(name, registryUrl)
-  const versionMetadata: VersionMetadata | undefined = _.cloneDeep(registryMetadata.versions[version])
+  const registryMetadata = await fetchMetadataCloned(name, registryUrl)
+  const versionMetadata: VersionMetadata | undefined = registryMetadata.versions[version]
   if (!versionMetadata) {
     throw new Error(`Unknown package version ${name}@${version}`)
   }
@@ -82,7 +81,7 @@ async function ensureLocalFolderExists(name: string, rootFolder: string): Promis
   return localFolder
 }
 
-function fetchMetadata(name: string, registryUrl: string): Promise<RegistryMetadata> {
+function fetchMetadataCloned(name: string, registryUrl: string): Promise<RegistryMetadata> {
   const urlSafeName = name.replace(/\//g, '%2f')
-  return fetchJsonWithCache(url.resolve(registryUrl, urlSafeName))
+  return fetchJsonWithCacheCloned(url.resolve(registryUrl, urlSafeName))
 }
