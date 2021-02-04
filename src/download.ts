@@ -25,14 +25,15 @@ async function download(registryUrl: string, localUrl: url.URL, rootFolder: stri
 
   const localFolder = await ensureLocalFolderExists(name, rootFolder)
   let data = await downloadTarball(versionMetadata, enforceTarballsOverHttps)
+  let actualNapiVersions: number[] = []
   if (hasPrebuiltBinaries(versionMetadata)) {
     const localPregypFolder = await ensureLocalFolderExists(version, localFolder)
-    await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)
-    data = await rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder)
+    actualNapiVersions = await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)
+    data = await rewriteMetadataInTarball(data, versionMetadata, localUrl, localFolder, actualNapiVersions)
   }
   await saveTarball(versionMetadata, data, localFolder)
 
-  rewriteVersionMetadata(versionMetadata, data, localUrl)
+  rewriteVersionMetadata(versionMetadata, data, localUrl, actualNapiVersions)
   await updateMetadata(versionMetadata, registryMetadata, registryUrl, localFolder)
 }
 

@@ -84,7 +84,7 @@ export interface VersionMetadata {
     package_name?: string,
     remote_uri?: string,
     template: string,
-    napi_versions?: [number | 'unknown']
+    napi_versions?: number[]
   },
   dist: {
     shasum?: string,
