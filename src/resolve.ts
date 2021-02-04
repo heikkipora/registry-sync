@@ -1,4 +1,3 @@
-import * as _ from 'lodash'
 import * as fs from 'fs'
 import {deepStrictEqual} from 'assert'
 import type {CacheSchema, OldCacheSchema, Package, PackageLock, PackageLockDependency, PackageWithId, PlatformVariant} from './types'
@@ -24,7 +23,8 @@ export async function dependenciesNotInCache(dependencies: PackageWithId[], cach
     console.log(`Pre-built binary properties changed, re-downloading all current packages`)
     return dependencies
   }
-  return _.differenceBy(dependencies, cachedDependencies, 'id')
+  const packageIdsInCache = cachedDependencies.map(pkg => pkg.id)
+  return dependencies.filter(pkg => !packageIdsInCache.includes(pkg.id))
 }
 
 async function loadCache(cacheFilePath: string): Promise<CacheSchema> {
