@@ -1,4 +1,10 @@
+# macOS
 .DS_Store
+
+# Editors
+/.idea/
+/*.iml
+
 node_modules
 build
 release-test/.test-execution
