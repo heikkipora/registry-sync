@@ -13,7 +13,8 @@ const options = {
   localUrl: new URL('https://localhost:8443'),
   rootFolder,
   prebuiltBinaryProperties: [] as PlatformVariant[],
-  enforceTarballsOverHttps: true
+  enforceTarballsOverHttps: true,
+  dryRun: false
 }
 
 const prebuiltBinaryProperties = [

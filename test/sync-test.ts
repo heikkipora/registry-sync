@@ -19,7 +19,8 @@ const options = {
   rootFolder,
   prebuiltBinaryProperties,
   enforceTarballsOverHttps: true,
-  includeDevDependencies: false
+  includeDevDependencies: false,
+  dryRun: false
 }
 
 describe('synchronize', () => {
