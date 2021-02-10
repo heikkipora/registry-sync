@@ -120,7 +120,7 @@ function resolvePackageNameFromRegistryYarnPackagePattern(packagePattern: string
 
 function resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies: YarnLockDependency[]): PackageWithId[] {
   const packages: PackageWithId[] = yarnLockDependencies
-    .reduce(function(filterMappedDependencies: PackageWithId[], {packagePattern, version}) {
+    .reduce((filterMappedDependencies: PackageWithId[], {packagePattern, version}) => {
       if (isNonRegistryYarnPackagePattern(packagePattern)) {
         return filterMappedDependencies;
       }

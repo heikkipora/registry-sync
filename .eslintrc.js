@@ -16,6 +16,7 @@ module.exports = {
         "plugin:@typescript-eslint/recommended"
     ],
     "rules": {
-        "@typescript-eslint/no-empty-function": "off"
+        "@typescript-eslint/no-empty-function": "off",
+        "prefer-arrow-callback": "error"
     }
 }
