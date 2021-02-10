@@ -35,34 +35,34 @@ export function normalizeYarnPackagePattern(
   name: string,
   range: string,
 } {
-  let hasVersion = false;
-  let range = 'latest';
-  let name = pattern;
+  let hasVersion = false
+  let range = 'latest'
+  let name = pattern
 
   // if we're a scope then remove the @ and add it back later
-  let isScoped = false;
+  let isScoped = false
   if (name[0] === '@') {
-    isScoped = true;
-    name = name.slice(1);
+    isScoped = true
+    name = name.slice(1)
   }
 
   // take first part as the name
-  const parts = name.split('@');
+  const parts = name.split('@')
   if (parts.length > 1) {
-    name = parts.shift();
-    range = parts.join('@');
+    name = parts.shift()
+    range = parts.join('@')
 
     if (range) {
-      hasVersion = true;
+      hasVersion = true
     } else {
-      range = '*';
+      range = '*'
     }
   }
 
   // add back @ scope suffix
   if (isScoped) {
-    name = `@${name}`;
+    name = `@${name}`
   }
 
-  return {name, range, hasVersion};
+  return {name, range, hasVersion}
 }

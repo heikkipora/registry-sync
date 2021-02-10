@@ -15,7 +15,7 @@ import type {
   PlatformVariant,
   YarnLockDependency
 } from './types'
-import {normalizeYarnPackagePattern} from "./normalize-yarn-pattern";
+import {normalizeYarnPackagePattern} from "./normalize-yarn-pattern"
 
 const YARN_LOCK_FILENAME = 'yarn.lock'
 
@@ -101,18 +101,18 @@ function isNonRegistryYarnPackagePattern(packagePattern: string): boolean {
     return true
   } else {
     // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/git-resolver.js#L19
-    const {hostname, path} = url.parse(packagePattern);
+    const {hostname, path} = url.parse(packagePattern)
     if (hostname && path && ['github.com', 'gitlab.com', 'bitbucket.com', 'bitbucket.org'].indexOf(hostname) >= 0) {
-      return path.split('/').filter((p): boolean => !!p).length === 2;
+      return path.split('/').filter((p): boolean => !!p).length === 2
     }
   }
 }
 
 function resolvePackageNameFromRegistryYarnPackagePattern(packagePattern: string): string {
   // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/registry-resolver.js#L12
-  const match = packagePattern.match(/^(\S+):(@?.*?)(@(.*?)|)$/);
+  const match = packagePattern.match(/^(\S+):(@?.*?)(@(.*?)|)$/)
   if (match) {
-    return match[2];
+    return match[2]
   } else {
     throw new Error(`Failed to resolve yarn package pattern ${packagePattern}, unrecognized format`)
   }
@@ -122,7 +122,7 @@ function resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies: YarnLo
   const packages: PackageWithId[] = yarnLockDependencies
     .reduce((filterMappedDependencies: PackageWithId[], {packagePattern, version}) => {
       if (isNonRegistryYarnPackagePattern(packagePattern)) {
-        return filterMappedDependencies;
+        return filterMappedDependencies
       }
 
       let packageName
@@ -135,7 +135,7 @@ function resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies: YarnLo
         const {name: namePart, range: rangePart} = normalizeYarnPackagePattern(packagePattern)
 
         if (isNonRegistryYarnPackagePattern(rangePart)) {
-          return filterMappedDependencies;
+          return filterMappedDependencies
         }
 
         if (rangePart.startsWith('npm:') || rangePart.startsWith('yarn:')) {
@@ -149,8 +149,8 @@ function resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies: YarnLo
 
       filterMappedDependencies.push({ id: `${packageName}@${version}`, name: packageName, version })
 
-      return filterMappedDependencies;
-    }, []);
+      return filterMappedDependencies
+    }, [])
 
   return packages
 }
@@ -167,7 +167,7 @@ async function parseDependenciesFromYarnLockFile(lockFilepath: string): Promise<
   const lockFileReadlineInterface = readline.createInterface({
     input: lockFileStream,
     crlfDelay: Infinity
-  });
+  })
 
   for await (const line of lockFileReadlineInterface) {
     // https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/lockfile/stringify.js#L111
@@ -192,7 +192,7 @@ async function parseDependenciesFromYarnLockFile(lockFilepath: string): Promise<
   }: {
     type: 'success' | 'merge' | 'conflict',
     object: { [packagePattern: string]: { version: string } }
-  } = yarnLockfile.parse(lockfileContents);
+  } = yarnLockfile.parse(lockfileContents)
 
   if (lockfileParseStatus !== 'success') {
     throw new Error(`Failed to parse file ${lockFilepath} as yarn lockfile, parse status ${lockfileParseStatus}`)
