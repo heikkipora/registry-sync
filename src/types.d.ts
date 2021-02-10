@@ -49,10 +49,6 @@ export interface Package {
   version: string
 }
 
-export interface CacheSchemaV3 extends CacheSchemaV2 {
-  prebuiltBinaryNApiSupportWithoutBrokenVersions: boolean
-}
-
 export interface CacheSchemaV2 {
   dependencies: PackageWithId[],
   prebuiltBinaryProperties: PlatformVariant[],

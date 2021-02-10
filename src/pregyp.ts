@@ -9,41 +9,27 @@ export function hasPrebuiltBinaries({binary}: VersionMetadata): boolean {
   return Boolean(binary && binary.module_name)
 }
 
-export async function downloadPrebuiltBinaries(versionMetadata: VersionMetadata, localFolder: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<number[]> {
+export async function downloadPrebuiltBinaries(versionMetadata: VersionMetadata, localFolder: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<void> {
   const {binary, name, version} = versionMetadata
 
   if (!binary.napi_versions) {
     for (const {abi, arch, platform} of prebuiltBinaryProperties) {
       await downloadPrebuiltBinary(localFolder, name, version, binary, abi, platform, arch)
     }
-    return []
+    return
   }
 
-  const foundNapiVersions: number[] = []
-  const declaredNapiVersions = binary.napi_versions || []
   for (const napiVersion of binary.napi_versions) {
-    const binaryDownloaded: boolean[] = []
     for (const {abi, arch, platform} of prebuiltBinaryProperties) {
-      const downloaded = await downloadPrebuiltBinary(localFolder, name, version, binary, abi, platform, arch, napiVersion)
-      binaryDownloaded.push(downloaded)
-    }
-    // n-api version is considered valid if at least one binary variant can be downloaded for it
-    // some packages miss binaries completely for a n-api version (such as sqlite3 for n-api v6 at the moment)
-    if (binaryDownloaded.filter(Boolean).length > 0) {
-      foundNapiVersions.push(napiVersion)
+      await downloadPrebuiltBinary(localFolder, name, version, binary, abi, platform, arch, napiVersion)
     }
   }
-  if (foundNapiVersions.length !== declaredNapiVersions.length) {
-    console.log(`Changed N-API version declaration of '${name}@${version}' from [${declaredNapiVersions}] to [${foundNapiVersions}] based on (un-)availability of pre-built binaries`)
-  }
-  return foundNapiVersions
 }
 
-async function downloadPrebuiltBinary(localFolder: string, name: string, version: string, binary: VersionMetadata["binary"], abi: number, platform: string, arch: string, napiVersion?: number): Promise<boolean> {
+async function downloadPrebuiltBinary(localFolder: string, name: string, version: string, binary: VersionMetadata["binary"], abi: number, platform: string, arch: string, napiVersion?: number): Promise<void> {
   try {
     const data = await fetchPrebuiltBinary(name, version, binary, abi, platform, arch, napiVersion)
     await fs.promises.writeFile(prebuiltBinaryFilePath(localFolder, name, version, binary, abi, platform, arch, napiVersion), data)
-    return true
   }
   catch (err) {
     // pre-built binaries are commonly not available on all platforms (and S3 will commonly respond with 403 for a non-existent file)
@@ -52,7 +38,6 @@ async function downloadPrebuiltBinary(localFolder: string, name: string, version
       console.error(`Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform} (n-api version ${napiVersion})`)
       throw err
     }
-    return false
   }
 }
 

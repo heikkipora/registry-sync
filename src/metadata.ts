@@ -8,19 +8,18 @@ import type {URL} from 'url'
 import type {VersionMetadata} from './types'
 import {sha1, sha512} from './integrity'
 
-export function rewriteVersionMetadata(versionMetadata: VersionMetadata, data: Buffer, localUrl: URL, actualNapiVersions: number[]): void {
+export function rewriteVersionMetadata(versionMetadata: VersionMetadata, data: Buffer, localUrl: URL): void {
   versionMetadata.dist.tarball = localTarballUrl(versionMetadata, localUrl)
 
   if (hasPrebuiltBinaries(versionMetadata)) {
     versionMetadata.binary.host = localUrl.origin
     versionMetadata.binary.remote_path = createPrebuiltBinaryRemotePath(localUrl, versionMetadata)
-    versionMetadata.binary.napi_versions = actualNapiVersions
     versionMetadata.dist.integrity = sha512(data)
     versionMetadata.dist.shasum = sha1(data)
   }
 }
 
-export async function rewriteMetadataInTarball(data: Buffer, versionMetadata: VersionMetadata, localUrl: URL, localFolder: string, actualNapiVersions: number[]): Promise<Buffer> {
+export async function rewriteMetadataInTarball(data: Buffer, versionMetadata: VersionMetadata, localUrl: URL, localFolder: string): Promise<Buffer> {
   const tmpFolder = path.join(localFolder, '.tmp')
   await fs.promises.mkdir(tmpFolder, {recursive: true})
   await extractTgz(data, tmpFolder)
@@ -30,7 +29,6 @@ export async function rewriteMetadataInTarball(data: Buffer, versionMetadata: Ve
   const metadata = JSON.parse(json)
   metadata.binary.host = localUrl.origin
   metadata.binary.remote_path = createPrebuiltBinaryRemotePath(localUrl, versionMetadata)
-  metadata.binary.napi_versions = actualNapiVersions
   await fs.promises.writeFile(manifestPath, JSON.stringify(metadata, null, 2))
 
   const updatedData = await compressTgz(tmpFolder)

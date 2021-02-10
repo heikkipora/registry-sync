@@ -7,7 +7,6 @@ import * as yarnLockfile from '@yarnpkg/lockfile'
 import type {
   CacheSchemaV1,
   CacheSchemaV2,
-  CacheSchemaV3,
   Package,
   PackageLock,
   PackageLockDependency,
@@ -26,18 +25,17 @@ export async function updateDependenciesCache(newDependencies: PackageWithId[], 
     .sort(sortById)
     .filter(uniqueById)
 
-  const data: CacheSchemaV3 = {
+  const data: CacheSchemaV2 = {
     dependencies,
     prebuiltBinaryProperties,
-    prebuiltBinaryNApiSupport: true,
-    prebuiltBinaryNApiSupportWithoutBrokenVersions: true
+    prebuiltBinaryNApiSupport: true
   }
   return fs.promises.writeFile(cacheFilePath, JSON.stringify(data), 'utf8')
 }
 
 export async function dependenciesNotInCache(dependencies: PackageWithId[], cacheFilePath: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<PackageWithId[]> {
-  const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties, prebuiltBinaryNApiSupport, prebuiltBinaryNApiSupportWithoutBrokenVersions} = await loadCache(cacheFilePath)
-  if (cachedDependencies.length > 0 && (!isDeepEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport || !prebuiltBinaryNApiSupportWithoutBrokenVersions)) {
+  const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties, prebuiltBinaryNApiSupport} = await loadCache(cacheFilePath)
+  if (cachedDependencies.length > 0 && (!isDeepEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport)) {
     console.log(`Pre-built binary properties changed, re-downloading all current packages`)
     return dependencies
   }
@@ -45,33 +43,24 @@ export async function dependenciesNotInCache(dependencies: PackageWithId[], cach
   return dependencies.filter(pkg => !packageIdsInCache.includes(pkg.id))
 }
 
-async function loadCache(cacheFilePath: string): Promise<CacheSchemaV3> {
+async function loadCache(cacheFilePath: string): Promise<CacheSchemaV2> {
   try {
-    const data: CacheSchemaV1 | CacheSchemaV2 | CacheSchemaV3 = JSON.parse(await fs.promises.readFile(cacheFilePath, 'utf8'))
-    // Migrate V1 legacy cache file schema to V3
+    const data: CacheSchemaV1 | CacheSchemaV2 = JSON.parse(await fs.promises.readFile(cacheFilePath, 'utf8'))
+    // Migrate V1 legacy cache file schema to V2
     if (Array.isArray(data)) {
       return {
         dependencies: data,
         prebuiltBinaryProperties: [],
-        prebuiltBinaryNApiSupport: false,
-        prebuiltBinaryNApiSupportWithoutBrokenVersions: false
-      }
-    }
-    // migrate V2 to V3
-    if (!('prebuiltBinaryNApiSupportWithoutBrokenVersions' in data)) {
-      return {
-        ...data,
-        prebuiltBinaryNApiSupportWithoutBrokenVersions: false
+        prebuiltBinaryNApiSupport: false
       }
     }
     return data
   } catch (fileNotFound) {
-    // empty V3 cache
+    // empty V2 cache
     return {
       dependencies: [],
       prebuiltBinaryProperties: [],
-      prebuiltBinaryNApiSupport: true,
-      prebuiltBinaryNApiSupportWithoutBrokenVersions: true
+      prebuiltBinaryNApiSupport: true
     }
   }
 }
