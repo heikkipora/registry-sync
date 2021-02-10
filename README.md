@@ -58,8 +58,8 @@ server {
   server_name localhost;
 
   location / {
-      root /usr/share/nginx/html;
-      index index.json;
+    root /usr/share/nginx/html;
+    index index.json;
   }
 
   error_page 404 @404_empty_json;
