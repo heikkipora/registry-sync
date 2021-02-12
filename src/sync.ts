@@ -11,7 +11,15 @@ export async function synchronize(options: CommandLineOptions): Promise<PackageW
 
   const packages = await dependenciesFromPackageLock(options.manifest, options.includeDevDependencies)
   const newPackages = await dependenciesNotInCache(packages, cacheFilePath, options.prebuiltBinaryProperties)
-  await downloadAll(newPackages, options)
-  await updateDependenciesCache(newPackages, cacheFilePath, options.prebuiltBinaryProperties)
+
+  if (options.dryRun) {
+    console.log(newPackages.map(({name, version}) => `${name}@${version}`).join('\n'))
+    console.log(`\nWould download ${newPackages.length} packages.`)
+  } else {
+    await downloadAll(newPackages, options)
+    await updateDependenciesCache(newPackages, cacheFilePath, options.prebuiltBinaryProperties)
+    console.log(`Downloaded ${newPackages.length} packages`)
+  }
+
   return newPackages
 }

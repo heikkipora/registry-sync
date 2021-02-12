@@ -23,7 +23,7 @@ The local copy can then be used as a simple private NPM registry without publish
     -h, --help               output usage information
     -V, --version            output the version number
     --root <path>            Path to save NPM package tarballs and metadata to
-    --manifest <file>        Path to a package-lock.json file to use as catalog for mirrored NPM packages
+    --manifest <file>        Path to a package-lock.json or yarn.lock file to use as catalog for mirrored NPM packages
     --localUrl <url>         URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)
     --binaryAbi <list>       Comma-separated list of node C++ ABI numbers to download pre-built binaries for. See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/
     --binaryArch <list>      Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64
@@ -31,6 +31,7 @@ The local copy can then be used as a simple private NPM registry without publish
     --registryUrl [url]      Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org
     --dontEnforceHttps       Disable the default behavior of downloading tarballs over HTTPS (will use whichever protocol is defined in the registry metadata)
     --includeDev             Include also packages found from devDependencies section of the --manifest. Not included by default.
+    --dryRun                 Print packages that would be downloaded but do not download them
 
 Example:
 
@@ -47,6 +48,43 @@ Re-executing ```registry-sync``` will only download and update files for new pac
 
 Configure a web server to use `index.json` as index file name instead of `index.html`.
 Also configure ```HTTP 404``` responses to have an ```application/json``` body of ```{}```.
+
+For example, for local testing you can run nginx in a container to serve the downloaded packages:
+```
+# Create a very simple nginx config
+cat <<EOF >nginx.conf
+server {
+  listen 8000;
+  server_name localhost;
+
+  location / {
+    root /usr/share/nginx/html;
+    index index.json;
+  }
+
+  error_page 404 @404_empty_json;
+
+  location @404_empty_json {
+    default_type application/json;
+    return 404 '{}';
+  }
+}
+EOF
+
+# Run nginx and serve directory local-registry
+docker run --rm --name registry -p 8000:8000 \
+  --volume="${PWD}/local-registry:/usr/share/nginx/html:ro" \
+  --volume="${PWD}/nginx.conf:/etc/nginx/conf.d/default.conf:ro" nginx:1.19
+```
+
+Then you can install dependencies from the local registry using `npm`
+```
+npm_config_registry='http://localhost:8000' npm install
+```
+or using `yarn`
+```
+YARN_REGISTRY='http://localhost:8000' yarn install
+```
 
 ### Creating a separate lockfile for synchronization
 

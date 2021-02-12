@@ -8,6 +8,7 @@ export interface CommandLineOptions {
   rootFolder: string,
   enforceTarballsOverHttps: boolean,
   includeDevDependencies: boolean
+  dryRun: boolean
 }
 
 export interface PackageLock {
@@ -32,6 +33,11 @@ export interface PackageLockDependency {
   },
   dev?: true,
   bundled?: true
+}
+
+export interface YarnLockDependency {
+  packagePattern: string,
+  version: string
 }
 
 export interface PackageWithId extends Package {
