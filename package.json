@@ -9,7 +9,9 @@
   "scripts": {
     "build": "./build-npm",
     "prettier": "prettier --write .",
+    "prettier:check": "prettier --check --loglevel warn .",
     "eslint": "eslint --fix --format=codeframe --ext .ts .",
+    "eslint:check": "eslint --max-warnings=0 --format=codeframe --ext .ts .",
     "lint-staged": "lint-staged --verbose",
     "test": "mocha -r ts-node/register --timeout 120000 test/*.ts",
     "release-test": "cd release-test && ./run-sync-install-cycle.sh"
