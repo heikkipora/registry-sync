@@ -17,11 +17,13 @@ if (!program.root) {
 }
 
 const sslEnabled = program.sslCert && program.sslKey
-const httpsOptions = sslEnabled ? {
-  port: program.httpsPort || 8443,
-  sslCert: program.sslCert,
-  sslKey: program.sslKey
-} : undefined
+const httpsOptions = sslEnabled
+  ? {
+      port: program.httpsPort || 8443,
+      sslCert: program.sslCert,
+      sslKey: program.sslKey
+    }
+  : undefined
 
 const options = {
   port: program.httpPort || 8000,

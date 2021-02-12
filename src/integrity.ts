@@ -1,6 +1,10 @@
 import * as ssri from 'ssri'
 
-export function verifyIntegrity(data: Buffer, id: string, {integrity, shasum}: {integrity?: string, shasum?: string}): void {
+export function verifyIntegrity(
+  data: Buffer,
+  id: string,
+  {integrity, shasum}: {integrity?: string; shasum?: string}
+): void {
   if (!integrity && !shasum) {
     throw new Error(`Integrity values not present in metadata for ${id}`)
   }

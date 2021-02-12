@@ -35,10 +35,12 @@ describe('synchronize', () => {
   })
 
   it('Should detect a change to pre-built binary properties and re-trigger download', async () => {
-    const downloaded = await synchronize({...options, prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 72, arch: 'x64', platform: 'darwin'})})
+    const downloaded = await synchronize({
+      ...options,
+      prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 72, arch: 'x64', platform: 'darwin'})
+    })
     expect(downloaded).to.have.lengthOf(79)
   })
 
-  after(() => fs.promises.rmdir(rootFolder, {recursive: true})
-  )
+  after(() => fs.promises.rmdir(rootFolder, {recursive: true}))
 })

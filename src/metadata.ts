@@ -19,7 +19,12 @@ export function rewriteVersionMetadata(versionMetadata: VersionMetadata, data: B
   }
 }
 
-export async function rewriteMetadataInTarball(data: Buffer, versionMetadata: VersionMetadata, localUrl: URL, localFolder: string): Promise<Buffer> {
+export async function rewriteMetadataInTarball(
+  data: Buffer,
+  versionMetadata: VersionMetadata,
+  localUrl: URL,
+  localFolder: string
+): Promise<Buffer> {
   const tmpFolder = path.join(localFolder, '.tmp')
   await fs.promises.mkdir(tmpFolder, {recursive: true})
   await extractTgz(data, tmpFolder)
@@ -42,9 +47,7 @@ function createPrebuiltBinaryRemotePath(url: URL, versionMetadata: VersionMetada
 
 export function extractTgz(data: Buffer, folder: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    const tgz = Readable.from(data)
-      .pipe(zlib.createGunzip())
-      .pipe(tar.extract(folder))
+    const tgz = Readable.from(data).pipe(zlib.createGunzip()).pipe(tar.extract(folder))
 
     tgz.on('finish', resolve)
     tgz.on('error', reject)
@@ -54,16 +57,14 @@ export function extractTgz(data: Buffer, folder: string): Promise<void> {
 function compressTgz(folder: string): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = []
-    const tgz = tar
-      .pack(folder)
-      .pipe(zlib.createGzip())
+    const tgz = tar.pack(folder).pipe(zlib.createGzip())
     tgz.on('data', (chunk: Buffer) => chunks.push(chunk))
     tgz.on('end', () => resolve(Buffer.concat(chunks)))
     tgz.on('error', reject)
   })
 }
 
-function localTarballUrl({name, version}: {name: string, version: string}, localUrl: URL) {
+function localTarballUrl({name, version}: {name: string; version: string}, localUrl: URL) {
   return `${localUrl.origin}${removeTrailingSlash(localUrl.pathname)}/${name}/${tarballFilename(name, version)}`
 }
 
@@ -73,5 +74,5 @@ export function tarballFilename(name: string, version: string): string {
 }
 
 function removeTrailingSlash(str: string): string {
-  return str.replace(/\/$/, "")
+  return str.replace(/\/$/, '')
 }

@@ -8,14 +8,37 @@ import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
 import {fetchBinaryData, fetchJsonWithCacheCloned} from './client'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
 
-export async function downloadAll(packages: PackageWithId[], {localUrl, prebuiltBinaryProperties, registryUrl, rootFolder, enforceTarballsOverHttps}: Omit<CommandLineOptions, "manifest" | "includeDevDependencies">): Promise<void> {
-  const downloadFromRegistry = download.bind(null, registryUrl, localUrl, rootFolder, prebuiltBinaryProperties, enforceTarballsOverHttps)
+export async function downloadAll(
+  packages: PackageWithId[],
+  {
+    localUrl,
+    prebuiltBinaryProperties,
+    registryUrl,
+    rootFolder,
+    enforceTarballsOverHttps
+  }: Omit<CommandLineOptions, 'manifest' | 'includeDevDependencies'>
+): Promise<void> {
+  const downloadFromRegistry = download.bind(
+    null,
+    registryUrl,
+    localUrl,
+    rootFolder,
+    prebuiltBinaryProperties,
+    enforceTarballsOverHttps
+  )
   for (const pkg of packages) {
     await downloadFromRegistry(pkg)
   }
 }
 
-async function download(registryUrl: string, localUrl: url.URL, rootFolder: string, prebuiltBinaryProperties: PlatformVariant[], enforceTarballsOverHttps: boolean, {name, version}: PackageWithId): Promise<void> {
+async function download(
+  registryUrl: string,
+  localUrl: url.URL,
+  rootFolder: string,
+  prebuiltBinaryProperties: PlatformVariant[],
+  enforceTarballsOverHttps: boolean,
+  {name, version}: PackageWithId
+): Promise<void> {
   const registryMetadata = await fetchMetadataCloned(name, registryUrl)
   const versionMetadata: VersionMetadata | undefined = registryMetadata.versions[version]
   if (!versionMetadata) {
@@ -46,7 +69,12 @@ function saveTarball({name, version}: VersionMetadata, data: Buffer, localFolder
   return fs.promises.writeFile(tarballPath(name, version, localFolder), data)
 }
 
-async function updateMetadata(versionMetadata: VersionMetadata, defaultMetadata: RegistryMetadata, registryUrl: string, localFolder: string) {
+async function updateMetadata(
+  versionMetadata: VersionMetadata,
+  defaultMetadata: RegistryMetadata,
+  registryUrl: string,
+  localFolder: string
+) {
   const {version} = versionMetadata
   const localMetadataPath = path.join(localFolder, 'index.json')
   const localMetadata = await loadMetadata(localMetadataPath, defaultMetadata)

@@ -1,8 +1,6 @@
 import * as fs from 'fs'
 import {expect} from 'chai'
-import {
-  dependenciesFromPackageLock
-} from '../src/resolve'
+import {dependenciesFromPackageLock} from '../src/resolve'
 
 const cacheFilePath = `${__dirname}/.cache.json`
 

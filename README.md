@@ -42,14 +42,15 @@ Example:
       --binaryArch x64 \
       --binaryPlatform darwin,linux
 
-Re-executing ```registry-sync``` will only download and update files for new package versions.
+Re-executing `registry-sync` will only download and update files for new package versions.
 
 ### Serving the local root folder after synchronization
 
 Configure a web server to use `index.json` as index file name instead of `index.html`.
-Also configure ```HTTP 404``` responses to have an ```application/json``` body of ```{}```.
+Also configure `HTTP 404` responses to have an `application/json` body of `{}`.
 
 For example, for local testing you can run nginx in a container to serve the downloaded packages:
+
 ```
 # Create a very simple nginx config
 cat <<EOF >nginx.conf
@@ -78,10 +79,13 @@ docker run --rm --name registry -p 8000:8000 \
 ```
 
 Then you can install dependencies from the local registry using `npm`
+
 ```
 npm_config_registry='http://localhost:8000' npm install
 ```
+
 or using `yarn`
+
 ```
 YARN_REGISTRY='http://localhost:8000' yarn install
 ```
@@ -91,6 +95,7 @@ YARN_REGISTRY='http://localhost:8000' yarn install
 In some cases `npm` might not include all optional packages that are needed for all platforms to `package-lock.json`, depending on which OS you used to create the lockfile.
 
 In this case it might be useful to copy the `package.json` that you want to synchronize as a local repository to somewhere else and create a new cross platform `package-lock.json` by running:
+
 ```
 npm install --force --package-lock-only
 ```
@@ -103,5 +108,5 @@ See [releases](https://github.com/heikkipora/registry-sync/releases).
 
 ## Contributing
 
-Pull requests are welcome. Kindly check that your code passes ESLint checks by running ```npm run eslint``` first.
-Integration tests can be run with ```npm test```. Both are anyway run automatically by GitHub Actions.
+Pull requests are welcome. Kindly check that your code passes ESLint checks by running `npm run eslint` first.
+Integration tests can be run with `npm test`. Both are anyway run automatically by GitHub Actions.
