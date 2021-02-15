@@ -29,11 +29,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // From https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/util/normalize-pattern.js#L2
 
 export function normalizeYarnPackagePattern(
-  pattern: string,
+  pattern: string
 ): {
-  hasVersion: boolean,
-  name: string,
-  range: string,
+  hasVersion: boolean
+  name: string
+  range: string
 } {
   let hasVersion = false
   let range = 'latest'

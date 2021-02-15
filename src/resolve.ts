@@ -14,16 +14,17 @@ import type {
   PlatformVariant,
   YarnLockDependency
 } from './types'
-import {normalizeYarnPackagePattern} from "./normalize-yarn-pattern"
+import {normalizeYarnPackagePattern} from './normalize-yarn-pattern'
 
 const YARN_LOCK_FILENAME = 'yarn.lock'
 
-export async function updateDependenciesCache(newDependencies: PackageWithId[], cacheFilePath: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<void> {
+export async function updateDependenciesCache(
+  newDependencies: PackageWithId[],
+  cacheFilePath: string,
+  prebuiltBinaryProperties: PlatformVariant[]
+): Promise<void> {
   const {dependencies: cachedDependencies} = await loadCache(cacheFilePath)
-  const dependencies = cachedDependencies
-    .concat(newDependencies)
-    .sort(sortById)
-    .filter(uniqueById)
+  const dependencies = cachedDependencies.concat(newDependencies).sort(sortById).filter(uniqueById)
 
   const data: CacheSchemaV2 = {
     dependencies,
@@ -33,9 +34,20 @@ export async function updateDependenciesCache(newDependencies: PackageWithId[], 
   return fs.promises.writeFile(cacheFilePath, JSON.stringify(data), 'utf8')
 }
 
-export async function dependenciesNotInCache(dependencies: PackageWithId[], cacheFilePath: string, prebuiltBinaryProperties: PlatformVariant[]): Promise<PackageWithId[]> {
-  const {dependencies: cachedDependencies, prebuiltBinaryProperties: cachedPrebuiltBinaryProperties, prebuiltBinaryNApiSupport} = await loadCache(cacheFilePath)
-  if (cachedDependencies.length > 0 && (!isDeepEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport)) {
+export async function dependenciesNotInCache(
+  dependencies: PackageWithId[],
+  cacheFilePath: string,
+  prebuiltBinaryProperties: PlatformVariant[]
+): Promise<PackageWithId[]> {
+  const {
+    dependencies: cachedDependencies,
+    prebuiltBinaryProperties: cachedPrebuiltBinaryProperties,
+    prebuiltBinaryNApiSupport
+  } = await loadCache(cacheFilePath)
+  if (
+    cachedDependencies.length > 0 &&
+    (!isDeepEqual(prebuiltBinaryProperties, cachedPrebuiltBinaryProperties) || !prebuiltBinaryNApiSupport)
+  ) {
     console.log(`Pre-built binary properties changed, re-downloading all current packages`)
     return dependencies
   }
@@ -66,27 +78,29 @@ async function loadCache(cacheFilePath: string): Promise<CacheSchemaV2> {
 }
 
 function isNonRegistryYarnPackagePattern(packagePattern: string): boolean {
-  if (// See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/link-resolver.js#L14
-      packagePattern.startsWith('link:') ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/file-resolver.js#L18
-      packagePattern.startsWith('file:') ||
-      /^\.{1,2}\//.test(packagePattern) ||
-      pathLib.isAbsolute(packagePattern) ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/tarball-resolver.js#L15
-      packagePattern.startsWith('http://') ||
-      packagePattern.startsWith('https://') ||
-      (packagePattern.indexOf('@') < 0 && (packagePattern.endsWith('.tgz') || packagePattern.endsWith('.tar.gz'))) ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/github-resolver.js#L6
-      packagePattern.startsWith('github:') ||
-      /^[^:@%/\s.-][^:@%/\s]*[/][^:@\s/%]+(?:#.*)?$/.test(packagePattern) ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/gitlab-resolver.js#L6
-      packagePattern.startsWith('gitlab:') ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/bitbucket-resolver.js#L6
-      packagePattern.startsWith('bitbucket:') ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/gist-resolver.js#L26
-      packagePattern.startsWith('gist:') ||
-      // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/git-resolver.js#L19
-      /^git:|^git\+.+:|^ssh:|^https?:.+\.git$|^https?:.+\.git#.+/.test(packagePattern)) {
+  if (
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/link-resolver.js#L14
+    packagePattern.startsWith('link:') ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/file-resolver.js#L18
+    packagePattern.startsWith('file:') ||
+    /^\.{1,2}\//.test(packagePattern) ||
+    pathLib.isAbsolute(packagePattern) ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/tarball-resolver.js#L15
+    packagePattern.startsWith('http://') ||
+    packagePattern.startsWith('https://') ||
+    (packagePattern.indexOf('@') < 0 && (packagePattern.endsWith('.tgz') || packagePattern.endsWith('.tar.gz'))) ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/github-resolver.js#L6
+    packagePattern.startsWith('github:') ||
+    /^[^:@%/\s.-][^:@%/\s]*[/][^:@\s/%]+(?:#.*)?$/.test(packagePattern) ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/gitlab-resolver.js#L6
+    packagePattern.startsWith('gitlab:') ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/bitbucket-resolver.js#L6
+    packagePattern.startsWith('bitbucket:') ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/gist-resolver.js#L26
+    packagePattern.startsWith('gist:') ||
+    // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/git-resolver.js#L19
+    /^git:|^git\+.+:|^ssh:|^https?:.+\.git$|^https?:.+\.git#.+/.test(packagePattern)
+  ) {
     return true
   } else {
     // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/git-resolver.js#L19
@@ -108,8 +122,8 @@ function resolvePackageNameFromRegistryYarnPackagePattern(packagePattern: string
 }
 
 function resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies: YarnLockDependency[]): PackageWithId[] {
-  const packages: PackageWithId[] = yarnLockDependencies
-    .reduce((filterMappedDependencies: PackageWithId[], {packagePattern, version}) => {
+  const packages: PackageWithId[] = yarnLockDependencies.reduce(
+    (filterMappedDependencies: PackageWithId[], {packagePattern, version}) => {
       if (isNonRegistryYarnPackagePattern(packagePattern)) {
         return filterMappedDependencies
       }
@@ -136,15 +150,20 @@ function resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies: YarnLo
         }
       }
 
-      filterMappedDependencies.push({ id: `${packageName}@${version}`, name: packageName, version })
+      filterMappedDependencies.push({id: `${packageName}@${version}`, name: packageName, version})
 
       return filterMappedDependencies
-    }, [])
+    },
+    []
+  )
 
   return packages
 }
 
-async function parseDependenciesFromNpmLockFile(lockFilepath: string, includeDevDependencies: boolean): Promise<PackageWithId[]> {
+async function parseDependenciesFromNpmLockFile(
+  lockFilepath: string,
+  includeDevDependencies: boolean
+): Promise<PackageWithId[]> {
   const packageLock: PackageLock = JSON.parse(await fs.promises.readFile(lockFilepath, 'utf8'))
   const dependencies = recurseNpmLockfileDependencies(packageLock, includeDevDependencies)
 
@@ -170,7 +189,9 @@ async function parseDependenciesFromYarnLockFile(lockFilepath: string): Promise<
       continue
     }
 
-    throw new Error(`Failed to parse file ${lockFilepath} as yarn lockfile, unrecognized format, only version 1 is supported`)
+    throw new Error(
+      `Failed to parse file ${lockFilepath} as yarn lockfile, unrecognized format, only version 1 is supported`
+    )
   }
   lockFileStream.destroy()
 
@@ -179,29 +200,32 @@ async function parseDependenciesFromYarnLockFile(lockFilepath: string): Promise<
     type: lockfileParseStatus,
     object: packagePatternToLockedVersion
   }: {
-    type: 'success' | 'merge' | 'conflict',
-    object: { [packagePattern: string]: { version: string } }
+    type: 'success' | 'merge' | 'conflict'
+    object: {[packagePattern: string]: {version: string}}
   } = yarnLockfile.parse(lockfileContents)
 
   if (lockfileParseStatus !== 'success') {
     throw new Error(`Failed to parse file ${lockFilepath} as yarn lockfile, parse status ${lockfileParseStatus}`)
   }
 
-  const yarnLockDependencies: YarnLockDependency[] = Object.entries(packagePatternToLockedVersion)
-    .map(([packagePattern, {version}]) => ({ packagePattern, version }))
+  const yarnLockDependencies: YarnLockDependency[] = Object.entries(
+    packagePatternToLockedVersion
+  ).map(([packagePattern, {version}]) => ({packagePattern, version}))
 
   return resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies)
 }
 
-export async function dependenciesFromPackageLock(path: string, includeDevDependencies: boolean): Promise<PackageWithId[]> {
+export async function dependenciesFromPackageLock(
+  path: string,
+  includeDevDependencies: boolean
+): Promise<PackageWithId[]> {
   const filename = pathLib.basename(path)
-  const dependencies = (filename === YARN_LOCK_FILENAME) ?
-    await parseDependenciesFromYarnLockFile(path) :
-    await parseDependenciesFromNpmLockFile(path, includeDevDependencies)
+  const dependencies =
+    filename === YARN_LOCK_FILENAME
+      ? await parseDependenciesFromYarnLockFile(path)
+      : await parseDependenciesFromNpmLockFile(path, includeDevDependencies)
 
-  return dependencies
-    .sort(sortById)
-    .filter(uniqueById)
+  return dependencies.sort(sortById).filter(uniqueById)
 }
 
 function sortById(a: PackageWithId, b: PackageWithId): number {
@@ -212,14 +236,19 @@ function uniqueById(value: PackageWithId, index: number, values: PackageWithId[]
   return values.findIndex(v => v.id === value.id) === index
 }
 
-function recurseNpmLockfileDependencies({dependencies}: PackageLock | PackageLockDependency, includeDevDependencies: boolean): Package[] {
+function recurseNpmLockfileDependencies(
+  {dependencies}: PackageLock | PackageLockDependency,
+  includeDevDependencies: boolean
+): Package[] {
   if (!dependencies) {
     return []
   }
   const includeFn = includeDevDependencies ? filterOutBundledDependencies : filterOutBundledAndDevDependencies
   return Object.entries(dependencies)
     .filter(includeFn)
-    .map(([name, props]) => [{name, version: props.version}].concat(recurseNpmLockfileDependencies(props, includeDevDependencies)))
+    .map(([name, props]) =>
+      [{name, version: props.version}].concat(recurseNpmLockfileDependencies(props, includeDevDependencies))
+    )
     .flat()
 }
 
@@ -235,7 +264,7 @@ function isDeepEqual(a: PlatformVariant[], b: PlatformVariant[]): boolean {
   try {
     deepStrictEqual(a, b)
     return true
-  } catch(ignored) {
+  } catch (ignored) {
     return false
   }
 }

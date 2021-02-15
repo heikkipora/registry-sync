@@ -3,9 +3,9 @@ name: Run tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
   workflow_dispatch:
 
@@ -16,13 +16,14 @@ jobs:
       matrix:
         node-version: [12.x, 14.x]
     steps:
-     - uses: actions/checkout@v2
-     - name: Use Node.js ${{ matrix.node-version }}
-       uses: actions/setup-node@v1
-       with:
-         node-version: ${{ matrix.node-version }}
-     - run: npm ci
-     - run: npm audit
-     - run: npm run eslint
-     - run: npm test
-     - run: npm run release-test
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm audit
+      - run: npm run prettier:check
+      - run: npm run eslint:check
+      - run: npm test
+      - run: npm run release-test

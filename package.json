@@ -8,7 +8,11 @@
   },
   "scripts": {
     "build": "./build-npm",
-    "eslint": "eslint . --ext .ts --fix",
+    "prettier": "prettier --write .",
+    "prettier:check": "prettier --check --loglevel warn .",
+    "eslint": "eslint --fix --format=codeframe --ext .ts .",
+    "eslint:check": "eslint --max-warnings=0 --format=codeframe --ext .ts .",
+    "lint-staged": "lint-staged --verbose",
     "test": "mocha -r ts-node/register --timeout 120000 test/*.ts",
     "release-test": "cd release-test && ./run-sync-install-cycle.sh"
   },
@@ -23,6 +27,7 @@
     "tar-fs": "2.1.1"
   },
   "devDependencies": {
+    "@arkweid/lefthook": "0.7.2",
     "@types/chai": "4.2.14",
     "@types/lodash": "4.14.168",
     "@types/mocha": "8.2.0",
@@ -35,9 +40,12 @@
     "@typescript-eslint/parser": "4.14.2",
     "chai": "4.2.0",
     "eslint": "7.19.0",
+    "eslint-config-prettier": "7.2.0",
     "eslint-plugin-mocha": "8.0.0",
     "express": "4.17.1",
+    "lint-staged": "10.5.4",
     "mocha": "8.2.1",
+    "prettier": "2.2.1",
     "ts-node": "9.1.1",
     "typescript": "4.1.3"
   },
