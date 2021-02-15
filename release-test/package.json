@@ -6,6 +6,6 @@
     "@marsaud/smb2": "0.17.2",
     "bcrypt": "5.0.0",
     "bluebird": "3.7.2",
-    "sqlite3": "5.0.1"
+    "sqlite3": "5.0.0"
   }
 }
