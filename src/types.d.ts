@@ -5,6 +5,7 @@ export interface CommandLineOptions {
   manifest: string
   prebuiltBinaryProperties: PlatformVariant[]
   registryUrl: string
+  registryToken: string
   rootFolder: string
   enforceTarballsOverHttps: boolean
   includeDevDependencies: boolean

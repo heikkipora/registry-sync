@@ -16,6 +16,7 @@ const options = {
   localUrl: new URL('https://localhost:8443'),
   manifest: `${__dirname}/manifests/package-lock.json`,
   registryUrl: 'https://registry.npmjs.org',
+  registryToken: null,
   rootFolder,
   prebuiltBinaryProperties,
   enforceTarballsOverHttps: true,

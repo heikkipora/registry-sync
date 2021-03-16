@@ -67,7 +67,7 @@ function fetchPrebuiltBinary(
   arch: string,
   napiVersion?: number
 ): Promise<Buffer> {
-  return fetchBinaryData(prebuiltBinaryUrl(name, version, binary, abi, platform, arch, napiVersion))
+  return fetchBinaryData(prebuiltBinaryUrl(name, version, binary, abi, platform, arch, napiVersion), null)
 }
 
 function prebuiltBinaryFilePath(

@@ -14,6 +14,7 @@ export async function downloadAll(
     localUrl,
     prebuiltBinaryProperties,
     registryUrl,
+    registryToken,
     rootFolder,
     enforceTarballsOverHttps
   }: Omit<CommandLineOptions, 'manifest' | 'includeDevDependencies'>
@@ -21,6 +22,7 @@ export async function downloadAll(
   const downloadFromRegistry = download.bind(
     null,
     registryUrl,
+    registryToken,
     localUrl,
     rootFolder,
     prebuiltBinaryProperties,
@@ -33,20 +35,21 @@ export async function downloadAll(
 
 async function download(
   registryUrl: string,
+  registryToken: string,
   localUrl: url.URL,
   rootFolder: string,
   prebuiltBinaryProperties: PlatformVariant[],
   enforceTarballsOverHttps: boolean,
   {name, version}: PackageWithId
 ): Promise<void> {
-  const registryMetadata = await fetchMetadataCloned(name, registryUrl)
+  const registryMetadata = await fetchMetadataCloned(name, registryUrl, registryToken)
   const versionMetadata: VersionMetadata | undefined = registryMetadata.versions[version]
   if (!versionMetadata) {
     throw new Error(`Unknown package version ${name}@${version}`)
   }
 
   const localFolder = await ensureLocalFolderExists(name, rootFolder)
-  let data = await downloadTarball(versionMetadata, enforceTarballsOverHttps)
+  let data = await downloadTarball(versionMetadata, enforceTarballsOverHttps, registryToken)
   if (hasPrebuiltBinaries(versionMetadata)) {
     const localPregypFolder = await ensureLocalFolderExists(version, localFolder)
     await downloadPrebuiltBinaries(versionMetadata, localPregypFolder, prebuiltBinaryProperties)
@@ -58,9 +61,9 @@ async function download(
   await updateMetadata(versionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
-async function downloadTarball({_id: id, dist}: VersionMetadata, enforceTarballsOverHttps: boolean): Promise<Buffer> {
+async function downloadTarball({_id: id, dist}: VersionMetadata, enforceTarballsOverHttps: boolean, registryToken: string): Promise<Buffer> {
   const tarballUrl = enforceTarballsOverHttps ? dist.tarball.replace('http://', 'https://') : dist.tarball
-  const data = await fetchBinaryData(tarballUrl)
+  const data = await fetchBinaryData(tarballUrl, registryToken)
   verifyIntegrity(data, id, dist)
   return data
 }
@@ -108,7 +111,7 @@ async function ensureLocalFolderExists(name: string, rootFolder: string): Promis
   return localFolder
 }
 
-function fetchMetadataCloned(name: string, registryUrl: string): Promise<RegistryMetadata> {
+function fetchMetadataCloned(name: string, registryUrl: string, registryToken: string): Promise<RegistryMetadata> {
   const urlSafeName = name.replace(/\//g, '%2f')
-  return fetchJsonWithCacheCloned(url.resolve(registryUrl, urlSafeName))
+  return fetchJsonWithCacheCloned(url.resolve(registryUrl, urlSafeName), registryToken)
 }
