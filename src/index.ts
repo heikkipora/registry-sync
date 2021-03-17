@@ -34,10 +34,7 @@ program
     '--registryUrl [url]',
     'Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org'
   )
-  .option(
-    '--registryToken [string]',
-    'Optional Bearer token for the registry.'
-  )
+  .option('--registryToken [string]', 'Optional Bearer token for the registry.')
   .option(
     '--dontEnforceHttps',
     'Disable the default behavior of downloading tarballs over HTTPS (will use whichever protocol is defined in the registry metadata)'

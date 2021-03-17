@@ -26,9 +26,9 @@ export function fetchBinaryData(url: string, token: string): Promise<Buffer> {
 }
 
 async function fetch<T>(url: string, responseType: ResponseType, token: string): Promise<T> {
-  let config:any = { responseType }
+  let config: any = {responseType}
   if (token !== null) {
-    config.headers = { 'Authorization': 'Bearer ' + token }
+    config.headers = {Authorization: 'Bearer ' + token}
   }
   return (await client.get<T>(url, config)).data
 }

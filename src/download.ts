@@ -61,7 +61,11 @@ async function download(
   await updateMetadata(versionMetadata, registryMetadata, registryUrl, localFolder)
 }
 
-async function downloadTarball({_id: id, dist}: VersionMetadata, enforceTarballsOverHttps: boolean, registryToken: string): Promise<Buffer> {
+async function downloadTarball(
+  {_id: id, dist}: VersionMetadata,
+  enforceTarballsOverHttps: boolean,
+  registryToken: string
+): Promise<Buffer> {
   const tarballUrl = enforceTarballsOverHttps ? dist.tarball.replace('http://', 'https://') : dist.tarball
   const data = await fetchBinaryData(tarballUrl, registryToken)
   verifyIntegrity(data, id, dist)
