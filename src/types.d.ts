@@ -1,4 +1,5 @@
 import type {URL} from 'url'
+import {ResponseType} from 'axios'
 
 export interface CommandLineOptions {
   localUrl: URL
@@ -98,4 +99,13 @@ export interface VersionMetadata {
     integrity?: string
     tarball: string
   }
+}
+
+export interface HTTPGetConfig {
+  responseType: ResponseType
+  headers?: AuthorizationHeader
+}
+
+export interface AuthorizationHeader {
+  authorization: string
 }
