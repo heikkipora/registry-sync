@@ -11,7 +11,7 @@ const tmpFolder = path.join(__dirname, '.tmp')
 const options = {
   registryUrl: 'https://registry.npmjs.org',
   localUrl: new URL('https://localhost:8443'),
-  registryToken: null,
+  registryToken: '',
   rootFolder,
   prebuiltBinaryProperties: [] as PlatformVariant[],
   enforceTarballsOverHttps: true,

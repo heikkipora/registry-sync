@@ -57,7 +57,7 @@ const options: CommandLineOptions = {
   manifest: rawOptions.manifest,
   prebuiltBinaryProperties,
   registryUrl: rawOptions.registryUrl || 'https://registry.npmjs.org',
-  registryToken: rawOptions.registryToken || null,
+  registryToken: rawOptions.registryToken || '',
   rootFolder: rawOptions.root,
   enforceTarballsOverHttps: Boolean(!rawOptions.dontEnforceHttps),
   includeDevDependencies: Boolean(rawOptions.includeDev),
