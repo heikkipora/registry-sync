@@ -1,10 +1,12 @@
 import type {URL} from 'url'
+import {ResponseType} from 'axios'
 
 export interface CommandLineOptions {
   localUrl: URL
   manifest: string
   prebuiltBinaryProperties: PlatformVariant[]
   registryUrl: string
+  registryToken: string
   rootFolder: string
   enforceTarballsOverHttps: boolean
   includeDevDependencies: boolean
@@ -97,4 +99,13 @@ export interface VersionMetadata {
     integrity?: string
     tarball: string
   }
+}
+
+export interface HTTPGetConfig {
+  responseType: ResponseType
+  headers?: AuthorizationHeader
+}
+
+export interface AuthorizationHeader {
+  authorization: string
 }

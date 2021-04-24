@@ -29,6 +29,7 @@ The local copy can then be used as a simple private NPM registry without publish
     --binaryArch <list>      Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64
     --binaryPlatform <list>  Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix
     --registryUrl [url]      Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org
+    --registryToken [string] Optional Bearer token for the registry
     --dontEnforceHttps       Disable the default behavior of downloading tarballs over HTTPS (will use whichever protocol is defined in the registry metadata)
     --includeDev             Include also packages found from devDependencies section of the --manifest. Not included by default.
     --dryRun                 Print packages that would be downloaded but do not download them
