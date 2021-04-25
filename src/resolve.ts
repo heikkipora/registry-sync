@@ -247,9 +247,17 @@ function recurseNpmLockfileDependencies(
   return Object.entries(dependencies)
     .filter(includeFn)
     .map(([name, props]) =>
-      [{name, version: props.version}].concat(recurseNpmLockfileDependencies(props, includeDevDependencies))
+      [deAlias(name, props)].concat(recurseNpmLockfileDependencies(props, includeDevDependencies))
     )
     .flat()
+}
+
+function deAlias(name: string, props: PackageLockDependency) {
+  if (props.version.startsWith('npm:')) {
+    const [realName, realVersion] = props.version.replace(/^npm:/, '').split('@')
+    return {name: realName, version: realVersion}
+  }
+  return {name, version: props.version}
 }
 
 function filterOutBundledDependencies([, props]: [string, PackageLockDependency]): boolean {

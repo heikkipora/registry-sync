@@ -11,6 +11,26 @@ describe('resolve', () => {
     expect(packages).to.deep.equal(expectedPackages)
   })
 
+  it.only('Should resolve a package with an aliased version value from a package-lock.json file', async () => {
+    const packages = await dependenciesFromPackageLock(
+      `${__dirname}/manifests/package-lock-with-aliased-vue-loader.json`,
+      false
+    )
+    const vueLoaders = packages.filter(p => p.name.startsWith('vue-loader'))
+    expect(vueLoaders).to.deep.equal([
+      {
+        id: 'vue-loader@15.9.6',
+        name: 'vue-loader',
+        version: '15.9.6'
+      },
+      {
+        id: 'vue-loader@16.2.0',
+        name: 'vue-loader',
+        version: '16.2.0'
+      }
+    ])
+  })
+
   it('Should resolve a linear list of packages from a package-lock.json file with devDependencies', async () => {
     const expectedPackagesWithDev = JSON.parse(
       await fs.promises.readFile(`${__dirname}/resolve-test-with-dev.json`, 'utf-8')
