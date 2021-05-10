@@ -11,6 +11,6 @@
     "sqlite3": "4.2.0"
   },
   "devDependencies": {
-    "lodash": "4.17.19"
+    "lodash": "4.17.21"
   }
 }
