@@ -208,9 +208,9 @@ async function parseDependenciesFromYarnLockFile(lockFilepath: string): Promise<
     throw new Error(`Failed to parse file ${lockFilepath} as yarn lockfile, parse status ${lockfileParseStatus}`)
   }
 
-  const yarnLockDependencies: YarnLockDependency[] = Object.entries(
-    packagePatternToLockedVersion
-  ).map(([packagePattern, {version}]) => ({packagePattern, version}))
+  const yarnLockDependencies: YarnLockDependency[] = Object.entries(packagePatternToLockedVersion).map(
+    ([packagePattern, {version}]) => ({packagePattern, version})
+  )
 
   return resolveNpmPackagesFromYarnLockDependencies(yarnLockDependencies)
 }
