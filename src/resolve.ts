@@ -225,7 +225,7 @@ export async function dependenciesFromPackageLock(
       ? await parseDependenciesFromYarnLockFile(path)
       : await parseDependenciesFromNpmLockFile(path, includeDevDependencies)
 
-  return dependencies.sort(sortById).filter(uniqueById)
+  return dependencies.sort(sortById).filter(uniqueById).filter(isNotLocal)
 }
 
 function sortById(a: PackageWithId, b: PackageWithId): number {
@@ -234,6 +234,15 @@ function sortById(a: PackageWithId, b: PackageWithId): number {
 
 function uniqueById(value: PackageWithId, index: number, values: PackageWithId[]): boolean {
   return values.findIndex(v => v.id === value.id) === index
+}
+
+function isNotLocal(dependency: PackageWithId): boolean {
+  // if the version starts with the url scheme 'file:' that means that
+  // the package is fetched from the local filesystem relative to the
+  // package-lock that we were passed; it could for instance be a git
+  // submodule. this package will not be fetched through the web server
+  // that we set up anyway, so don't attempt to synchronize it
+  return !dependency.version.startsWith('file:')
 }
 
 function recurseNpmLockfileDependencies(
