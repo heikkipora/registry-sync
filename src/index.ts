@@ -1,12 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import * as program from 'commander'
+import {Command} from 'commander'
 import type {CommandLineOptions, PlatformVariant} from './types'
 import {synchronize} from './sync'
 import {URL} from 'url'
 
 const {version} = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8'))
 
+const program = new Command()
 program
   .version(version)
   .requiredOption('--root <path>', 'Path to save NPM package tarballs and metadata to')
@@ -43,7 +44,7 @@ program
   .option('--dryRun', 'Print packages that would be downloaded but do not download them')
   .parse(process.argv)
 
-const rawOptions: program.OptionValues = program.opts()
+const rawOptions = program.opts()
 
 const abis: number[] = rawOptions.binaryAbi.split(',').map(Number)
 const architectures: string[] = rawOptions.binaryArch.split(',')
