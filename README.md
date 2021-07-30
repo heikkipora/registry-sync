@@ -25,13 +25,22 @@ The local copy can then be used as a simple private NPM registry without publish
     --root <path>            Path to save NPM package tarballs and metadata to
     --manifest <file>        Path to a package-lock.json or yarn.lock file to use as catalog for mirrored NPM packages
     --localUrl <url>         URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)
-    --binaryAbi <list>       Comma-separated list of node C++ ABI numbers to download pre-built binaries for. See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/
-    --binaryArch <list>      Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64
-    --binaryPlatform <list>  Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix
-    --registryUrl [url]      Optional URL to use as NPM registry when fetching packages. Default value is https://registry.npmjs.org
-    --registryToken [string] Optional Bearer token for the registry
+    --binaryAbi <list>       Optional comma-separated list of node C++ ABI numbers to download pre-built binaries for.
+                             See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/.
+                             Default value is from the current Node.js process.
+    --binaryArch <list>      Optional comma-separated list of CPU architectures to download pre-built binaries for.
+                             Valid values: arm, ia32, and x64.
+                             Default value is from the current Node.js process.
+    --binaryPlatform <list>  Optional comma-separated list of OS platforms to download pre-built binaries for.
+                             Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix.
+                             Default value is from the current Node.js process.
+    --registryUrl [url]      Optional URL to use as NPM registry when fetching packages.
+                             Default value is https://registry.npmjs.org
+    --registryToken [string] Optional Bearer token for the registry.
+                             Not included by default.
     --dontEnforceHttps       Disable the default behavior of downloading tarballs over HTTPS (will use whichever protocol is defined in the registry metadata)
-    --includeDev             Include also packages found from devDependencies section of the --manifest. Not included by default.
+    --includeDev             Include also packages found from devDependencies section of the --manifest.
+                             Not included by default.
     --dryRun                 Print packages that would be downloaded but do not download them
 
 Example:
