@@ -19,15 +19,15 @@ program
     '--localUrl <url>',
     'URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)'
   )
-  .requiredOption(
+  .option(
     '--binaryAbi <list>',
     'Comma-separated list of node C++ ABI numbers to download pre-built binaries for. See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/'
   )
-  .requiredOption(
+  .option(
     '--binaryArch <list>',
     'Comma-separated list of CPU architectures to download pre-built binaries for. Valid values: arm, ia32, and x64'
   )
-  .requiredOption(
+  .option(
     '--binaryPlatform <list>',
     'Comma-separated list of OS platforms to download pre-built binaries for. Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix'
   )
@@ -46,9 +46,16 @@ program
 
 const rawOptions = program.opts()
 
-const abis: number[] = rawOptions.binaryAbi.split(',').map(Number)
-const architectures: string[] = rawOptions.binaryArch.split(',')
-const platforms: string[] = rawOptions.binaryPlatform.split(',')
+// use current (abi,arch,platform) triplet as default if none is specified
+// so the user doesn't have to look them up if build is always done on the
+// same kind of machine
+const binaryAbi: string = rawOptions.binaryAbi || process.versions.modules
+const binaryArch: string = rawOptions.binaryArch || process.arch
+const binaryPlatform: string = rawOptions.binaryPlatform || process.platform
+
+const abis: number[] = binaryAbi.split(',').map(Number)
+const architectures: string[] = binaryArch.split(',')
+const platforms: string[] = binaryPlatform.split(',')
 const prebuiltBinaryProperties: PlatformVariant[] = abis
   .map(abi => architectures.map(arch => platforms.map(platform => ({abi, arch, platform}))).flat())
   .flat()
