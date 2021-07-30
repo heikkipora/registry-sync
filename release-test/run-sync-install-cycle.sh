@@ -22,5 +22,14 @@ printf "\n-- START LOCAL REGISTRY SERVER ----------------------------------\n\n"
 printf "\n-- INSTALL FROM LOCAL REGISTRY ----------------------------------\n\n"
 (cd .test-execution && npm install --cache ./.npm-cache --registry https://localhost:8443)
 
+printf '\n-- CLEAN-UP RUNTIME DIRECTORY -----------------------------------\n'
+rm -fr .test-execution/local-registry .test-execution/node_modules .test-execution/package-lock.json
+
+printf "\n-- SYNCHRONIZE PACKAGES IN PACKAGE-LOCK.JSON WITH DEFAULTS ------\n\n"
+(cd ../build && bin/sync --manifest ../release-test/package-lock.json --root ../release-test/.test-execution/local-registry --localUrl https://localhost:8443)
+
+printf "\n-- INSTALL FROM LOCAL REGISTRY ----------------------------------\n\n"
+(cd .test-execution && npm install --cache ./.npm-cache --registry https://localhost:8443)
+
 printf "\n-- STOP LOCAL REGISTRY SERVER -----------------------------------\n\n"
 (cd server && ./stop-server.sh)
