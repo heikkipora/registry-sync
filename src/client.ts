@@ -1,6 +1,6 @@
 import * as https from 'https'
-import type {HTTPGetConfig, RegistryMetadata} from './types'
-import axios, {ResponseType} from 'axios'
+import type {RegistryMetadata} from './types'
+import axios, {AxiosRequestConfig, ResponseType} from 'axios'
 
 const metadataCache: {[url: string]: RegistryMetadata} = {}
 
@@ -26,7 +26,7 @@ export function fetchBinaryData(url: string, token: string): Promise<Buffer> {
 }
 
 async function fetch<T>(url: string, responseType: ResponseType, token: string): Promise<T> {
-  const config: HTTPGetConfig = {responseType}
+  const config: AxiosRequestConfig = {responseType}
   if (token !== '') {
     config.headers = {authorization: 'Bearer ' + token}
   }
