@@ -43,5 +43,5 @@ describe('synchronize', () => {
     expect(downloaded).to.have.lengthOf(79)
   })
 
-  after(() => fs.promises.rmdir(rootFolder, {recursive: true}))
+  after(() => fs.promises.rm(rootFolder, {recursive: true}))
 })

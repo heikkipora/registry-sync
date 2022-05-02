@@ -37,7 +37,7 @@ export async function rewriteMetadataInTarball(
   await fs.promises.writeFile(manifestPath, JSON.stringify(metadata, null, 2))
 
   const updatedData = await compressTgz(tmpFolder)
-  await fs.promises.rmdir(tmpFolder, {recursive: true})
+  await fs.promises.rm(tmpFolder, {recursive: true})
   return updatedData
 }
 

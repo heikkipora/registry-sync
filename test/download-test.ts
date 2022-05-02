@@ -111,8 +111,8 @@ describe('download', () => {
   })
 
   after(async () => {
-    await fs.promises.rmdir(rootFolder, {recursive: true})
-    await fs.promises.rmdir(tmpFolder, {recursive: true})
+    await fs.promises.rm(rootFolder, {recursive: true})
+    await fs.promises.rm(tmpFolder, {recursive: true})
   })
 })
 
