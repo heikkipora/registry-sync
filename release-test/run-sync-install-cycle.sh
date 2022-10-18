@@ -14,7 +14,7 @@ printf '\n-- INSTALL REGISTRY-SYNC ----------------------------------------\n\n'
 (cd ../build && npm i --omit=dev)
 
 printf "\n-- SYNCHRONIZE PACKAGES IN PACKAGE-LOCK.JSON TO LOCAL FOLDER ----\n\n"
-(cd ../build && bin/sync --manifest ../release-test/package-lock.json --root ../release-test/.test-execution/local-registry --localUrl https://localhost:8443 --binaryAbi 83,93,108 --binaryArch x64 --binaryPlatform linux,darwin --includeDev)
+(cd ../build && bin/sync --manifest ../release-test/package-lock.json --root ../release-test/.test-execution/local-registry --localUrl https://localhost:8443 --binaryAbi 83,93,108 --binaryArch x64,arm64 --binaryPlatform linux,darwin --includeDev)
 
 printf "\n-- START LOCAL REGISTRY SERVER ----------------------------------\n\n"
 (cd server && ./start-server.sh ../.test-execution/local-registry)
