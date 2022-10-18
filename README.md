@@ -48,8 +48,8 @@ Example:
     registry-sync --root ./local-registry \
       --manifest ./package-lock.json \
       --localUrl http://localhost:8000 \
-      --binaryAbi 48,57 \
-      --binaryArch x64 \
+      --binaryAbi 93,108 \
+      --binaryArch x64,arm64 \
       --binaryPlatform darwin,linux
 
 Re-executing `registry-sync` will only download and update files for new package versions.
