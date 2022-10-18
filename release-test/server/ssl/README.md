@@ -4,31 +4,32 @@ These files are for HTTPS testing only (node-pre-gyp requires a HTTPS host)
 
 Point `cafile`configuration property in `~/.npmrc`to our test localhost CA
 
-    npm config set cafile=<path to test/ssl/localhost-ca.pem>
+    npm config set cafile=<path to localhost-ca.pem>
 
-Disable TLS certificate verification
+Let node-pre-gyp (fetching native binaries) also know about the localhost CA
 
-    export NODE_TLS_REJECT_UNAUTHORIZED=0
+    export NODE_EXTRA_CA_CERTS=<absolute path to localhost-ca.pem>
 
 ## Generating the ssl certificate (already in this folder)
 
 ```
-openssl genrsa \
-  -out localhost-ca.key \
-  2048
+openssl genpkey \
+  -algorithm RSA \
+  -out localhost-ca.key
 
 openssl req \
   -x509 \
   -new \
   -nodes \
   -key localhost-ca.key \
-  -days 1024 \
+  -days 1000 \
   -out localhost-ca.pem \
-  -subj "/C=FI"
+  -subj "/C=FI" \
+  -sha512
 
-openssl genrsa \
-  -out localhost.key \
-  2048
+openssl genpkey \
+  -algorithm RSA \
+  -out localhost.key
 
 openssl req -new \
   -key localhost.key \
@@ -41,7 +42,8 @@ openssl x509 \
   -CAkey localhost-ca.key \
   -CAcreateserial \
   -out localhost.crt \
-  -days 1000
+  -days 1000 \
+  -sha512
 
 rm localhost-ca.key localhost-ca.srl localhost.csr
 ```

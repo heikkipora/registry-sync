@@ -29,7 +29,7 @@ The local copy can then be used as a simple private NPM registry without publish
                              See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/.
                              Default value is from the current Node.js process.
     --binaryArch <list>      Optional comma-separated list of CPU architectures to download pre-built binaries for.
-                             Valid values: arm, ia32, and x64.
+                             Valid values: arm, arm64, ia32, and x64.
                              Default value is from the current Node.js process.
     --binaryPlatform <list>  Optional comma-separated list of OS platforms to download pre-built binaries for.
                              Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix.
@@ -48,8 +48,8 @@ Example:
     registry-sync --root ./local-registry \
       --manifest ./package-lock.json \
       --localUrl http://localhost:8000 \
-      --binaryAbi 48,57 \
-      --binaryArch x64 \
+      --binaryAbi 93,108 \
+      --binaryArch x64,arm64 \
       --binaryPlatform darwin,linux
 
 Re-executing `registry-sync` will only download and update files for new package versions.

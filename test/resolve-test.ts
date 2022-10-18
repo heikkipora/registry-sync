@@ -11,7 +11,7 @@ describe('resolve', () => {
     expect(packages).to.deep.equal(expectedPackages)
   })
 
-  it.only('Should resolve a package with an aliased version value from a package-lock.json file', async () => {
+  it('Should resolve a package with an aliased version value from a package-lock.json file', async () => {
     const packages = await dependenciesFromPackageLock(
       `${__dirname}/manifests/package-lock-with-aliased-vue-loader.json`,
       false
