@@ -29,7 +29,7 @@ The local copy can then be used as a simple private NPM registry without publish
                              See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/.
                              Default value is from the current Node.js process.
     --binaryArch <list>      Optional comma-separated list of CPU architectures to download pre-built binaries for.
-                             Valid values: arm, ia32, and x64.
+                             Valid values: arm, arm64, ia32, and x64.
                              Default value is from the current Node.js process.
     --binaryPlatform <list>  Optional comma-separated list of OS platforms to download pre-built binaries for.
                              Valid values: linux, darwin, win32, sunos, freebsd, openbsd, and aix.
