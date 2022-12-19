@@ -6,10 +6,10 @@ import {URL} from 'url'
 const rootFolder = `${__dirname}/.download`
 
 const prebuiltBinaryProperties = [
-  {abi: 57, arch: 'x64', platform: 'darwin'},
-  {abi: 57, arch: 'x64', platform: 'linux'},
-  {abi: 64, arch: 'x64', platform: 'darwin'},
-  {abi: 64, arch: 'x64', platform: 'linux'}
+  {abi: 93, arch: 'x64', platform: 'darwin'},
+  {abi: 93, arch: 'x64', platform: 'linux'},
+  {abi: 108, arch: 'x64', platform: 'darwin'},
+  {abi: 108, arch: 'x64', platform: 'linux'}
 ]
 
 const options = {
@@ -38,7 +38,7 @@ describe('synchronize', () => {
   it('Should detect a change to pre-built binary properties and re-trigger download', async () => {
     const downloaded = await synchronize({
       ...options,
-      prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 72, arch: 'x64', platform: 'darwin'})
+      prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 111, arch: 'x64', platform: 'darwin'})
     })
     expect(downloaded).to.have.lengthOf(112)
   })
