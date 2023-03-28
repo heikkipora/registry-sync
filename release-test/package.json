@@ -4,6 +4,6 @@
   "private": true,
   "dependencies": {
     "bcrypt": "5.1.0",
-    "sqlite3": "5.1.2"
+    "sqlite3": "5.1.5"
   }
 }
