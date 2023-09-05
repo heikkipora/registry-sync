@@ -450,14 +450,14 @@
     "version": "2.1.2"
   },
   {
-    "id": "semver@6.3.0",
+    "id": "semver@6.3.1",
     "name": "semver",
-    "version": "6.3.0"
+    "version": "6.3.1"
   },
   {
-    "id": "semver@7.3.8",
+    "id": "semver@7.5.4",
     "name": "semver",
-    "version": "7.3.8"
+    "version": "7.5.4"
   },
   {
     "id": "set-blocking@2.0.0",
