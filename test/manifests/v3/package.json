@@ -1,0 +1,16 @@
+{
+  "name": "dependencies-with-pregyp-binaries",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@csstools/normalize.css": "12.0.0",
+    "@marsaud/smb2": "0.18.0",
+    "bcrypt": "5.1.0",
+    "bluebird": "3.7.2",
+    "fsevents": "2.3.2",
+    "sqlite3": "5.1.5"
+  },
+  "devDependencies": {
+    "lodash": "4.17.21"
+  }
+}
