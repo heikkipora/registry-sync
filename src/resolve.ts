@@ -164,7 +164,7 @@ async function parseDependenciesFromNpmLockFile(
   includeDevDependencies: boolean
 ): Promise<PackageWithId[]> {
   const packageLock: PackageLock = JSON.parse(await fs.promises.readFile(lockFilepath, 'utf8'))
-  const dependencies = recurseNpmLockfileDependencies(packageLock, includeDevDependencies)
+  const dependencies = collectNpmLockfileDependencies(packageLock, includeDevDependencies)
 
   return dependencies.map(({name, version}) => ({id: `${name}@${version}`, name, version}))
 }
@@ -244,7 +244,7 @@ function isNotLocal(dependency: PackageWithId): boolean {
   return !dependency.version.startsWith('file:')
 }
 
-function recurseNpmLockfileDependencies({packages}: PackageLock, includeDevDependencies: boolean): Package[] {
+function collectNpmLockfileDependencies({packages}: PackageLock, includeDevDependencies: boolean): Package[] {
   return Object.entries(packages)
     .filter(([name, props]) => name.length > 0 && (includeDevDependencies || !props.dev))
     .map(([name, props]) => ({
