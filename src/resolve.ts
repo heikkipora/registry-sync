@@ -164,8 +164,12 @@ async function parseDependenciesFromNpmLockFile(
   includeDevDependencies: boolean
 ): Promise<PackageWithId[]> {
   const packageLock: PackageLock = JSON.parse(await fs.promises.readFile(lockFilepath, 'utf8'))
-  const dependencies = collectNpmLockfileDependencies(packageLock, includeDevDependencies)
+  const fileVersion = packageLock.lockfileVersion || 1
+  if (![2, 3].includes(packageLock.lockfileVersion)) {
+    throw new Error(`Unsupported package-lock.json version ${fileVersion}`)
+  }
 
+  const dependencies = collectNpmLockfileDependencies(packageLock, includeDevDependencies)
   return dependencies.map(({name, version}) => ({id: `${name}@${version}`, name, version}))
 }
 
