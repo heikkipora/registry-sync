@@ -9,7 +9,6 @@ import type {
   CacheSchemaV2,
   Package,
   PackageLock,
-  PackageLockDependency,
   PackageWithId,
   PlatformVariant,
   YarnLockDependency
@@ -245,36 +244,19 @@ function isNotLocal(dependency: PackageWithId): boolean {
   return !dependency.version.startsWith('file:')
 }
 
-function recurseNpmLockfileDependencies(
-  {dependencies}: PackageLock | PackageLockDependency,
-  includeDevDependencies: boolean
-): Package[] {
-  if (!dependencies) {
-    return []
-  }
-  const includeFn = includeDevDependencies ? filterOutBundledDependencies : filterOutBundledAndDevDependencies
-  return Object.entries(dependencies)
-    .filter(includeFn)
-    .map(([name, props]) =>
-      [deAlias(name, props)].concat(recurseNpmLockfileDependencies(props, includeDevDependencies))
-    )
-    .flat()
+function recurseNpmLockfileDependencies({packages}: PackageLock, includeDevDependencies: boolean): Package[] {
+  return Object.entries(packages)
+    .filter(([name, props]) => name.length > 0 && (includeDevDependencies || !props.dev))
+    .map(([name, props]) => ({
+      name: props.name || pathToName(name),
+      version: props.version
+    }))
 }
 
-function deAlias(name: string, props: PackageLockDependency) {
-  if (props.version.startsWith('npm:')) {
-    const [realName, realVersion] = props.version.replace(/^npm:/, '').split('@')
-    return {name: realName, version: realVersion}
-  }
-  return {name, version: props.version}
-}
-
-function filterOutBundledDependencies([, props]: [string, PackageLockDependency]): boolean {
-  return !props.bundled
-}
-
-function filterOutBundledAndDevDependencies([, props]: [string, PackageLockDependency]): boolean {
-  return !(props.bundled || props.dev)
+// "node_modules/lodash" -> "lodash"
+// "node_modules/make-dir/node_modules/semver" -> "semver"
+function pathToName(path: string) {
+  return path.split('node_modules/').pop()
 }
 
 function isDeepEqual(a: PlatformVariant[], b: PlatformVariant[]): boolean {

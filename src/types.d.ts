@@ -16,24 +16,14 @@ export interface PackageLock {
   name: string
   version: string
   lockfileVersion?: number
-  packages: unknown
-  dependencies: {
-    [name: string]: PackageLockDependency
+  packages: {
+    [path: string]: {
+      version: string
+      // only aliased packages have the name property
+      name?: string
+      dev?: true
+    }
   }
-}
-
-export interface PackageLockDependency {
-  version: string
-  resolved: string
-  integrity: string
-  requires?: {
-    [name: string]: string
-  }
-  dependencies?: {
-    [name: string]: PackageLockDependency
-  }
-  dev?: true
-  bundled?: true
 }
 
 export interface YarnLockDependency {
