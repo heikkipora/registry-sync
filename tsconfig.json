@@ -5,9 +5,9 @@
     "checkJs": false,
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "es2019",
+    "target": "es2022",
     "moduleResolution": "node",
-    "lib": ["es2019"]
+    "lib": ["es2022"]
   },
   "include": ["src/**/*"]
 }
