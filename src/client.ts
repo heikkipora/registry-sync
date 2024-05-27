@@ -1,8 +1,9 @@
 import * as https from 'https'
 import type {RegistryMetadata} from './types'
 import axios, {AxiosRequestConfig, ResponseType} from 'axios'
+import {LRUCache} from 'lru-cache'
 
-const metadataCache: {[url: string]: RegistryMetadata} = {}
+const metadataCache = new LRUCache<string, RegistryMetadata>({max: 100})
 
 const client = axios.create({
   httpsAgent: new https.Agent({keepAlive: true}),
@@ -10,11 +11,13 @@ const client = axios.create({
 })
 
 export async function fetchJsonWithCacheCloned(url: string, token: string): Promise<RegistryMetadata> {
-  if (!metadataCache[url]) {
-    // eslint-disable-next-line require-atomic-updates
-    metadataCache[url] = await fetch<RegistryMetadata>(url, 'json', token)
+  if (metadataCache.has(url)) {
+    return cloneDeep(metadataCache.get(url))
   }
-  return cloneDeep(metadataCache[url])
+
+  const value = await fetch<RegistryMetadata>(url, 'json', token)
+  metadataCache.set(url, value)
+  return cloneDeep(value)
 }
 
 function cloneDeep(metadata: RegistryMetadata): RegistryMetadata {

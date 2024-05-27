@@ -22,6 +22,7 @@
     "@yarnpkg/lockfile": "1.1.0",
     "axios": "1.6.5",
     "commander": "11.1.0",
+    "lru-cache": "10.2.2",
     "semver": "7.5.4",
     "ssri": "10.0.5",
     "tar-fs": "3.0.4"
