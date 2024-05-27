@@ -12,16 +12,12 @@ const client = axios.create({
 
 export async function fetchJsonWithCacheCloned(url: string, token: string): Promise<RegistryMetadata> {
   if (metadataCache.has(url)) {
-    return cloneDeep(metadataCache.get(url))
+    return structuredClone(metadataCache.get(url))
   }
 
   const value = await fetch<RegistryMetadata>(url, 'json', token)
   metadataCache.set(url, value)
-  return cloneDeep(value)
-}
-
-function cloneDeep(metadata: RegistryMetadata): RegistryMetadata {
-  return JSON.parse(JSON.stringify(metadata))
+  return structuredClone(value)
 }
 
 export function fetchBinaryData(url: string, token: string): Promise<Buffer> {
