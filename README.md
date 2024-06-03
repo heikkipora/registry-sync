@@ -25,8 +25,8 @@ The local copy can then be used as a simple private NPM registry without publish
     --root <path>            Path to save NPM package tarballs and metadata to
     --manifest <file>        Path to a package-lock.json or yarn.lock file to use as catalog for mirrored NPM packages
     --localUrl <url>         URL to use as root in stored package metadata (i.e. where folder defined as --root will be exposed at)
-    --binaryAbi <list>       Optional comma-separated list of node C++ ABI numbers to download pre-built binaries for.
-                             See NODE_MODULE_VERSION column in https://nodejs.org/en/download/releases/.
+    --binaryAbi <list>       Optional comma-separated list of node C++ ABI numbers (NODE_MODULE_VERSION) to download pre-built binaries for.
+                             Look for NODE_MODULE_VERSION in release ChangeLogs via https://nodejs.org/en/download/releases/.
                              Default value is from the current Node.js process.
     --binaryArch <list>      Optional comma-separated list of CPU architectures to download pre-built binaries for.
                              Valid values: arm, arm64, ia32, and x64.
