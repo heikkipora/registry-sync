@@ -66,6 +66,7 @@ export interface RegistryMetadata {
   }
   'dist-tags': {
     latest?: string
+    [tag: string]: string
   }
 }
 

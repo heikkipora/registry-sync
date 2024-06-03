@@ -87,8 +87,24 @@ async function updateMetadata(
   const localMetadata = await loadMetadata(localMetadataPath, defaultMetadata)
   localMetadata.versions[version] = versionMetadata
   localMetadata.time[version] = defaultMetadata.time[version]
-  localMetadata['dist-tags'].latest = Object.keys(localMetadata.versions).sort(semver.compare).pop()
+  localMetadata['dist-tags'] = collectDistTags(localMetadata, defaultMetadata)
   await saveMetadata(localMetadataPath, localMetadata)
+}
+
+// Collect thise dist-tags entries (name -> version) from registry metadata,
+// which point to versions we have locally available.
+// Override 'latest' tag to ensure its validity as we might not have the version
+// that is tagged latest in registry
+function collectDistTags(localMetadata: RegistryMetadata, defaultMetadata: RegistryMetadata) {
+  const availableVersions = Object.keys(localMetadata.versions)
+  const validDistTags = Object.entries(defaultMetadata['dist-tags']).filter(([, version]) =>
+    availableVersions.includes(version)
+  )
+
+  return {
+    ...Object.fromEntries(validDistTags),
+    latest: availableVersions.sort(semver.compare).pop()
+  }
 }
 
 async function loadMetadata(path: string, defaultMetadata: RegistryMetadata): Promise<RegistryMetadata> {

@@ -110,9 +110,24 @@ describe('download', () => {
     expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
   })
 
+  it('Should retain custom dist-tags that point to available versions', async () => {
+    const packages = [
+      {id: 'node-fetch@3.3.1', name: 'node-fetch', version: '3.3.1'},
+      {id: 'node-fetch@2.7.0', name: 'node-fetch', version: '2.7.0'},
+      {id: 'node-fetch@2.6.7', name: 'node-fetch', version: '2.6.7'}
+    ]
+    await downloadAll(packages, options)
+    const nodeFetchMetadata = await readMetadataFile('node-fetch')
+    expect(nodeFetchMetadata['dist-tags']).to.deep.equal({
+      cjs: '2.6.7',
+      latest: '3.3.1',
+      'release-2.x': '2.7.0'
+    })
+  })
+
   after(async () => {
-    await fs.promises.rm(rootFolder, {recursive: true})
-    await fs.promises.rm(tmpFolder, {recursive: true})
+    await fs.promises.rm(rootFolder, {recursive: true, force: true})
+    await fs.promises.rm(tmpFolder, {recursive: true, force: true})
   })
 })
 
