@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bcrypt": "5.1.0",
+    "node-fetch": "cjs",
     "sqlite3": "5.1.5"
   }
 }
