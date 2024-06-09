@@ -255,9 +255,9 @@
     "version": "2.0.4"
   },
   {
-    "id": "ip@2.0.0",
-    "name": "ip",
-    "version": "2.0.0"
+    "id": "ip-address@9.0.5",
+    "name": "ip-address",
+    "version": "9.0.5"
   },
   {
     "id": "is-fullwidth-code-point@3.0.0",
@@ -273,6 +273,11 @@
     "id": "isexe@2.0.0",
     "name": "isexe",
     "version": "2.0.0"
+  },
+  {
+    "id": "jsbn@1.1.0",
+    "name": "jsbn",
+    "version": "1.1.0"
   },
   {
     "id": "lru-cache@6.0.0",
@@ -325,9 +330,9 @@
     "version": "3.3.6"
   },
   {
-    "id": "minipass@4.0.0",
+    "id": "minipass@5.0.0",
     "name": "minipass",
-    "version": "4.0.0"
+    "version": "5.0.0"
   },
   {
     "id": "minizlib@2.1.2",
@@ -475,9 +480,14 @@
     "version": "6.2.1"
   },
   {
-    "id": "socks@2.7.1",
+    "id": "socks@2.8.3",
     "name": "socks",
-    "version": "2.7.1"
+    "version": "2.8.3"
+  },
+  {
+    "id": "sprintf-js@1.1.3",
+    "name": "sprintf-js",
+    "version": "1.1.3"
   },
   {
     "id": "sqlite3@5.1.5",
@@ -505,9 +515,9 @@
     "version": "6.0.1"
   },
   {
-    "id": "tar@6.1.13",
+    "id": "tar@6.2.1",
     "name": "tar",
-    "version": "6.1.13"
+    "version": "6.2.1"
   },
   {
     "id": "tr46@0.0.3",
