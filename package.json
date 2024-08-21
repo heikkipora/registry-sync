@@ -20,18 +20,18 @@
   "license": "MIT",
   "dependencies": {
     "@yarnpkg/lockfile": "1.1.0",
-    "axios": "1.7.2",
+    "axios": "1.7.4",
     "commander": "12.1.0",
     "lru-cache": "10.2.2",
-    "semver": "7.6.2",
+    "semver": "7.6.3",
     "ssri": "10.0.6",
     "tar-fs": "3.0.6"
   },
   "devDependencies": {
     "@arkweid/lefthook": "0.7.7",
-    "@types/chai": "4.3.16",
-    "@types/lodash": "4.17.4",
-    "@types/mocha": "10.0.6",
+    "@types/chai": "4.3.17",
+    "@types/lodash": "4.17.7",
+    "@types/mocha": "10.0.7",
     "@types/node": "20.12.12",
     "@types/semver": "7.5.8",
     "@types/ssri": "7.1.5",
@@ -43,13 +43,13 @@
     "eslint": "8.56.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-formatter-codeframe": "7.32.1",
-    "eslint-plugin-mocha": "10.4.3",
+    "eslint-plugin-mocha": "10.5.0",
     "express": "4.19.2",
-    "lint-staged": "15.2.5",
-    "mocha": "10.4.0",
-    "prettier": "3.2.5",
+    "lint-staged": "15.2.9",
+    "mocha": "10.7.3",
+    "prettier": "3.3.3",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.5.4"
   },
   "keywords": [
     "registry",
