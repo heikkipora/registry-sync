@@ -66,7 +66,7 @@ async function loadCache(cacheFilePath: string): Promise<CacheSchemaV2> {
       }
     }
     return data
-  } catch (fileNotFound) {
+  } catch {
     // empty V2 cache
     return {
       dependencies: [],
@@ -267,7 +267,7 @@ function isDeepEqual(a: PlatformVariant[], b: PlatformVariant[]): boolean {
   try {
     deepStrictEqual(a, b)
     return true
-  } catch (ignored) {
+  } catch {
     return false
   }
 }
