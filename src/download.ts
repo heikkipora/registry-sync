@@ -111,7 +111,7 @@ async function loadMetadata(path: string, defaultMetadata: RegistryMetadata): Pr
   try {
     const json = await fs.promises.readFile(path, 'utf8')
     return JSON.parse(json)
-  } catch (fileNotFound) {
+  } catch {
     return {...defaultMetadata, 'dist-tags': {}, time: {}, versions: {}}
   }
 }
