@@ -6,7 +6,7 @@
 
 ### Key Capabilities
 - Synchronize packages from remote NPM registries to local storage
-- Parse npm's package-lock.json (v1, v2, v3) and yarn.lock files
+- Parse npm's package-lock.json (v2, v3) and yarn.lock files
 - Download pre-built native binaries for multiple Node ABI versions, architectures, and platforms
 - Incremental syncing with caching to avoid re-downloading unchanged packages
 - Registry authentication via Bearer tokens
