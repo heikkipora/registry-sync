@@ -3,6 +3,7 @@
   "version": "7.1.0",
   "description": "synchronize a remote npm registry for private use",
   "repository": "https://github.com/heikkipora/registry-sync",
+  "type": "module",
   "bin": {
     "registry-sync": "bin/sync"
   },
@@ -10,7 +11,8 @@
     "build": "./build-npm",
     "eslint": "eslint --max-warnings=0 src test",
     "fix-eslint": "eslint --fix src test",
-    "test": "mocha -r ts-node/register --config test/.mocharc.js --timeout 120000 test/*.ts",
+    "test": "mocha --timeout 120000 test/*.ts",
+    "typecheck": "tsc",
     "release-test": "cd release-test && ./run-sync-install-cycle.sh"
   },
   "author": "Heikki Pora",
@@ -39,7 +41,6 @@
     "express": "5.2.1",
     "globals": "17.0.0",
     "mocha": "11.7.5",
-    "ts-node": "10.9.2",
     "typescript": "5.9.3",
     "typescript-eslint": "8.51.0"
   },

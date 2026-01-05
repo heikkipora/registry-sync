@@ -3,6 +3,4 @@
 rm -fr build
 mkdir build
 cp LICENSE package.json README.md build
-cp -r bin build
-
-npx tsc
+cp -r bin src build

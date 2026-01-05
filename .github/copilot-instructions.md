@@ -15,12 +15,12 @@
 
 ## Tech Stack
 
-- **Language**: TypeScript 5.9+ (targeting ES2022)
-- **Runtime**: Node.js v20.17.0 or newer
-- **Module Format**: CommonJS
+- **Language**: TypeScript 5.9+ (targeting ES2024)
+- **Runtime**: Node.js v22.18.0 or newer with native TypeScript support
+- **Module Format**: ES Modules (type: "module")
 - **CLI Framework**: commander 14.x
 - **HTTP Client**: axios 1.13.x with LRU cache
-- **Testing**: Mocha 11.x + Chai 6.x with ts-node
+- **Testing**: Mocha 11.x + Chai 6.x (direct .ts execution, no compilation)
 - **Linting**: ESLint 9.x (flat config) with typescript-eslint 8.x
 - **Key Dependencies**: ssri, tar-fs, @yarnpkg/lockfile, semver
 
@@ -134,24 +134,49 @@ Each module handles a single concern:
 - One primary export per file matching the file name
 - Keep files focused on a single concern
 - Place type definitions in [types.d.ts](src/types.d.ts)
-- Import types with `import type` syntax
+- **CRITICAL**: Always use `import type` for type-only imports
+- **CRITICAL**: Always include `.ts` file extension for local module imports
 
-### Module Exports
+### Module Imports and Exports
 ```typescript
+// ALWAYS include .ts extension for local imports (required for Node.js native TS)
+import {downloadAll} from './download.ts'
+import {synchronize} from './sync.ts'
+
+// ALWAYS use 'import type' for type-only imports
+import type {PackageWithId, CommandLineOptions} from './types.d.ts'
+import type {RegistryMetadata} from './types.d.ts'
+
+// For external packages, NO extension
+import {Command} from 'commander'
+import * as fs from 'fs'
+
+// For node built-ins that need types, use 'import type'
+import type {URL} from 'url'
+
 // Named exports for main functionality
 export async function downloadAll(...) { }
+```
 
-// Type-only imports
-import type {PackageWithId, CommandLineOptions} from './types.d.ts'
+### Handling __dirname and __filename in ES Modules
+Since we use ES modules, `__dirname` and `__filename` are not available. Use this pattern:
+
+```typescript
+import {fileURLToPath} from 'url'
+import * as path from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 ```
 
 ## Testing Approach
 
 ### Test Structure
 - **Framework**: Mocha with Chai assertions
-- **Execution**: Via ts-node for TypeScript tests
+- **Execution**: Direct TypeScript execution via Node.js v22.18+ (no transpilation). Call `nvm use` before running tests to ensure correct Node version.
 - **Timeout**: 120 seconds for network operations
 - **Location**: `test/` directory with `*-test.ts` naming
+- **Run Command**: `npm test` (runs `mocha --config test/.mocharc.js --timeout 120000 test/*.ts`)
 
 ### Test Patterns
 1. **Fixture-Based Testing**
@@ -307,8 +332,11 @@ Before suggesting code, ensure:
 - [ ] Error handling distinguishes fatal vs recoverable
 - [ ] No implicit `any` types
 - [ ] No unnecessary dependencies between modules
+- [ ] **All local imports include `.ts` extension**
+- [ ] **All type-only imports use `import type` syntax**
 - [ ] Tests cover the new functionality
-- [ ] ESLint rules pass (run `npm run eslint`)
+- [ ] Type checking passes: `npm run typecheck`
+- [ ] ESLint rules pass: `npm run eslint`
 - [ ] Code follows existing patterns in the codebase
 
 ## Build & Release Process
@@ -316,13 +344,14 @@ Before suggesting code, ensure:
 ### Build Steps
 1. Remove old `build/` directory
 2. Create new `build/` directory
-3. Copy `LICENSE`, `package.json`, `README.md`, `bin/` to `build/`
-4. Compile TypeScript: `npx tsc`
+3. Copy `LICENSE`, `package.json`, `README.md`, `bin/`, and `src/` to `build/`
+4. **No compilation step** - TypeScript files are distributed as-is and executed natively by Node.js v22.18+
 
 ### Quality Checks
+- Type checking must pass: `npm run typecheck` (runs `tsc` in noEmit mode)
 - ESLint must pass with zero warnings: `npm run eslint`
 - All tests must pass: `npm test`
-- GitHub Actions runs both checks automatically
+- GitHub Actions runs all checks automatically
 
 ## Common Tasks
 

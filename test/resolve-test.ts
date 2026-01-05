@@ -1,19 +1,19 @@
 import * as fs from 'fs'
+import {dependenciesFromPackageLock, dependenciesNotInCache, updateDependenciesCache} from '../src/resolve.ts'
 import {expect} from 'chai'
-import {dependenciesFromPackageLock, dependenciesNotInCache, updateDependenciesCache} from '../src/resolve'
 
-const cacheFilePath = `${__dirname}/.cache.json`
+const cacheFilePath = `${import.meta.dirname}/.cache.json`
 
 describe('resolve', () => {
   it('Should resolve a linear list of packages from a package-lock.json file', async () => {
-    const expectedPackages = JSON.parse(await fs.promises.readFile(`${__dirname}/resolve-test.json`, 'utf-8'))
-    const packages = await dependenciesFromPackageLock(`${__dirname}/manifests/package-lock.json`, false)
+    const expectedPackages = JSON.parse(await fs.promises.readFile(`${import.meta.dirname}/resolve-test.json`, 'utf-8'))
+    const packages = await dependenciesFromPackageLock(`${import.meta.dirname}/manifests/package-lock.json`, false)
     expect(packages).to.deep.equal(expectedPackages)
   })
 
   it('Should resolve a package with an aliased version value from a package-lock.json file', async () => {
     const packages = await dependenciesFromPackageLock(
-      `${__dirname}/manifests/package-lock-with-aliased-vue-loader.json`,
+      `${import.meta.dirname}/manifests/package-lock-with-aliased-vue-loader.json`,
       false
     )
     const vueLoaders = packages.filter(p => p.name.startsWith('vue-loader'))
@@ -33,9 +33,9 @@ describe('resolve', () => {
 
   it('Should resolve a linear list of packages from a package-lock.json file with devDependencies', async () => {
     const expectedPackagesWithDev = JSON.parse(
-      await fs.promises.readFile(`${__dirname}/resolve-test-with-dev.json`, 'utf-8')
+      await fs.promises.readFile(`${import.meta.dirname}/resolve-test-with-dev.json`, 'utf-8')
     )
-    const packages = await dependenciesFromPackageLock(`${__dirname}/manifests/package-lock.json`, true)
+    const packages = await dependenciesFromPackageLock(`${import.meta.dirname}/manifests/package-lock.json`, true)
     expect(packages).to.deep.equal(expectedPackagesWithDev)
   })
 

@@ -2,11 +2,11 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as semver from 'semver'
 import * as url from 'url'
-import {verifyIntegrity} from './integrity'
-import type {CommandLineOptions, PackageWithId, PlatformVariant, RegistryMetadata, VersionMetadata} from './types'
-import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp'
-import {fetchBinaryData, fetchJsonWithCacheCloned} from './client'
-import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata'
+import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp.ts'
+import {fetchBinaryData, fetchJsonWithCacheCloned} from './client.ts'
+import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata.ts'
+import {verifyIntegrity} from './integrity.ts'
+import type {CommandLineOptions, PackageWithId, PlatformVariant, RegistryMetadata, VersionMetadata} from './types.d.ts'
 
 export async function downloadAll(
   packages: PackageWithId[],

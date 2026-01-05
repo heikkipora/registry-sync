@@ -2,8 +2,9 @@ import * as fs from 'fs'
 import * as pathLib from 'path'
 import * as readline from 'readline'
 import * as url from 'url'
+import yarnLockfile from '@yarnpkg/lockfile'
 import {deepStrictEqual} from 'assert'
-import * as yarnLockfile from '@yarnpkg/lockfile'
+import {normalizeYarnPackagePattern} from './normalize-yarn-pattern.ts'
 import type {
   CacheSchemaV1,
   CacheSchemaV2,
@@ -12,8 +13,7 @@ import type {
   PackageWithId,
   PlatformVariant,
   YarnLockDependency
-} from './types'
-import {normalizeYarnPackagePattern} from './normalize-yarn-pattern'
+} from './types.d.ts'
 
 const YARN_LOCK_FILENAME = 'yarn.lock'
 

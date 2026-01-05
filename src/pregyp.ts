@@ -2,8 +2,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as semver from 'semver'
 import * as url from 'url'
-import {fetchBinaryData} from './client'
-import type {PlatformVariant, VersionMetadata} from './types'
+import {fetchBinaryData} from './client.ts'
+import type {PlatformVariant, VersionMetadata} from './types.d.ts'
 
 export function hasPrebuiltBinaries({binary}: VersionMetadata): boolean {
   return Boolean(binary && binary.module_name)
@@ -46,9 +46,10 @@ async function downloadPrebuiltBinary(
       prebuiltBinaryFilePath(localFolder, name, version, binary, abi, platform, arch, napiVersion),
       data
     )
-  } catch (err) {
+  } catch (err: unknown) {
     // pre-built binaries are commonly not available on all platforms (and S3 will commonly respond with 403 for a non-existent file)
-    const fileNotFoundError = err.response && (err.response.status == 403 || err.response.status == 404)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const fileNotFoundError = (err as any).response && ((err as any).response.status == 403 || (err as any).response.status == 404)
     if (!fileNotFoundError) {
       console.error(
         `Unexpected error fetching prebuilt binary for ${name} and ABI v${abi} on ${arch}-${platform} (n-api version ${napiVersion})`

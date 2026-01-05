@@ -1,9 +1,9 @@
 import * as fs from 'fs'
 import {expect} from 'chai'
-import {synchronize} from '../src/sync'
+import {synchronize} from '../src/sync.ts'
 import {URL} from 'url'
 
-const rootFolder = `${__dirname}/.download`
+const rootFolder = `${import.meta.dirname}/.download`
 
 const prebuiltBinaryProperties = [
   {abi: 93, arch: 'x64', platform: 'darwin'},
@@ -14,7 +14,7 @@ const prebuiltBinaryProperties = [
 
 const options = {
   localUrl: new URL('https://localhost:8443'),
-  manifest: `${__dirname}/manifests/package-lock.json`,
+  manifest: `${import.meta.dirname}/manifests/package-lock.json`,
   registryUrl: 'https://registry.npmjs.org',
   registryToken: '',
   rootFolder,

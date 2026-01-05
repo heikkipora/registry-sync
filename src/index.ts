@@ -1,11 +1,11 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import {Command} from 'commander'
-import type {CommandLineOptions, PlatformVariant} from './types'
-import {synchronize} from './sync'
+import {synchronize} from './sync.ts'
 import {URL} from 'url'
+import type {CommandLineOptions, PlatformVariant} from './types.d.ts'
 
-const {version} = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf-8'))
+const {version} = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, '..', 'package.json'), 'utf-8'))
 
 const program = new Command()
 program
