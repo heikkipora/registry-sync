@@ -118,5 +118,5 @@ See [releases](https://github.com/heikkipora/registry-sync/releases).
 
 ## Contributing
 
-Pull requests are welcome. Kindly check that your code passes ESLint checks by running `npm run eslint:check` first.
+Pull requests are welcome. Kindly check that your code passes ESLint checks by running `npm run eslint` first.
 Integration tests can be run with `npm test`. Both are anyway run automatically by GitHub Actions.
