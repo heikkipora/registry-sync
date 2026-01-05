@@ -1,4 +1,0 @@
-pre-commit:
-  commands:
-    prettier-eslint:
-      run: npm --silent run lint-staged
