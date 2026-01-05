@@ -1,13 +1,13 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import {downloadAll} from '../src/download'
+import {downloadAll} from '../src/download.ts'
 import {expect} from 'chai'
-import {extractTgz} from '../src/metadata'
-import {PlatformVariant, RegistryMetadata} from '../src/types'
+import {extractTgz} from '../src/metadata.ts'
 import {URL} from 'url'
+import type {PlatformVariant, RegistryMetadata} from '../src/types.d.ts'
 
-const rootFolder = `${__dirname}/.download`
-const tmpFolder = path.join(__dirname, '.tmp')
+const rootFolder = `${import.meta.dirname}/.download`
+const tmpFolder = path.join(import.meta.dirname, '.tmp')
 const options = {
   registryUrl: 'https://registry.npmjs.org',
   localUrl: new URL('https://localhost:8443'),

@@ -2,11 +2,11 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as tar from 'tar-fs'
 import * as zlib from 'zlib'
-import {hasPrebuiltBinaries} from './pregyp'
+import {hasPrebuiltBinaries} from './pregyp.ts'
 import {Readable} from 'stream'
+import {sha1, sha512} from './integrity.ts'
 import type {URL} from 'url'
-import type {VersionMetadata} from './types'
-import {sha1, sha512} from './integrity'
+import type {VersionMetadata} from './types.d.ts'
 
 export function rewriteVersionMetadata(versionMetadata: VersionMetadata, data: Buffer, localUrl: URL): void {
   versionMetadata.dist.tarball = localTarballUrl(versionMetadata, localUrl)

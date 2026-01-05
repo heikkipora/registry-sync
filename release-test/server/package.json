@@ -2,12 +2,16 @@
   "name": "server",
   "version": "1.0.0",
   "private": "true",
+  "type": "module",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.ts",
+    "typecheck": "tsc"
   },
   "license": "MIT",
   "devDependencies": {
-    "commander": "9.2.0",
-    "express": "4.21.1"
+    "@types/express": "5.0.0",
+    "@types/node": "20.17.32",
+    "commander": "14.0.2",
+    "express": "5.2.1"
   }
 }

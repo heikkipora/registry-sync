@@ -1,6 +1,6 @@
-import type {CommandLineOptions, PackageWithId} from './types'
-import {downloadAll} from './download'
-import {dependenciesFromPackageLock, dependenciesNotInCache, updateDependenciesCache} from './resolve'
+import {dependenciesFromPackageLock, dependenciesNotInCache, updateDependenciesCache} from './resolve.ts'
+import {downloadAll} from './download.ts'
+import type {CommandLineOptions, PackageWithId} from './types.d.ts'
 
 export async function synchronize(options: CommandLineOptions): Promise<PackageWithId[]> {
   const cacheFilePath = `${options.rootFolder}/.registry-sync-cache.json`
