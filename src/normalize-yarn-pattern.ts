@@ -47,7 +47,7 @@ export function normalizeYarnPackagePattern(pattern: string): {
   // take first part as the name
   const parts = name.split('@')
   if (parts.length > 1) {
-    name = parts.shift()
+    name = parts.shift()!
     range = parts.join('@')
 
     if (range) {

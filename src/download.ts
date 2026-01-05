@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as semver from 'semver'
 import * as url from 'url'
+import assert from 'assert'
 import {downloadPrebuiltBinaries, hasPrebuiltBinaries} from './pregyp.ts'
 import {fetchBinaryData, fetchJsonWithCacheCloned} from './client.ts'
 import {rewriteMetadataInTarball, rewriteVersionMetadata, tarballFilename} from './metadata.ts'
@@ -91,19 +92,22 @@ async function updateMetadata(
   await saveMetadata(localMetadataPath, localMetadata)
 }
 
-// Collect thise dist-tags entries (name -> version) from registry metadata,
+// Collect dist-tags entries (name -> version) from registry metadata,
 // which point to versions we have locally available.
 // Override 'latest' tag to ensure its validity as we might not have the version
 // that is tagged latest in registry
-function collectDistTags(localMetadata: RegistryMetadata, defaultMetadata: RegistryMetadata) {
+function collectDistTags(localMetadata: RegistryMetadata, defaultMetadata: RegistryMetadata): Record<string, string> {
   const availableVersions = Object.keys(localMetadata.versions)
   const validDistTags = Object.entries(defaultMetadata['dist-tags']).filter(([, version]) =>
     availableVersions.includes(version)
   )
 
+  const latest = availableVersions.sort(semver.compare).pop()
+  assert(latest, 'At least one version should be locally available to determine "latest" dist-tag')
+
   return {
     ...Object.fromEntries(validDistTags),
-    latest: availableVersions.sort(semver.compare).pop()
+    latest
   }
 }
 

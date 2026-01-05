@@ -3,14 +3,19 @@ import * as path from 'path'
 import * as semver from 'semver'
 import * as url from 'url'
 import {fetchBinaryData} from './client.ts'
-import type {PlatformVariant, VersionMetadata} from './types.d.ts'
+import type {PlatformVariant, PrebuiltBinaryMetadata, VersionMetadata, VersionMetadataWithBinary} from './types.d.ts'
 
-export function hasPrebuiltBinaries({binary}: VersionMetadata): boolean {
-  return Boolean(binary && binary.module_name)
+export function hasPrebuiltBinaries(metadata: VersionMetadata): metadata is VersionMetadataWithBinary {
+  return Boolean(metadata.binary
+    && metadata.binary.host
+    && metadata.binary.module_name
+    && metadata.binary.package_name
+    && metadata.binary.remote_path
+  )
 }
 
 export async function downloadPrebuiltBinaries(
-  versionMetadata: VersionMetadata,
+  versionMetadata: VersionMetadataWithBinary,
   localFolder: string,
   prebuiltBinaryProperties: PlatformVariant[]
 ): Promise<void> {
@@ -34,7 +39,7 @@ async function downloadPrebuiltBinary(
   localFolder: string,
   name: string,
   version: string,
-  binary: VersionMetadata['binary'],
+  binary: PrebuiltBinaryMetadata,
   abi: number,
   platform: string,
   arch: string,
@@ -62,7 +67,7 @@ async function downloadPrebuiltBinary(
 function fetchPrebuiltBinary(
   name: string,
   version: string,
-  binary: VersionMetadata['binary'],
+  binary: PrebuiltBinaryMetadata,
   abi: number,
   platform: string,
   arch: string,
@@ -75,7 +80,7 @@ function prebuiltBinaryFilePath(
   localFolder: string,
   name: string,
   version: string,
-  binary: VersionMetadata['binary'],
+  binary: PrebuiltBinaryMetadata,
   abi: number,
   platform: string,
   arch: string,
@@ -87,7 +92,7 @@ function prebuiltBinaryFilePath(
 function prebuiltBinaryUrl(
   name: string,
   version: string,
-  binary: VersionMetadata['binary'],
+  binary: PrebuiltBinaryMetadata,
   abi: number,
   platform: string,
   arch: string,
@@ -104,7 +109,7 @@ function prebuiltBinaryUrl(
 function prebuiltBinaryRemotePath(
   name: string,
   version: string,
-  binary: VersionMetadata['binary'],
+  binary: PrebuiltBinaryMetadata,
   abi: number,
   platform: string,
   arch: string,
@@ -116,7 +121,7 @@ function prebuiltBinaryRemotePath(
 function prebuiltBinaryFileName(
   name: string,
   version: string,
-  binary: VersionMetadata['binary'],
+  binary: PrebuiltBinaryMetadata,
   abi: number,
   platform: string,
   arch: string,
@@ -136,7 +141,7 @@ function formatPrebuilt(
   arch: string,
   napiVersion?: number
 ): string {
-  const moduleVersion = semver.parse(version)
+  const moduleVersion = semver.parse(version, false, true)
   const prerelease = (moduleVersion.prerelease || []).join('.')
   const build = (moduleVersion.build || []).join('.')
 

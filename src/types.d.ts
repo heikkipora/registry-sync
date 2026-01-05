@@ -74,19 +74,26 @@ export interface VersionMetadata {
   _id: string
   name: string
   version: string
-  binary?: {
-    module_name?: string
-    module_path?: string
-    remote_path?: string
-    host?: string
-    package_name?: string
-    remote_uri?: string
-    template: string
-    napi_versions?: number[]
-  }
+  binary?: PrebuiltBinaryMetadata
   dist: {
     shasum?: string
     integrity?: string
     tarball: string
   }
+}
+
+// The following properties may be present but are ignored by registry-sync
+// module_path?: string
+// remote_uri?: string
+export interface PrebuiltBinaryMetadata {
+  host: string
+  module_name: string
+  napi_versions?: number[]
+  package_name: string
+  remote_path: string
+  template: string
+}
+
+export interface VersionMetadataWithBinary extends VersionMetadata {
+  binary: PrebuiltBinaryMetadata
 }

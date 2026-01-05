@@ -12,8 +12,9 @@ const client = axios.create({
 })
 
 export async function fetchJsonWithCacheCloned(url: string, token: string): Promise<RegistryMetadata> {
-  if (metadataCache.has(url)) {
-    return structuredClone(metadataCache.get(url))
+  const cached = metadataCache.get(url)
+  if (cached) {
+    return structuredClone(cached)
   }
 
   const value = await fetch<RegistryMetadata>(url, 'json', token)

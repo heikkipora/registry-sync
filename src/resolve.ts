@@ -2,8 +2,8 @@ import * as fs from 'fs'
 import * as pathLib from 'path'
 import * as readline from 'readline'
 import * as url from 'url'
+import assert, {deepStrictEqual} from 'assert'
 import yarnLockfile from '@yarnpkg/lockfile'
-import {deepStrictEqual} from 'assert'
 import {normalizeYarnPackagePattern} from './normalize-yarn-pattern.ts'
 import type {
   CacheSchemaV1,
@@ -108,6 +108,7 @@ function isNonRegistryYarnPackagePattern(packagePattern: string): boolean {
       return path.split('/').filter((p): boolean => !!p).length === 2
     }
   }
+  return false
 }
 
 function resolvePackageNameFromRegistryYarnPackagePattern(packagePattern: string): string {
@@ -165,7 +166,7 @@ async function parseDependenciesFromNpmLockFile(
 ): Promise<PackageWithId[]> {
   const packageLock: PackageLock = JSON.parse(await fs.promises.readFile(lockFilepath, 'utf8'))
   const fileVersion = packageLock.lockfileVersion || 1
-  if (![2, 3].includes(packageLock.lockfileVersion)) {
+  if (![2, 3].includes(fileVersion)) {
     throw new Error(`Unsupported package-lock.json version ${fileVersion}`)
   }
 
@@ -260,7 +261,9 @@ function collectNpmLockfileDependencies({packages}: PackageLock, includeDevDepen
 // "node_modules/lodash" -> "lodash"
 // "node_modules/make-dir/node_modules/semver" -> "semver"
 function pathToName(path: string) {
-  return path.split('node_modules/').pop()
+  const name = path.split('node_modules/').pop()
+  assert(name, `Failed to extract package name from path ${path}`)
+  return name
 }
 
 function isDeepEqual(a: PlatformVariant[], b: PlatformVariant[]): boolean {
