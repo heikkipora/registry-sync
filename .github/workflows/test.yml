@@ -26,4 +26,5 @@ jobs:
       - run: npm run eslint
       - run: npm run typecheck
       - run: npm test
+      - run: (cd release-test/server && npm ci && npm run typecheck)
       - run: npm run release-test

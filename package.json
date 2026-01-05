@@ -9,8 +9,8 @@
   },
   "scripts": {
     "build": "./build-npm",
-    "eslint": "eslint --max-warnings=0 src test",
-    "fix-eslint": "eslint --fix src test",
+    "eslint": "eslint --max-warnings=0 src test release-test/server/src",
+    "fix-eslint": "eslint --fix src test release-test/server/src",
     "test": "mocha --timeout 120000 test/*.ts",
     "typecheck": "tsc",
     "release-test": "cd release-test && ./run-sync-install-cycle.sh"
