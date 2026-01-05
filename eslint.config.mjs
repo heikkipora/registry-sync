@@ -1,25 +1,22 @@
 import globals from 'globals'
-import mochaPlugin from 'eslint-plugin-mocha'
-import jsPlugin from '@eslint/js'
-import parser from '@typescript-eslint/parser'
-import typescriptPlugin from '@typescript-eslint/eslint-plugin'
-import {defineConfig} from 'eslint/config'
+import mocha from 'eslint-plugin-mocha'
+import tseslint from 'typescript-eslint'
 
-export default defineConfig([
+export default [
+  ...tseslint.configs.recommended,
+  mocha.configs.recommended,
   {
-    files: ['src/**/*.ts', 'test/**/*.ts'],
-    extends: ['@typescript-eslint/eslint-recommended', '@typescript-eslint/recommended', 'js/recommended'],
-    plugins: {
-      '@typescript-eslint': typescriptPlugin,
-      js: jsPlugin,
-      mocha: mochaPlugin
-    },
+    rules: {
+      'mocha/no-mocha-arrows': 'off'
+    }
+  },
+  {
     languageOptions: {
       globals: {
         ...globals.mocha,
-        ...globals.node
-      },
-      parser
+        ...globals.node,
+      }
     }
   }
-])
+]
+ 
