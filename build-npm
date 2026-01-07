@@ -3,4 +3,6 @@
 rm -fr build
 mkdir build
 cp LICENSE package.json README.md build
-cp -r bin src build
+cp -r bin build
+tsc --build tsconfig.build.json
+rm build/src/*.tsbuildinfo
