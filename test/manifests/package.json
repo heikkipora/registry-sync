@@ -2,6 +2,7 @@
   "name": "dependencies-with-pregyp-binaries",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@csstools/normalize.css": "12.1.1",
     "@marsaud/smb2": "0.18.0",

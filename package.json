@@ -13,7 +13,8 @@
     "fix-eslint": "eslint --fix src test release-test/server/src",
     "test": "mocha --timeout 120000 test/*.ts",
     "typecheck": "tsc",
-    "release-test": "cd release-test && ./run-sync-install-cycle.sh"
+    "release-test": "cd release-test && ./run-sync-install-cycle.sh",
+    "refresh-manifests": "cd test/manifests && ./refresh-manifests.sh"
   },
   "author": "Heikki Pora",
   "license": "MIT",
