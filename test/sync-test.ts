@@ -27,7 +27,7 @@ const options = {
 describe('synchronize', () => {
   it('Should download a bunch of packages', async () => {
     const downloaded = await synchronize(options)
-    expect(downloaded).to.have.lengthOf(15)
+    expect(downloaded).to.have.lengthOf(13)
   })
 
   it('Should already have all of the packages', async () => {
@@ -40,7 +40,7 @@ describe('synchronize', () => {
       ...options,
       prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 111, arch: 'x64', platform: 'darwin'})
     })
-    expect(downloaded).to.have.lengthOf(15)
+    expect(downloaded).to.have.lengthOf(13)
   })
 
   after(() => fs.promises.rm(rootFolder, {recursive: true}))

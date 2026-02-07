@@ -1,13 +1,18 @@
 [
   {
-    "id": "@csstools/normalize.css@12.1.1",
-    "name": "@csstools/normalize.css",
-    "version": "12.1.1"
+    "id": "@tanstack/query-core@5.90.20",
+    "name": "@tanstack/query-core",
+    "version": "5.90.20"
   },
   {
-    "id": "@marsaud/smb2@0.18.0",
-    "name": "@marsaud/smb2",
-    "version": "0.18.0"
+    "id": "@tanstack/react-query@5.90.20",
+    "name": "@tanstack/react-query",
+    "version": "5.90.20"
+  },
+  {
+    "id": "@types/node@22.18.0",
+    "name": "@types/node",
+    "version": "22.18.0"
   },
   {
     "id": "bcrypt@6.0.0",
@@ -15,9 +20,9 @@
     "version": "6.0.0"
   },
   {
-    "id": "inherits@2.0.4",
-    "name": "inherits",
-    "version": "2.0.4"
+    "id": "lodash@4.17.23",
+    "name": "lodash",
+    "version": "4.17.23"
   },
   {
     "id": "node-addon-api@8.5.0",
@@ -35,24 +40,9 @@
     "version": "4.8.4"
   },
   {
-    "id": "ntlm@0.1.3",
-    "name": "ntlm",
-    "version": "0.1.3"
-  },
-  {
-    "id": "readable-stream@3.6.2",
-    "name": "readable-stream",
-    "version": "3.6.2"
-  },
-  {
-    "id": "safe-buffer@5.2.1",
-    "name": "safe-buffer",
-    "version": "5.2.1"
-  },
-  {
-    "id": "string_decoder@1.3.0",
-    "name": "string_decoder",
-    "version": "1.3.0"
+    "id": "react@19.2.4",
+    "name": "react",
+    "version": "19.2.4"
   },
   {
     "id": "tr46@0.0.3",
@@ -60,9 +50,9 @@
     "version": "0.0.3"
   },
   {
-    "id": "util-deprecate@1.0.2",
-    "name": "util-deprecate",
-    "version": "1.0.2"
+    "id": "undici-types@6.21.0",
+    "name": "undici-types",
+    "version": "6.21.0"
   },
   {
     "id": "webidl-conversions@3.0.1",

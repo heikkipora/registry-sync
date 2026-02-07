@@ -1,13 +1,113 @@
 [
   {
-    "id": "@csstools/normalize.css@12.1.1",
-    "name": "@csstools/normalize.css",
-    "version": "12.1.1"
+    "id": "@eslint-community/eslint-utils@4.9.1",
+    "name": "@eslint-community/eslint-utils",
+    "version": "4.9.1"
   },
   {
-    "id": "@marsaud/smb2@0.18.0",
-    "name": "@marsaud/smb2",
-    "version": "0.18.0"
+    "id": "@eslint-community/regexpp@4.12.2",
+    "name": "@eslint-community/regexpp",
+    "version": "4.12.2"
+  },
+  {
+    "id": "@eslint/config-array@0.23.1",
+    "name": "@eslint/config-array",
+    "version": "0.23.1"
+  },
+  {
+    "id": "@eslint/config-helpers@0.5.2",
+    "name": "@eslint/config-helpers",
+    "version": "0.5.2"
+  },
+  {
+    "id": "@eslint/core@1.1.0",
+    "name": "@eslint/core",
+    "version": "1.1.0"
+  },
+  {
+    "id": "@eslint/object-schema@3.0.1",
+    "name": "@eslint/object-schema",
+    "version": "3.0.1"
+  },
+  {
+    "id": "@eslint/plugin-kit@0.6.0",
+    "name": "@eslint/plugin-kit",
+    "version": "0.6.0"
+  },
+  {
+    "id": "@humanfs/core@0.19.1",
+    "name": "@humanfs/core",
+    "version": "0.19.1"
+  },
+  {
+    "id": "@humanfs/node@0.16.7",
+    "name": "@humanfs/node",
+    "version": "0.16.7"
+  },
+  {
+    "id": "@humanwhocodes/module-importer@1.0.1",
+    "name": "@humanwhocodes/module-importer",
+    "version": "1.0.1"
+  },
+  {
+    "id": "@humanwhocodes/retry@0.4.3",
+    "name": "@humanwhocodes/retry",
+    "version": "0.4.3"
+  },
+  {
+    "id": "@isaacs/balanced-match@4.0.1",
+    "name": "@isaacs/balanced-match",
+    "version": "4.0.1"
+  },
+  {
+    "id": "@isaacs/brace-expansion@5.0.1",
+    "name": "@isaacs/brace-expansion",
+    "version": "5.0.1"
+  },
+  {
+    "id": "@tanstack/query-core@5.90.20",
+    "name": "@tanstack/query-core",
+    "version": "5.90.20"
+  },
+  {
+    "id": "@tanstack/react-query@5.90.20",
+    "name": "@tanstack/react-query",
+    "version": "5.90.20"
+  },
+  {
+    "id": "@types/esrecurse@4.3.1",
+    "name": "@types/esrecurse",
+    "version": "4.3.1"
+  },
+  {
+    "id": "@types/estree@1.0.8",
+    "name": "@types/estree",
+    "version": "1.0.8"
+  },
+  {
+    "id": "@types/json-schema@7.0.15",
+    "name": "@types/json-schema",
+    "version": "7.0.15"
+  },
+  {
+    "id": "@types/node@22.18.0",
+    "name": "@types/node",
+    "version": "22.18.0"
+  },
+  {
+    "id": "acorn-jsx@5.3.2",
+    "name": "acorn-jsx",
+    "version": "5.3.2"
+  },
+  {
+    "id": "acorn@8.15.0",
+    "name": "acorn",
+    "version": "8.15.0"
+  },
+  {
+    "id": "ajv@6.12.6",
+    "name": "ajv",
+    "version": "6.12.6"
   },
   {
     "id": "bcrypt@6.0.0",
@@ -15,14 +115,184 @@
     "version": "6.0.0"
   },
   {
-    "id": "inherits@2.0.4",
-    "name": "inherits",
-    "version": "2.0.4"
+    "id": "cross-spawn@7.0.6",
+    "name": "cross-spawn",
+    "version": "7.0.6"
+  },
+  {
+    "id": "debug@4.4.3",
+    "name": "debug",
+    "version": "4.4.3"
+  },
+  {
+    "id": "deep-is@0.1.4",
+    "name": "deep-is",
+    "version": "0.1.4"
+  },
+  {
+    "id": "escape-string-regexp@4.0.0",
+    "name": "escape-string-regexp",
+    "version": "4.0.0"
+  },
+  {
+    "id": "eslint-scope@9.1.0",
+    "name": "eslint-scope",
+    "version": "9.1.0"
+  },
+  {
+    "id": "eslint-visitor-keys@3.4.3",
+    "name": "eslint-visitor-keys",
+    "version": "3.4.3"
+  },
+  {
+    "id": "eslint-visitor-keys@5.0.0",
+    "name": "eslint-visitor-keys",
+    "version": "5.0.0"
+  },
+  {
+    "id": "eslint@10.0.0",
+    "name": "eslint",
+    "version": "10.0.0"
+  },
+  {
+    "id": "espree@11.1.0",
+    "name": "espree",
+    "version": "11.1.0"
+  },
+  {
+    "id": "esquery@1.7.0",
+    "name": "esquery",
+    "version": "1.7.0"
+  },
+  {
+    "id": "esrecurse@4.3.0",
+    "name": "esrecurse",
+    "version": "4.3.0"
+  },
+  {
+    "id": "estraverse@5.3.0",
+    "name": "estraverse",
+    "version": "5.3.0"
+  },
+  {
+    "id": "esutils@2.0.3",
+    "name": "esutils",
+    "version": "2.0.3"
+  },
+  {
+    "id": "fast-deep-equal@3.1.3",
+    "name": "fast-deep-equal",
+    "version": "3.1.3"
+  },
+  {
+    "id": "fast-json-stable-stringify@2.1.0",
+    "name": "fast-json-stable-stringify",
+    "version": "2.1.0"
+  },
+  {
+    "id": "fast-levenshtein@2.0.6",
+    "name": "fast-levenshtein",
+    "version": "2.0.6"
+  },
+  {
+    "id": "file-entry-cache@8.0.0",
+    "name": "file-entry-cache",
+    "version": "8.0.0"
+  },
+  {
+    "id": "find-up@5.0.0",
+    "name": "find-up",
+    "version": "5.0.0"
+  },
+  {
+    "id": "flat-cache@4.0.1",
+    "name": "flat-cache",
+    "version": "4.0.1"
+  },
+  {
+    "id": "flatted@3.3.3",
+    "name": "flatted",
+    "version": "3.3.3"
+  },
+  {
+    "id": "glob-parent@6.0.2",
+    "name": "glob-parent",
+    "version": "6.0.2"
+  },
+  {
+    "id": "ignore@5.3.2",
+    "name": "ignore",
+    "version": "5.3.2"
+  },
+  {
+    "id": "imurmurhash@0.1.4",
+    "name": "imurmurhash",
+    "version": "0.1.4"
+  },
+  {
+    "id": "is-extglob@2.1.1",
+    "name": "is-extglob",
+    "version": "2.1.1"
+  },
+  {
+    "id": "is-glob@4.0.3",
+    "name": "is-glob",
+    "version": "4.0.3"
+  },
+  {
+    "id": "isexe@2.0.0",
+    "name": "isexe",
+    "version": "2.0.0"
+  },
+  {
+    "id": "json-buffer@3.0.1",
+    "name": "json-buffer",
+    "version": "3.0.1"
+  },
+  {
+    "id": "json-schema-traverse@0.4.1",
+    "name": "json-schema-traverse",
+    "version": "0.4.1"
+  },
+  {
+    "id": "json-stable-stringify-without-jsonify@1.0.1",
+    "name": "json-stable-stringify-without-jsonify",
+    "version": "1.0.1"
+  },
+  {
+    "id": "keyv@4.5.4",
+    "name": "keyv",
+    "version": "4.5.4"
+  },
+  {
+    "id": "levn@0.4.1",
+    "name": "levn",
+    "version": "0.4.1"
+  },
+  {
+    "id": "locate-path@6.0.0",
+    "name": "locate-path",
+    "version": "6.0.0"
   },
   {
     "id": "lodash@4.17.23",
     "name": "lodash",
     "version": "4.17.23"
+  },
+  {
+    "id": "minimatch@10.1.2",
+    "name": "minimatch",
+    "version": "10.1.2"
+  },
+  {
+    "id": "ms@2.1.3",
+    "name": "ms",
+    "version": "2.1.3"
+  },
+  {
+    "id": "natural-compare@1.4.0",
+    "name": "natural-compare",
+    "version": "1.4.0"
   },
   {
     "id": "node-addon-api@8.5.0",
@@ -40,24 +310,49 @@
     "version": "4.8.4"
   },
   {
-    "id": "ntlm@0.1.3",
-    "name": "ntlm",
-    "version": "0.1.3"
+    "id": "optionator@0.9.4",
+    "name": "optionator",
+    "version": "0.9.4"
   },
   {
-    "id": "readable-stream@3.6.2",
-    "name": "readable-stream",
-    "version": "3.6.2"
+    "id": "p-limit@3.1.0",
+    "name": "p-limit",
+    "version": "3.1.0"
   },
   {
-    "id": "safe-buffer@5.2.1",
-    "name": "safe-buffer",
-    "version": "5.2.1"
+    "id": "p-locate@5.0.0",
+    "name": "p-locate",
+    "version": "5.0.0"
   },
   {
-    "id": "string_decoder@1.3.0",
-    "name": "string_decoder",
-    "version": "1.3.0"
+    "id": "path-exists@4.0.0",
+    "name": "path-exists",
+    "version": "4.0.0"
+  },
+  {
+    "id": "path-key@3.1.1",
+    "name": "path-key",
+    "version": "3.1.1"
+  },
+  {
+    "id": "prelude-ls@1.2.1",
+    "name": "prelude-ls",
+    "version": "1.2.1"
+  },
+  {
+    "id": "punycode@2.3.1",
+    "name": "punycode",
+    "version": "2.3.1"
+  },
+  {
+    "id": "shebang-command@2.0.0",
+    "name": "shebang-command",
+    "version": "2.0.0"
+  },
+  {
+    "id": "shebang-regex@3.0.0",
+    "name": "shebang-regex",
+    "version": "3.0.0"
   },
   {
     "id": "tr46@0.0.3",
@@ -65,9 +360,19 @@
     "version": "0.0.3"
   },
   {
-    "id": "util-deprecate@1.0.2",
-    "name": "util-deprecate",
-    "version": "1.0.2"
+    "id": "type-check@0.4.0",
+    "name": "type-check",
+    "version": "0.4.0"
+  },
+  {
+    "id": "undici-types@6.21.0",
+    "name": "undici-types",
+    "version": "6.21.0"
+  },
+  {
+    "id": "uri-js@4.4.1",
+    "name": "uri-js",
+    "version": "4.4.1"
   },
   {
     "id": "webidl-conversions@3.0.1",
@@ -78,5 +383,20 @@
     "id": "whatwg-url@5.0.0",
     "name": "whatwg-url",
     "version": "5.0.0"
+  },
+  {
+    "id": "which@2.0.2",
+    "name": "which",
+    "version": "2.0.2"
+  },
+  {
+    "id": "word-wrap@1.2.5",
+    "name": "word-wrap",
+    "version": "1.2.5"
+  },
+  {
+    "id": "yocto-queue@0.1.0",
+    "name": "yocto-queue",
+    "version": "0.1.0"
   }
 ]
