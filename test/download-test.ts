@@ -67,47 +67,47 @@ describe('download', () => {
   })
 
   it('Should download a node-pre-gyp package and correctly rewrite metadata', async () => {
-    const packages = [{id: 'node-gtk@0.4.0', name: 'node-gtk', version: '0.4.0'}]
+    const packages = [{id: 'node-gtk@1.0.0', name: 'node-gtk', version: '1.0.0'}]
     await downloadAll(packages, {...options, prebuiltBinaryProperties})
     await fs.promises.mkdir(tmpFolder, {recursive: true})
-    const data = await readTarball('node-gtk', '0.4.0')
+    const data = await readTarball('node-gtk', '1.0.0')
     await extractTgz(data, tmpFolder)
     const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
-    expect(fileContents.binary.remote_path).equal('/node-gtk/0.4.0/')
+    expect(fileContents.binary.remote_path).equal('/node-gtk/1.0.0/')
   })
 
   it('Should download a node-pre-gyp package and correctly rewrite metadata when localUrl contains a path', async () => {
-    const packages = [{id: 'node-gtk@0.4.0', name: 'node-gtk', version: '0.4.0'}]
+    const packages = [{id: 'node-gtk@1.0.0', name: 'node-gtk', version: '1.0.0'}]
     await downloadAll(packages, {
       ...options,
       prebuiltBinaryProperties,
       localUrl: new URL('https://localhost:8443/registry')
     })
     await fs.promises.mkdir(tmpFolder, {recursive: true})
-    const data = await readTarball('node-gtk', '0.4.0')
+    const data = await readTarball('node-gtk', '1.0.0')
     await extractTgz(data, tmpFolder)
     const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
-    expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
+    expect(fileContents.binary.remote_path).equal('/registry/node-gtk/1.0.0/')
   })
 
   it('Should download a node-pre-gyp package and correctly rewrite metadata when localUrl contains a path with ending slash', async () => {
-    const packages = [{id: 'node-gtk@0.4.0', name: 'node-gtk', version: '0.4.0'}]
+    const packages = [{id: 'node-gtk@1.0.0', name: 'node-gtk', version: '1.0.0'}]
     await downloadAll(packages, {
       ...options,
       prebuiltBinaryProperties,
       localUrl: new URL('https://localhost:8443/registry/')
     })
     await fs.promises.mkdir(tmpFolder, {recursive: true})
-    const data = await readTarball('node-gtk', '0.4.0')
+    const data = await readTarball('node-gtk', '1.0.0')
     await extractTgz(data, tmpFolder)
     const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
     expect(fileContents.binary.host).equal('https://localhost:8443')
-    expect(fileContents.binary.remote_path).equal('/registry/node-gtk/0.4.0/')
+    expect(fileContents.binary.remote_path).equal('/registry/node-gtk/1.0.0/')
   })
 
   it('Should retain custom dist-tags that point to available versions', async () => {
