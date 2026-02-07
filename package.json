@@ -19,10 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "@yarnpkg/lockfile": "1.1.0",
-    "axios": "1.13.2",
-    "commander": "14.0.2",
-    "lru-cache": "11.2.4",
-    "semver": "7.7.3",
+    "axios": "1.13.4",
+    "commander": "14.0.3",
+    "lru-cache": "11.2.5",
+    "semver": "7.7.4",
     "ssri": "13.0.0",
     "tar-fs": "3.1.1"
   },
@@ -39,10 +39,10 @@
     "eslint": "9.39.2",
     "eslint-plugin-mocha": "11.2.0",
     "express": "5.2.1",
-    "globals": "17.1.0",
+    "globals": "17.3.0",
     "mocha": "11.7.5",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.53.1"
+    "typescript-eslint": "8.54.0"
   },
   "keywords": [
     "registry",
