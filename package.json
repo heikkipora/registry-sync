@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "@yarnpkg/lockfile": "1.1.0",
-    "axios": "1.13.4",
+    "axios": "1.13.5",
     "commander": "14.0.3",
     "lru-cache": "11.2.5",
     "semver": "7.7.4",
