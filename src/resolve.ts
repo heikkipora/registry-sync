@@ -76,7 +76,7 @@ async function loadCache(cacheFilePath: string): Promise<CacheSchemaV2> {
   }
 }
 
-function isNonRegistryYarnPackagePattern(packagePattern: string): boolean {
+export function isNonRegistryYarnPackagePattern(packagePattern: string): boolean {
   if (
     // See https://github.com/yarnpkg/yarn/blob/953c8b6a20e360b097625d64189e6e56ed813e0f/src/resolvers/exotics/link-resolver.js#L14
     packagePattern.startsWith('link:') ||
