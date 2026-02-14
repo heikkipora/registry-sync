@@ -1,7 +1,8 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import {after, describe, it} from 'node:test'
+import assert from 'node:assert/strict'
 import {downloadAll} from '../src/download.ts'
-import {expect} from 'chai'
 import {extractTgz} from '../src/metadata.ts'
 import {URL} from 'url'
 import type {PlatformVariant, RegistryMetadata} from '../src/types.d.ts'
@@ -39,7 +40,7 @@ describe('download', () => {
     const packages = [{id: 'aproba@2.1.0', name: 'aproba', version: '2.1.0'}]
     await downloadAll(packages, options)
     const aprobaMetadata = await readMetadataFile('aproba')
-    expect(aprobaMetadata.versions['2.1.0'].dist.tarball).equal('https://localhost:8443/aproba/aproba-2.1.0.tgz')
+    assert.strictEqual(aprobaMetadata.versions['2.1.0'].dist.tarball, 'https://localhost:8443/aproba/aproba-2.1.0.tgz')
   })
 
   it('Should download a package with correct metadata when localUrl contains a path', async () => {
@@ -49,7 +50,8 @@ describe('download', () => {
       localUrl: new URL('https://localhost:8443/registry')
     })
     const aprobaMetadata = await readMetadataFile('aproba')
-    expect(aprobaMetadata.versions['2.1.0'].dist.tarball).equal(
+    assert.strictEqual(
+      aprobaMetadata.versions['2.1.0'].dist.tarball,
       'https://localhost:8443/registry/aproba/aproba-2.1.0.tgz'
     )
   })
@@ -61,7 +63,8 @@ describe('download', () => {
       localUrl: new URL('https://localhost:8443/registry/')
     })
     const aprobaMetadata = await readMetadataFile('aproba')
-    expect(aprobaMetadata.versions['2.1.0'].dist.tarball).equal(
+    assert.strictEqual(
+      aprobaMetadata.versions['2.1.0'].dist.tarball,
       'https://localhost:8443/registry/aproba/aproba-2.1.0.tgz'
     )
   })
@@ -74,8 +77,8 @@ describe('download', () => {
     await extractTgz(data, tmpFolder)
     const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
-    expect(fileContents.binary.host).equal('https://localhost:8443')
-    expect(fileContents.binary.remote_path).equal('/node-gtk/1.0.0/')
+    assert.strictEqual(fileContents.binary.host, 'https://localhost:8443')
+    assert.strictEqual(fileContents.binary.remote_path, '/node-gtk/1.0.0/')
   })
 
   it('Should download a node-pre-gyp package and correctly rewrite metadata when localUrl contains a path', async () => {
@@ -90,8 +93,8 @@ describe('download', () => {
     await extractTgz(data, tmpFolder)
     const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
-    expect(fileContents.binary.host).equal('https://localhost:8443')
-    expect(fileContents.binary.remote_path).equal('/registry/node-gtk/1.0.0/')
+    assert.strictEqual(fileContents.binary.host, 'https://localhost:8443')
+    assert.strictEqual(fileContents.binary.remote_path, '/registry/node-gtk/1.0.0/')
   })
 
   it('Should download a node-pre-gyp package and correctly rewrite metadata when localUrl contains a path with ending slash', async () => {
@@ -106,8 +109,8 @@ describe('download', () => {
     await extractTgz(data, tmpFolder)
     const fileStr = await fs.promises.readFile(path.join(tmpFolder, 'package', 'package.json'), 'utf-8')
     const fileContents = JSON.parse(fileStr)
-    expect(fileContents.binary.host).equal('https://localhost:8443')
-    expect(fileContents.binary.remote_path).equal('/registry/node-gtk/1.0.0/')
+    assert.strictEqual(fileContents.binary.host, 'https://localhost:8443')
+    assert.strictEqual(fileContents.binary.remote_path, '/registry/node-gtk/1.0.0/')
   })
 
   it('Should retain custom dist-tags that point to available versions', async () => {
@@ -118,7 +121,7 @@ describe('download', () => {
     ]
     await downloadAll(packages, options)
     const nodeFetchMetadata = await readMetadataFile('node-fetch')
-    expect(nodeFetchMetadata['dist-tags']).to.deep.equal({
+    assert.deepStrictEqual(nodeFetchMetadata['dist-tags'], {
       cjs: '2.6.7',
       latest: '3.3.1',
       'release-2.x': '2.7.0'

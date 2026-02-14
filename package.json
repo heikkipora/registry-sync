@@ -11,7 +11,7 @@
     "build": "./build-npm",
     "eslint": "eslint --max-warnings=0 src test release-test/server/src",
     "fix-eslint": "eslint --fix src test release-test/server/src",
-    "test": "mocha --timeout 120000 test/*.ts",
+    "test": "node --test --test-timeout 120000 --test-concurrency 1 test/*.ts",
     "typecheck": "tsc",
     "release-test": "cd release-test && ./run-sync-install-cycle.sh",
     "refresh-manifests": "cd test/manifests && ./refresh-manifests.sh"
@@ -28,20 +28,15 @@
     "tar-fs": "3.1.1"
   },
   "devDependencies": {
-    "@types/chai": "5.2.3",
     "@types/lodash": "4.17.23",
-    "@types/mocha": "10.0.10",
     "@types/node": "22.18.0",
     "@types/semver": "7.7.1",
     "@types/ssri": "7.1.5",
     "@types/tar-fs": "2.0.4",
     "@types/yarnpkg__lockfile": "1.1.9",
-    "chai": "6.2.2",
     "eslint": "9.39.2",
-    "eslint-plugin-mocha": "11.2.0",
     "express": "5.2.1",
     "globals": "17.3.0",
-    "mocha": "11.7.5",
     "typescript": "5.9.3",
     "typescript-eslint": "8.55.0"
   },

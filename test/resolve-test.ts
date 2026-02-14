@@ -1,6 +1,7 @@
 import * as fs from 'fs'
+import {after, describe, it} from 'node:test'
+import assert from 'node:assert/strict'
 import {dependenciesFromPackageLock, dependenciesNotInCache, updateDependenciesCache} from '../src/resolve.ts'
-import {expect} from 'chai'
 
 const cacheFilePath = `${import.meta.dirname}/.cache.json`
 
@@ -8,7 +9,7 @@ describe('resolve', () => {
   it('Should resolve a linear list of packages from a package-lock.json file', async () => {
     const expectedPackages = JSON.parse(await fs.promises.readFile(`${import.meta.dirname}/resolve-test.json`, 'utf-8'))
     const packages = await dependenciesFromPackageLock(`${import.meta.dirname}/manifests/package-lock.json`, false)
-    expect(packages).to.deep.equal(expectedPackages)
+    assert.deepStrictEqual(packages, expectedPackages)
   })
 
   it('Should resolve a package with an aliased version value from a package-lock.json file', async () => {
@@ -17,7 +18,7 @@ describe('resolve', () => {
       false
     )
     const vueLoaders = packages.filter(p => p.name.startsWith('vue-loader'))
-    expect(vueLoaders).to.deep.equal([
+    assert.deepStrictEqual(vueLoaders, [
       {
         id: 'vue-loader@15.9.6',
         name: 'vue-loader',
@@ -36,7 +37,7 @@ describe('resolve', () => {
       await fs.promises.readFile(`${import.meta.dirname}/resolve-test-with-dev.json`, 'utf-8')
     )
     const packages = await dependenciesFromPackageLock(`${import.meta.dirname}/manifests/package-lock.json`, true)
-    expect(packages).to.deep.equal(expectedPackagesWithDev)
+    assert.deepStrictEqual(packages, expectedPackagesWithDev)
   })
 
   it('Should detect packages that are new (compared to cache)', async () => {
@@ -55,7 +56,7 @@ describe('resolve', () => {
     ]
     await updateDependenciesCache(dependenciesV1, cacheFilePath, [])
     const changedDependencies = await dependenciesNotInCache(dependenciesV2, cacheFilePath, [])
-    expect(changedDependencies).to.deep.equal(expectedDependencies)
+    assert.deepStrictEqual(changedDependencies, expectedDependencies)
   })
 
   after(() => fs.promises.unlink(cacheFilePath).catch(() => {}))

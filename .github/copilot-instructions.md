@@ -172,11 +172,11 @@ const __dirname = path.dirname(__filename)
 ## Testing Approach
 
 ### Test Structure
-- **Framework**: Mocha with Chai assertions
+- **Framework**: Node.js built-in test runner (`node:test`) with `node:assert/strict`
 - **Execution**: Direct TypeScript execution via Node.js v22.18+ (no transpilation). Call `nvm use` before running tests to ensure correct Node version.
 - **Timeout**: 120 seconds for network operations
 - **Location**: `test/` directory with `*-test.ts` naming
-- **Run Command**: `npm test` (runs `mocha --config test/.mocharc.js --timeout 120000 test/*.ts`)
+- **Run Command**: `npm test` (runs `node --test --test-timeout 120000 test/*.ts`)
 
 ### Test Patterns
 1. **Fixture-Based Testing**

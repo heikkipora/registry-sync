@@ -1,5 +1,6 @@
 import * as fs from 'fs'
-import {expect} from 'chai'
+import {after, describe, it} from 'node:test'
+import assert from 'node:assert/strict'
 import {synchronize} from '../src/sync.ts'
 import {URL} from 'url'
 
@@ -27,12 +28,12 @@ const options = {
 describe('synchronize', () => {
   it('Should download a bunch of packages', async () => {
     const downloaded = await synchronize(options)
-    expect(downloaded).to.have.lengthOf(13)
+    assert.strictEqual(downloaded.length, 13)
   })
 
   it('Should already have all of the packages', async () => {
     const downloaded = await synchronize(options)
-    expect(downloaded).to.have.lengthOf(0)
+    assert.strictEqual(downloaded.length, 0)
   })
 
   it('Should detect a change to pre-built binary properties and re-trigger download', async () => {
@@ -40,7 +41,7 @@ describe('synchronize', () => {
       ...options,
       prebuiltBinaryProperties: prebuiltBinaryProperties.concat({abi: 111, arch: 'x64', platform: 'darwin'})
     })
-    expect(downloaded).to.have.lengthOf(13)
+    assert.strictEqual(downloaded.length, 13)
   })
 
   after(() => fs.promises.rm(rootFolder, {recursive: true}))
