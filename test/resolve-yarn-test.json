@@ -10,9 +10,9 @@
     "version": "4.12.2"
   },
   {
-    "id": "@eslint/config-array@0.23.1",
+    "id": "@eslint/config-array@0.23.2",
     "name": "@eslint/config-array",
-    "version": "0.23.1"
+    "version": "0.23.2"
   },
   {
     "id": "@eslint/config-helpers@0.5.2",
@@ -25,9 +25,9 @@
     "version": "1.1.0"
   },
   {
-    "id": "@eslint/object-schema@3.0.1",
+    "id": "@eslint/object-schema@3.0.2",
     "name": "@eslint/object-schema",
-    "version": "3.0.1"
+    "version": "3.0.2"
   },
   {
     "id": "@eslint/plugin-kit@0.6.0",
@@ -53,16 +53,6 @@
     "id": "@humanwhocodes/retry@0.4.3",
     "name": "@humanwhocodes/retry",
     "version": "0.4.3"
-  },
-  {
-    "id": "@isaacs/balanced-match@4.0.1",
-    "name": "@isaacs/balanced-match",
-    "version": "4.0.1"
-  },
-  {
-    "id": "@isaacs/brace-expansion@5.0.1",
-    "name": "@isaacs/brace-expansion",
-    "version": "5.0.1"
   },
   {
     "id": "@tanstack/query-core@5.90.20",
@@ -100,19 +90,29 @@
     "version": "5.3.2"
   },
   {
-    "id": "acorn@8.15.0",
+    "id": "acorn@8.16.0",
     "name": "acorn",
-    "version": "8.15.0"
+    "version": "8.16.0"
   },
   {
-    "id": "ajv@6.12.6",
+    "id": "ajv@6.14.0",
     "name": "ajv",
-    "version": "6.12.6"
+    "version": "6.14.0"
+  },
+  {
+    "id": "balanced-match@4.0.4",
+    "name": "balanced-match",
+    "version": "4.0.4"
   },
   {
     "id": "bcrypt@6.0.0",
     "name": "bcrypt",
     "version": "6.0.0"
+  },
+  {
+    "id": "brace-expansion@5.0.4",
+    "name": "brace-expansion",
+    "version": "5.0.4"
   },
   {
     "id": "cross-spawn@7.0.6",
@@ -135,9 +135,9 @@
     "version": "4.0.0"
   },
   {
-    "id": "eslint-scope@9.1.0",
+    "id": "eslint-scope@9.1.1",
     "name": "eslint-scope",
-    "version": "9.1.0"
+    "version": "9.1.1"
   },
   {
     "id": "eslint-visitor-keys@3.4.3",
@@ -145,9 +145,9 @@
     "version": "3.4.3"
   },
   {
-    "id": "eslint-visitor-keys@5.0.0",
+    "id": "eslint-visitor-keys@5.0.1",
     "name": "eslint-visitor-keys",
-    "version": "5.0.0"
+    "version": "5.0.1"
   },
   {
     "id": "eslint@10.0.0",
@@ -155,9 +155,9 @@
     "version": "10.0.0"
   },
   {
-    "id": "espree@11.1.0",
+    "id": "espree@11.1.1",
     "name": "espree",
-    "version": "11.1.0"
+    "version": "11.1.1"
   },
   {
     "id": "esquery@1.7.0",
@@ -280,9 +280,9 @@
     "version": "4.17.23"
   },
   {
-    "id": "minimatch@10.1.2",
+    "id": "minimatch@10.2.4",
     "name": "minimatch",
-    "version": "10.1.2"
+    "version": "10.2.4"
   },
   {
     "id": "ms@2.1.3",
@@ -295,9 +295,9 @@
     "version": "1.4.0"
   },
   {
-    "id": "node-addon-api@8.5.0",
+    "id": "node-addon-api@8.6.0",
     "name": "node-addon-api",
-    "version": "8.5.0"
+    "version": "8.6.0"
   },
   {
     "id": "node-fetch@2.6.7",

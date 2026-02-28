@@ -25,9 +25,9 @@
     "version": "4.17.23"
   },
   {
-    "id": "node-addon-api@8.5.0",
+    "id": "node-addon-api@8.6.0",
     "name": "node-addon-api",
-    "version": "8.5.0"
+    "version": "8.6.0"
   },
   {
     "id": "node-fetch@2.6.7",
