@@ -10,29 +10,29 @@
     "version": "4.12.2"
   },
   {
-    "id": "@eslint/config-array@0.23.2",
+    "id": "@eslint/config-array@0.23.3",
     "name": "@eslint/config-array",
-    "version": "0.23.2"
+    "version": "0.23.3"
   },
   {
-    "id": "@eslint/config-helpers@0.5.2",
+    "id": "@eslint/config-helpers@0.5.3",
     "name": "@eslint/config-helpers",
-    "version": "0.5.2"
+    "version": "0.5.3"
   },
   {
-    "id": "@eslint/core@1.1.0",
+    "id": "@eslint/core@1.1.1",
     "name": "@eslint/core",
-    "version": "1.1.0"
+    "version": "1.1.1"
   },
   {
-    "id": "@eslint/object-schema@3.0.2",
+    "id": "@eslint/object-schema@3.0.3",
     "name": "@eslint/object-schema",
-    "version": "3.0.2"
+    "version": "3.0.3"
   },
   {
-    "id": "@eslint/plugin-kit@0.6.0",
+    "id": "@eslint/plugin-kit@0.6.1",
     "name": "@eslint/plugin-kit",
-    "version": "0.6.0"
+    "version": "0.6.1"
   },
   {
     "id": "@humanfs/core@0.19.1",
@@ -135,9 +135,9 @@
     "version": "4.0.0"
   },
   {
-    "id": "eslint-scope@9.1.1",
+    "id": "eslint-scope@9.1.2",
     "name": "eslint-scope",
-    "version": "9.1.1"
+    "version": "9.1.2"
   },
   {
     "id": "eslint-visitor-keys@3.4.3",
@@ -155,9 +155,9 @@
     "version": "10.0.0"
   },
   {
-    "id": "espree@11.1.1",
+    "id": "espree@11.2.0",
     "name": "espree",
-    "version": "11.1.1"
+    "version": "11.2.0"
   },
   {
     "id": "esquery@1.7.0",
@@ -210,9 +210,9 @@
     "version": "4.0.1"
   },
   {
-    "id": "flatted@3.3.3",
+    "id": "flatted@3.4.2",
     "name": "flatted",
-    "version": "3.3.3"
+    "version": "3.4.2"
   },
   {
     "id": "glob-parent@6.0.2",
