@@ -10,24 +10,24 @@
     "version": "4.12.2"
   },
   {
-    "id": "@eslint/config-array@0.23.3",
+    "id": "@eslint/config-array@0.23.4",
     "name": "@eslint/config-array",
-    "version": "0.23.3"
+    "version": "0.23.4"
   },
   {
-    "id": "@eslint/config-helpers@0.5.3",
+    "id": "@eslint/config-helpers@0.5.4",
     "name": "@eslint/config-helpers",
-    "version": "0.5.3"
+    "version": "0.5.4"
   },
   {
-    "id": "@eslint/core@1.1.1",
+    "id": "@eslint/core@1.2.0",
     "name": "@eslint/core",
-    "version": "1.1.1"
+    "version": "1.2.0"
   },
   {
-    "id": "@eslint/object-schema@3.0.3",
+    "id": "@eslint/object-schema@3.0.4",
     "name": "@eslint/object-schema",
-    "version": "3.0.3"
+    "version": "3.0.4"
   },
   {
     "id": "@eslint/plugin-kit@0.6.1",
@@ -110,9 +110,9 @@
     "version": "6.0.0"
   },
   {
-    "id": "brace-expansion@5.0.4",
+    "id": "brace-expansion@5.0.5",
     "name": "brace-expansion",
-    "version": "5.0.4"
+    "version": "5.0.5"
   },
   {
     "id": "cross-spawn@7.0.6",
@@ -275,14 +275,14 @@
     "version": "6.0.0"
   },
   {
-    "id": "lodash@4.17.23",
+    "id": "lodash@4.18.1",
     "name": "lodash",
-    "version": "4.17.23"
+    "version": "4.18.1"
   },
   {
-    "id": "minimatch@10.2.4",
+    "id": "minimatch@10.2.5",
     "name": "minimatch",
-    "version": "10.2.4"
+    "version": "10.2.5"
   },
   {
     "id": "ms@2.1.3",
@@ -295,9 +295,9 @@
     "version": "1.4.0"
   },
   {
-    "id": "node-addon-api@8.6.0",
+    "id": "node-addon-api@8.7.0",
     "name": "node-addon-api",
-    "version": "8.6.0"
+    "version": "8.7.0"
   },
   {
     "id": "node-fetch@2.6.7",

@@ -20,14 +20,14 @@
     "version": "6.0.0"
   },
   {
-    "id": "lodash@4.17.23",
+    "id": "lodash@4.18.1",
     "name": "lodash",
-    "version": "4.17.23"
+    "version": "4.18.1"
   },
   {
-    "id": "node-addon-api@8.6.0",
+    "id": "node-addon-api@8.7.0",
     "name": "node-addon-api",
-    "version": "8.6.0"
+    "version": "8.7.0"
   },
   {
     "id": "node-fetch@2.6.7",
