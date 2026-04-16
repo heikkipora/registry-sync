@@ -2,7 +2,10 @@
   "name": "registry-sync",
   "version": "8.2.3",
   "description": "synchronize a remote npm registry for private use",
-  "repository": "https://github.com/heikkipora/registry-sync",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heikkipora/registry-sync.git"
+  },
   "type": "module",
   "bin": {
     "registry-sync": "bin/sync"
