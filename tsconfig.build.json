@@ -4,6 +4,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "outDir": "build/src",
+    "rootDir": "src",
     "skipLibCheck": true,
     "importsNotUsedAsValues": "remove",
     "preserveValueImports": false,
