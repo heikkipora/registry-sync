@@ -23,10 +23,10 @@
   "license": "MIT",
   "dependencies": {
     "@yarnpkg/lockfile": "1.1.0",
-    "axios": "1.16.0",
-    "commander": "14.0.3",
-    "lru-cache": "11.3.5",
-    "semver": "7.7.4",
+    "axios": "1.16.1",
+    "commander": "15.0.0",
+    "lru-cache": "11.5.1",
+    "semver": "7.8.1",
     "ssri": "13.0.1",
     "tar-fs": "3.1.2"
   },
@@ -37,11 +37,11 @@
     "@types/ssri": "7.1.5",
     "@types/tar-fs": "2.0.4",
     "@types/yarnpkg__lockfile": "1.1.9",
-    "eslint": "10.2.0",
+    "eslint": "10.4.1",
     "express": "5.2.1",
-    "globals": "17.5.0",
-    "typescript": "6.0.2",
-    "typescript-eslint": "8.58.2"
+    "globals": "17.6.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.60.1"
   },
   "keywords": [
     "registry",
