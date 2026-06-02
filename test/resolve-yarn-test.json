@@ -10,24 +10,24 @@
     "version": "4.12.2"
   },
   {
-    "id": "@eslint/config-array@0.23.4",
+    "id": "@eslint/config-array@0.23.5",
     "name": "@eslint/config-array",
-    "version": "0.23.4"
+    "version": "0.23.5"
   },
   {
-    "id": "@eslint/config-helpers@0.5.4",
+    "id": "@eslint/config-helpers@0.5.5",
     "name": "@eslint/config-helpers",
-    "version": "0.5.4"
+    "version": "0.5.5"
   },
   {
-    "id": "@eslint/core@1.2.0",
+    "id": "@eslint/core@1.2.1",
     "name": "@eslint/core",
-    "version": "1.2.0"
+    "version": "1.2.1"
   },
   {
-    "id": "@eslint/object-schema@3.0.4",
+    "id": "@eslint/object-schema@3.0.5",
     "name": "@eslint/object-schema",
-    "version": "3.0.4"
+    "version": "3.0.5"
   },
   {
     "id": "@eslint/plugin-kit@0.6.1",
@@ -35,14 +35,19 @@
     "version": "0.6.1"
   },
   {
-    "id": "@humanfs/core@0.19.1",
+    "id": "@humanfs/core@0.19.2",
     "name": "@humanfs/core",
-    "version": "0.19.1"
+    "version": "0.19.2"
   },
   {
-    "id": "@humanfs/node@0.16.7",
+    "id": "@humanfs/node@0.16.8",
     "name": "@humanfs/node",
-    "version": "0.16.7"
+    "version": "0.16.8"
+  },
+  {
+    "id": "@humanfs/types@0.15.0",
+    "name": "@humanfs/types",
+    "version": "0.15.0"
   },
   {
     "id": "@humanwhocodes/module-importer@1.0.1",
@@ -70,9 +75,9 @@
     "version": "4.3.1"
   },
   {
-    "id": "@types/estree@1.0.8",
+    "id": "@types/estree@1.0.9",
     "name": "@types/estree",
-    "version": "1.0.8"
+    "version": "1.0.9"
   },
   {
     "id": "@types/json-schema@7.0.15",
@@ -95,9 +100,9 @@
     "version": "8.16.0"
   },
   {
-    "id": "ajv@6.14.0",
+    "id": "ajv@6.15.0",
     "name": "ajv",
-    "version": "6.14.0"
+    "version": "6.15.0"
   },
   {
     "id": "balanced-match@4.0.4",
@@ -110,9 +115,9 @@
     "version": "6.0.0"
   },
   {
-    "id": "brace-expansion@5.0.5",
+    "id": "brace-expansion@5.0.6",
     "name": "brace-expansion",
-    "version": "5.0.5"
+    "version": "5.0.6"
   },
   {
     "id": "cross-spawn@7.0.6",
@@ -295,9 +300,9 @@
     "version": "1.4.0"
   },
   {
-    "id": "node-addon-api@8.7.0",
+    "id": "node-addon-api@8.8.0",
     "name": "node-addon-api",
-    "version": "8.7.0"
+    "version": "8.8.0"
   },
   {
     "id": "node-fetch@2.6.7",
