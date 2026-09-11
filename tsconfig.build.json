@@ -6,8 +6,6 @@
     "outDir": "build/src",
     "rootDir": "src",
     "skipLibCheck": true,
-    "importsNotUsedAsValues": "remove",
-    "preserveValueImports": false,
     "rewriteRelativeImportExtensions": true,
   },
   "include": ["src/**/*"],
